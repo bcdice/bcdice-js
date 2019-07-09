@@ -1,22 +1,38 @@
 {
   "name": "bcdice",
   "version": "1.0.0-beta-0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "BCDice for JS",
+  "keywords": [
+    "dice"
+  ],
+  "homepage": "https://github.com/bcdice/bcdice-js#readme",
+  "bugs": {
+    "url": "https://github.com/bcdice/bcdice-js/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bcdice/bcdice-js.git"
   },
-  "keywords": [
-    "dice"
-  ],
-  "author": "bcdice",
   "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/bcdice/bcdice-js/issues"
+  "author": "bcdice",
+  "main": "lib/BCDice.js",
+  "scripts": {
+    "build": "run-s build:rb build:games build:ts build:post",
+    "build:games": "ts-node --files scripts/extractGames.ts",
+    "build:post": "ts-node --files scripts/postProcess.ts",
+    "build:rb": "ts-node --files scripts/buildRuby.ts",
+    "build:ts": "tsc -b src/tsconfig.json",
+    "example": "run-s example:*",
+    "example:basic": "ts-node --files examples/basic.ts",
+    "test": "ts-node --files scripts/test.ts"
   },
-  "homepage": "https://github.com/bcdice/bcdice-js#readme"
+  "devDependencies": {
+    "@types/lodash": "^4.14.135",
+    "@types/node": "^12.0.12",
+    "lodash": "^4.17.11",
+    "npm-run-all": "^4.1.5",
+    "source-map-support": "^0.5.12",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.2"
+  }
 }
