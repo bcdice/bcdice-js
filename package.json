@@ -1,0 +1,22 @@
+{
+  "name": "bcdice",
+  "version": "1.0.0-beta-0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcdice/bcdice-js.git"
+  },
+  "keywords": [
+    "dice"
+  ],
+  "author": "bcdice",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/bcdice/bcdice-js/issues"
+  },
+  "homepage": "https://github.com/bcdice/bcdice-js#readme"
+}
