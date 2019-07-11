@@ -1,6 +1,5 @@
-import '@lib/JsPatch';
+import '@lib/opal';
 import '@lib/cgiDiceBot';
-import '@lib/DiceBotLoader';
 import * as diceBot from '@lib/diceBot.json';
 
 declare const Opal: any;

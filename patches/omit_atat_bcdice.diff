@@ -1,0 +1,107 @@
+diff --git a/diceBot/Amadeus.rb b/diceBot/Amadeus.rb
+index ace8edf..3b6d520 100644
+--- a/diceBot/Amadeus.rb
++++ b/diceBot/Amadeus.rb
+@@ -117,7 +117,7 @@ INFO_MESSAGE_TEXT
+     return "ファンブル！" if  dice_n == 1
+     return "スペシャル！" if  dice_n >= special_n
+ 
+-    success = @@bcdice.check_hit(total_n, signOfInequality, diff)
++    success = bcdice.check_hit(total_n, signOfInequality, diff)
+     return "成功" if success >= 1
+ 
+     return "失敗"
+diff --git a/diceBot/Amadeus_Korean.rb b/diceBot/Amadeus_Korean.rb
+index 20a87b9..04362f9 100644
+--- a/diceBot/Amadeus_Korean.rb
++++ b/diceBot/Amadeus_Korean.rb
+@@ -118,7 +118,7 @@ INFO_MESSAGE_TEXT
+     return "펌블！" if dice_n == 1
+     return "스페셜！" if dice_n >= special_n
+ 
+-    success = @@bcdice.check_hit(total_n, signOfInequality, diff)
++    success = bcdice.check_hit(total_n, signOfInequality, diff)
+     return "성공" if success >= 1
+ 
+     return "실패"
+diff --git a/diceBot/BarnaKronika.rb b/diceBot/BarnaKronika.rb
+index afe7826..65f5fbf 100644
+--- a/diceBot/BarnaKronika.rb
++++ b/diceBot/BarnaKronika.rb
+@@ -12,12 +12,12 @@ class BarnaKronika < DiceBot
+   # ダイスボット設定後に行う処理
+   # @return [void]
+   def postSet
+-    if @@bcdice
+-      @@bcdice.cardTrader.set1Deck2Jokers
++    if bcdice
++      bcdice.cardTrader.set1Deck2Jokers
+       # 手札の他のカード置き場
+-      @@bcdice.cardTrader.card_place = 0
++      bcdice.cardTrader.card_place = 0
+       # 場札のタップ処理の必要があるか？
+-      @@bcdice.cardTrader.canTapCard = false
++      bcdice.cardTrader.canTapCard = false
+     end
+   end
+ 
+diff --git a/diceBot/ChaosFlare.rb b/diceBot/ChaosFlare.rb
+index 744dbff..8d2aae1 100644
+--- a/diceBot/ChaosFlare.rb
++++ b/diceBot/ChaosFlare.rb
+@@ -4,12 +4,12 @@ class ChaosFlare < DiceBot
+   # ダイスボット設定後に行う処理
+   # @return [void]
+   def postSet
+-    if @@bcdice
+-      @@bcdice.cardTrader.set2Decks2Jokers
++    if bcdice
++      bcdice.cardTrader.set2Decks2Jokers
+       # 手札の他のカード置き場
+-      @@bcdice.cardTrader.card_place = 0
++      bcdice.cardTrader.card_place = 0
+       # 場札のタップ処理の必要があるか？
+-      @@bcdice.cardTrader.canTapCard = false
++      bcdice.cardTrader.canTapCard = false
+     end
+   end
+ 
+diff --git a/diceBot/DoubleCross.rb b/diceBot/DoubleCross.rb
+index 775528a..a55347c 100644
+--- a/diceBot/DoubleCross.rb
++++ b/diceBot/DoubleCross.rb
+@@ -196,7 +196,7 @@ INFO_MESSAGE_TEXT
+         output += "#{subtotal}[#{dice_dat[1]}]"
+         total_n += subtotal
+ 
+-        break unless @@bcdice.isReRollAgain(dice_cnt, round)
++        break unless bcdice.isReRollAgain(dice_cnt, round)
+       end
+     end
+ 
+diff --git a/diceBot/HatsuneMiku.rb b/diceBot/HatsuneMiku.rb
+index 846c8f6..cf710c6 100644
+--- a/diceBot/HatsuneMiku.rb
++++ b/diceBot/HatsuneMiku.rb
+@@ -134,7 +134,7 @@ INFO_MESSAGE_TEXT
+     return "ファンブル" if  dice_n == 1
+     return "スペシャル" if  dice_n >= special_n
+ 
+-    success = @@bcdice.check_hit(total_n, signOfInequality, diff)
++    success = bcdice.check_hit(total_n, signOfInequality, diff)
+     return "成功" if success >= 1
+ 
+     return "失敗"
+diff --git a/diceBot/SwordWorld2_0.rb b/diceBot/SwordWorld2_0.rb
+index 9691c4f..8f950f0 100644
+--- a/diceBot/SwordWorld2_0.rb
++++ b/diceBot/SwordWorld2_0.rb
+@@ -155,7 +155,7 @@ INFO_MESSAGE_TEXT
+ 
+     return result unless( result == "" )
+ 
+-    string = @@bcdice.getOriginalMessage
++    string = bcdice.getOriginalMessage
+ 
+     superSuccessValue = 41
+ 

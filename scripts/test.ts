@@ -2,14 +2,14 @@ import 'source-map-support/register';
 import * as fs from 'fs';
 import * as path from 'path';
 import BCDice from '..';
-import { testDataDir, libDir, libDiceBotsDir } from './utilities';
+import { outputDiceBotDir, bcdiceTestDataDir } from './paths';
 
 class TestFailure extends Error {
 }
 
 async function test(): Promise<void> {
-  const diceBotFiles = (await fs.promises.readdir(libDiceBotsDir)).filter(file => file.match(/\.js$/));
-  const dataFiles = (await fs.promises.readdir(testDataDir)).filter(file => file.match(/\.txt$/) && !file.match(/^_/));
+  const diceBotFiles = (await fs.promises.readdir(outputDiceBotDir)).filter(file => file.match(/\.js$/));
+  const dataFiles = (await fs.promises.readdir(bcdiceTestDataDir)).filter(file => file.match(/\.txt$/) && !file.match(/^_/));
 
   const bcdice = new BCDice();
 
@@ -21,9 +21,9 @@ async function test(): Promise<void> {
 
     process.stdout.write(`\n${gameType} `);
 
-    require(path.join(libDiceBotsDir, `${gameType}.js`));
+    require(path.join(outputDiceBotDir, `${gameType}.js`));
 
-    (await fs.promises.readFile(path.join(testDataDir, dataFile)))
+    (await fs.promises.readFile(path.join(bcdiceTestDataDir, dataFile)))
       .toString()
       .replace(/\r/g, '')
       .split(/\n=+\n?/g)
@@ -71,4 +71,7 @@ async function test(): Promise<void> {
   if (typeof games[0].gameType !== 'string') throw new TestFailure();
   if (typeof games[0].gameName !== 'string') throw new TestFailure();
 }
-test().catch(e => console.error(e));
+test().catch(e => {
+  console.error(e);
+  process.exit(1);
+});

@@ -4,13 +4,13 @@
     "module": "commonjs",
     "declaration": true,
     "sourceMap": true,
-    "outDir": "./lib",
+    "outDir": "../lib",
     "rootDir": "./",
     "resolveJsonModule": true,
     "strict": true,
     "baseUrl": "./",
     "paths": {
-      "@lib": ["./lib"],
+      "@lib": ["../lib"],
     },
   },
 }

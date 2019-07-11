@@ -17,11 +17,11 @@
   "author": "bcdice",
   "main": "lib/BCDice.js",
   "scripts": {
-    "build": "run-s build:rb build:games build:ts build:post",
-    "build:games": "ts-node --files scripts/extractGames.ts",
+    "clean": "rimraf lib patched",
+    "build": "run-s build:rake build:tsc build:post",
+    "build:rake": "bundle exec rake",
+    "build:tsc": "tsc -b src/tsconfig.json",
     "build:post": "ts-node --files scripts/postProcess.ts",
-    "build:rb": "ts-node --files scripts/buildRuby.ts",
-    "build:ts": "tsc -b src/tsconfig.json",
     "example": "run-s example:*",
     "example:basic": "ts-node --files examples/basic.ts",
     "test": "ts-node --files scripts/test.ts"
@@ -31,6 +31,7 @@
     "@types/node": "^12.0.12",
     "lodash": "^4.17.11",
     "npm-run-all": "^4.1.5",
+    "rimraf": "^2.6.3",
     "source-map-support": "^0.5.12",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.2"

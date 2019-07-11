@@ -1,9 +1,9 @@
 import { promises as fs } from 'fs';
 import * as path from 'path';
-import { libDir } from './utilities';
+import { outputDir } from './paths';
 
 async function postProcess(): Promise<void> {
-  const filePath = path.join(libDir, 'BCDice.js');
+  const filePath = path.join(outputDir, 'BCDice.js');
   console.log('Processing', filePath);
   const source = await fs.readFile(filePath);
   const content = source.toString().replace(
@@ -12,4 +12,7 @@ async function postProcess(): Promise<void> {
   );
   await fs.writeFile(filePath, content);
 }
-postProcess().catch(e => console.error(e));
+postProcess().catch(e => {
+  console.error(e);
+  process.exit(1);
+});
