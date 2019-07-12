@@ -7,7 +7,7 @@ index a8324da..4b75c97 100644
  
    def printErrorMessage(e)
 -    sendMessageToOnlySender("error " + e.to_s + $@.join("\n"))
-+    sendMessageToOnlySender("error " + e.to_s + ($@ || []).join("\n") + $!)
++    sendMessageToOnlySender("error " + e.to_s + caller().join("\n"))
    end
  
    def recieveMessageCatched(nick_e, tnick)
@@ -19,7 +19,7 @@ index dec7207..bd452f5 100644
    end
  
    def getModifyText(operator, value)
-+    return '' if( value == 0)
++    return '' if value == 0
      operatorText =
        case operator
        when "+"
@@ -31,7 +31,7 @@ index 5580409..b7dfdaa 100644
    end
  
    def getModifyText(operator, value)
-+    return '' if( value == 0)
++    return '' if value == 0
      operatorText =
        case operator
        when "+"
@@ -44,7 +44,7 @@ index 109d4bf..44385af 100644
        result, secret_flg = rollDiceCommand(command)
      rescue => e
 -      debug("executeCommand exception", e.to_s, $@.join("\n"))
-+      debug("executeCommand exception", e.to_s, ($@ || []).join("\n"), $!)
++      debug("executeCommand exception", e.to_s, caller().join("\n"))
      end
  
      debug('rollDiceCommand result', result)
@@ -79,16 +79,3 @@ index e741935..89b10f7 100644
  
          modify_list = modifyAddString.scan(/[+-]\d+/)
          modify_list.each{|i| modify += i.to_i }
-diff --git a/irc/ircLib.rb b/irc/ircLib.rb
-index 595dd7d..9603e75 100644
---- a/irc/ircLib.rb
-+++ b/irc/ircLib.rb
-@@ -25,7 +25,7 @@ class Net::IRC::Client
-       @log.debug "error!!";
-       @log.debug e.to_s
-       @log.debug $!.inspect
--      @log.debug $@.join("\n")
-+      @log.debug $@&.join("\n")
-     end
-     @log.debug "on_connected passed";
- 
