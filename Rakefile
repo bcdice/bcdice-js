@@ -34,17 +34,17 @@ task patch: [:copy] do
 end
 
 task build: [
-  :extract_games,
+  :extract_info_list,
   :build_opal,
   :build_core,
   :build_dicebot,
 ] do
 end
 
-task extract_games: [:patch] do
+task extract_info_list: [:patch] do
   require("./#{$bcdiceDir}/diceBot/DiceBot")
 
-  games = getGameTypes.map { |gameType|
+  infoList = getGameTypes.map { |gameType|
     puts "extracting diceBot/#{gameType}"
 
     require("./#{$bcdiceDir}/diceBot/#{gameType}.rb")
@@ -54,12 +54,12 @@ task extract_games: [:patch] do
       gameType: gameType,
       gameName: diceBot.gameName,
       prefixes: diceBot.prefixes.flatten,
-      help: diceBot.getHelpMessage,
+      info: diceBot.getHelpMessage,
     }
   }
 
   json = JSON.pretty_generate({
-    games: games
+    infoList: infoList
   })
 
   FileUtils.mkdir_p($outputDir)

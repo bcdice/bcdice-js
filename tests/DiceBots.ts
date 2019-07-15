@@ -46,7 +46,7 @@ describe('DiceBots', () => {
                 bcdice.setRandomValues(rands);
                 bcdice.setTest(true);
 
-                const [message] = bcdice.roll(input, gameType, []);
+                const [message] = bcdice.roll(input, gameType);
 
                 const surplusRands = bcdice.rands.map(r => r.join('/')).join(', ');
 

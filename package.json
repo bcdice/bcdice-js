@@ -24,6 +24,7 @@
     "build:post": "ts-node --files scripts/postProcess.ts",
     "example": "run-s example:*",
     "example:basic": "ts-node --files examples/basic.ts",
+    "example:import": "ts-node --files examples/import.ts",
     "test": "cross-env TS_NODE_FILES=true mocha -r ts-node/register -r source-map-support/register tests/**/*.ts"
   },
   "devDependencies": {

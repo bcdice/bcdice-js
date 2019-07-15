@@ -4,9 +4,16 @@ import * as diceBot from '@lib/diceBot.json';
 
 declare const Opal: any;
 
+export interface Info {
+  gameType: string;
+  gameName: string;
+  prefixes: string;
+  info: string;
+}
+
 export default class BCDice {
-  public static get games(): { gameType: string, gameName: string, help: string, prefixes: string[] }[] {
-    return diceBot.games;
+  public static get infoList(): Info[] {
+    return diceBot.infoList;
   }
 
   public readonly cgiDiceBot: any;
@@ -23,11 +30,11 @@ export default class BCDice {
     this.cgiDiceBot.$setTest(test);
   }
 
-  public roll(input: string, gameType: string, dir: string[] = []): [string, number[][] | null] {
+  public roll(input: string, gameType: string): [string, number[][] | null] {
     const [
       result,
       rands,
-    ] = this.cgiDiceBot.$roll(input, gameType, dir);
+    ] = this.cgiDiceBot.$roll(input, gameType, [], '', true);
 
     return [
       result,

@@ -7,15 +7,57 @@ $ npm install --save bcdice
 
 ## Usage
 ```ts
-import BCDice from '../bcdice-js/BCDice';
+import BCDice, { Info } from 'bcdice-js';
 import 'bcdice/lib/diceBot/Cthulhu';
 
-console.log(BCDice.games);
+function getInfo(gameType: string): Info | undefined {
+  return BCDice.infoList.find(info => info.gameType === gameType);
+}
 
-const bcdice = new BCDice();
-const [result, rands] = bcdice.roll('CC', 'Cthulhu');
-console.log(result, rands);
+interface RollResult {
+  result: string;
+  rands: number[][] | null;
+}
 
+function roll(command: string, gameType: string): RollResult {
+  const bcdice = new BCDice();
+  const [result, rands] = bcdice.roll(command, gameType);
+  return {
+    result,
+    rands,
+  };
+}
+
+console.log(getInfo('Cthulhu'))
+console.log(roll('CC', 'Cthulhu'));
+```
+
+### Dynamic Importing
+```ts
+import BCDice, { Info } from 'bcdice-js';
+
+function getInfo(gameType: string): Info | undefined {
+  return BCDice.infoList.find(info => info.gameType === gameType);
+}
+
+interface RollResult {
+  result: string;
+  rands: number[][] | null;
+}
+
+function roll(command: string, gameType: string): Promise<RollResult? {
+  const bcdice = new BCDice();
+  return import(`bcdice/lib/diceBot/${gameType}`).then(() => {
+    const [result, rands] = bcdice.roll(command, gameType);
+    return {
+      result,
+      rands,
+    };
+  });
+}
+
+console.log(getInfo('Cthulhu'));
+roll('CC', 'Cthulhu').then(result => console.log(result));
 ```
 
 ## Development

@@ -1,12 +1,27 @@
 
-// import BCDice from 'bcdice-js';
+// import BCDice, { Info } from 'bcdice-js';
 // import 'bcdice/lib/diceBot/Cthulhu';
 
-import BCDice from '..';
+import BCDice, { Info } from '..';
 import '../lib/diceBot/Cthulhu';
 
-console.log(BCDice.games.find(game => game.gameType === 'Cthulhu'));
+function getInfo(gameType: string): Info | undefined {
+  return BCDice.infoList.find(info => info.gameType === gameType);
+}
 
-const bcdice = new BCDice();
-const [result, rands] = bcdice.roll('CC', 'Cthulhu');
-console.log(result, rands);
+interface RollResult {
+  result: string;
+  rands: number[][] | null;
+}
+
+function roll(command: string, gameType: string): RollResult {
+  const bcdice = new BCDice();
+  const [result, rands] = bcdice.roll(command, gameType);
+  return {
+    result,
+    rands,
+  };
+}
+
+console.log(getInfo('Cthulhu'))
+console.log(roll('CC', 'Cthulhu'));
