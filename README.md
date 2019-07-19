@@ -7,6 +7,8 @@
 [![GitHub stars](https://img.shields.io/github/stars/bcdice/bcdice-js.svg)](https://github.com/bcdice/bcdice-js/stargazers)
 [![GitHub license](https://img.shields.io/github/license/bcdice/bcdice-js.svg)](https://github.com/bcdice/bcdice-js/blob/master/LICENSE)
 
+BCDice ported package for JavaScript by Opal.
+
 ## Install
 ```bash
 $ npm install --save bcdice
