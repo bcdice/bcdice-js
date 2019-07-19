@@ -70,8 +70,8 @@ roll('CC', 'Cthulhu').then(result => console.log(result));
 ## Development
 ### Install
 ```bash
-$ gem install opal
-$ npm run install
+$ bundle install
+$ npm install
 ```
 
 ### Build
