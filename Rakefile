@@ -44,11 +44,12 @@ end
 task extract_info_list: [:patch] do
   require("./#{$bcdiceDir}/diceBot/DiceBot")
 
+  print "extracting DiceBot "
   infoList = getGameTypes.map { |gameType|
-    puts "extracting diceBot/#{gameType}"
-
     require("./#{$bcdiceDir}/diceBot/#{gameType}.rb")
     diceBot = Object.const_get(gameType).new
+
+    print "."
 
     {
       gameType: gameType,
@@ -57,6 +58,7 @@ task extract_info_list: [:patch] do
       info: diceBot.getHelpMessage,
     }
   }
+  print "\n"
 
   json = JSON.pretty_generate({
     infoList: infoList
@@ -89,10 +91,12 @@ task build_core: [:patch] do
 end
 
 task build_dicebot: [:patch] do
+  print "building DiceBot "
   getGameTypes.each { |gameType|
-    puts "building diceBot/#{gameType}"
     builder = Builder.new
     builder.build("./#{$patchedDir}/diceBot/#{gameType}.rb")
     builder.write("#{$outputDir}/diceBot/#{gameType}.js")
+    print "."
   }
+  print "\n"
 end
