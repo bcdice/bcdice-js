@@ -1,5 +1,5 @@
 
-// import BCDice, { Info } from 'bcdice-js';
+// import BCDice, { Info } from 'bcdice';
 import BCDice, { Info } from '..';
 
 function getInfo(gameType: string): Info | undefined {

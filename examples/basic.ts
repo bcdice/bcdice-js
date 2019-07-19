@@ -1,5 +1,5 @@
 
-// import BCDice, { Info } from 'bcdice-js';
+// import BCDice, { Info } from 'bcdice';
 // import 'bcdice/lib/diceBot/Cthulhu';
 
 import BCDice, { Info } from '..';

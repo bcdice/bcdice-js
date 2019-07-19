@@ -7,7 +7,7 @@ $ npm install --save bcdice
 
 ## Usage
 ```ts
-import BCDice, { Info } from 'bcdice-js';
+import BCDice, { Info } from 'bcdice';
 import 'bcdice/lib/diceBot/Cthulhu';
 
 function getInfo(gameType: string): Info | undefined {
@@ -34,7 +34,7 @@ console.log(roll('CC', 'Cthulhu'));
 
 ### Dynamic Importing
 ```ts
-import BCDice, { Info } from 'bcdice-js';
+import BCDice, { Info } from 'bcdice';
 
 function getInfo(gameType: string): Info | undefined {
   return BCDice.infoList.find(info => info.gameType === gameType);

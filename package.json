@@ -1,7 +1,7 @@
 {
   "name": "bcdice",
   "version": "1.0.0-beta-0",
-  "description": "BCDice for JS",
+  "description": "BCDice ported for JavaScript",
   "keywords": [
     "dice"
   ],
