@@ -1,4 +1,20 @@
 language: node_js
 node_js:
-- 12
+- "12"
 - lts/*
+before_install:
+  - rvm install 2.6.3
+  - ruby -v
+  - gem install bundler
+install:
+  - npm ci
+  - bundler install
+before_script:
+  - npm run clean
+script:
+  - npm run build
+  - npm run test
+  - npm run example
+before_deploy:
+  - npm clean
+  - NODE_ENV=production npm run build
