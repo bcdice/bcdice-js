@@ -2,8 +2,8 @@
 /BCDice
 /Gemfile
 /Gemfile.lock
-/node_modules
 /patched
+/patches
 /Rakefile
 /scripts
 /tests
