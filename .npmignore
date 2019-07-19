@@ -1,0 +1,10 @@
+/.travis.yml
+/BCDice
+/Gemfile
+/Gemfile.lock
+/node_modules
+/patched
+/Rakefile
+/scripts
+/tests
+/tsconfig.json
