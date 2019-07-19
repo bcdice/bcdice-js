@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '12'
+- node
 - lts/*
 before_install:
 - rvm install 2.6.3
