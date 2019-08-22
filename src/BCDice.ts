@@ -23,7 +23,7 @@ export default class BCDice {
   }
 
   public setRandomValues(rands: number[][]): void {
-    this.cgiDiceBot.$setRandomValues(rands)
+    this.cgiDiceBot.$setRandomValues(rands.map(a => a.slice()).slice());
   }
 
   public setTest(test: boolean): void {

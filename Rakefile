@@ -28,9 +28,7 @@ task :copy do
 end
 
 task patch: [:copy] do
-  Dir.glob("#{$patchesDir}/*.diff") { |file|
-    sh "patch -p1 < ../#{file}", { chdir: $patchedDir }, {}
-  }
+  sh 'patch -p2 < ../patch.diff', { chdir: $patchedDir }, {}
 end
 
 task build: [
