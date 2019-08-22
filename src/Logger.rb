@@ -10,7 +10,7 @@ module Logger
   end
 
   def self.add_log(*args)
-    @logs <<= args
+    @logs <<= args if ($isDebug)
   end
 end
 
