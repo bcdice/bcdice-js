@@ -13,7 +13,7 @@ before_script:
 - npm run clean
 script:
 - npm run build
-- npm run test -- --reporter dot
+- npm run test
 - npm run example
 before_deploy:
 - npm run clean
