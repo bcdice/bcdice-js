@@ -86,6 +86,7 @@ task build_core: [:patch] do
 
   builder.build("./#{$patchedDir}/cgiDiceBot.rb")
   builder.build("./#{$srcDir}/DiceBotLoader.rb")
+  builder.build("./#{$srcDir}/Logger.rb")
 
   builder.write("#{$outputDir}/cgiDiceBot.js")
 end

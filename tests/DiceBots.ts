@@ -3,8 +3,16 @@ import * as path from 'path';
 import { expect } from 'chai';
 import BCDice from '..';
 
+declare var Opal: any;
+
 describe('DiceBots', () => {
   it('can load tests', async () => {
+    const { Logger } = Opal;
+
+    beforeEach(() => {
+      Logger.$clear();
+    });
+
     const testDataDir = path.join(__dirname, '../BCDice/src/test/data');
     const testDataDirFiles = await fs.promises.readdir(testDataDir);
     const testDataList = await Promise.all(testDataDirFiles
@@ -28,39 +36,48 @@ describe('DiceBots', () => {
           .replace(/\r/g, '') //TODO
           .split(/\n=+\n?/g)
           .filter(a => a !== '')
-          .forEach((testCaseSrc,) => {
-              const m = testCaseSrc.match(/input:((.|\n)*)?output:((.|\n)*)rand:((.|\n)*)/)
+          .forEach((testCaseSrc) => {
+            const m = testCaseSrc.match(/input:((.|\n)*)?output:((.|\n)*)rand:((.|\n)*)/)
 
-              const input = m ? m[1].trim() : '';
-              const output = m ? m[3].trim() : '';
-              const rands = m
-                ? m[5].trim()
-                  .split(/,/g)
-                  .map(a => a.split(/\//g).map(b => Number(b.trim())))
-                : [];
+            const input = m ? m[1].trim() : '';
+            const output = m ? m[3].trim() : '';
+            const rands = m
+              ? m[5].trim()
+                .split(/,/g)
+                .map(a => a.split(/\//g).map(b => Number(b.trim())))
+              : [];
 
-              if (gameType === 'PlotTest' && input.match(/^S2d6/)) { //TODO
-                xit(`rolls ${input}`, () => {});
-                return;
-              }
+            if (gameType === 'PlotTest' && input.match(/^S2d6/)) { //TODO
+              xit(`rolls ${input}`, () => {});
+              return;
+            }
 
-              it(`rolls ${input}`, () => {
-                expect(m).not.to.be.null;
+            it(`rolls ${input}`, () => {
+              expect(m).not.to.be.null;
 
-                const bcdice = new BCDice();
-                bcdice.setRandomValues(rands);
-                bcdice.setTest(true);
+              const bcdice = new BCDice();
+              bcdice.setRandomValues(rands);
+              bcdice.setTest(true);
 
-                const [message] = bcdice.roll(input, gameType);
+              const [message] = bcdice.roll(input, gameType);
 
-                const surplusRands = bcdice.rands.map(r => r.join('/')).join(', ');
+              const surplusRands = bcdice.rands.map(r => r.join('/')).join(', ');
 
-                const messageWithRands = (surplusRands && surplusRands !== '0')
-                  ? `${message}ダイス残り：${surplusRands}`
-                  : message;
-                expect(messageWithRands.trim()).to.equal(output);
-              });
+              const messageWithRands = (surplusRands && surplusRands !== '0')
+                ? `${message}ダイス残り：${surplusRands}`
+                : message;
+
+              const errorMessage = `
+                gameType: ${gameType}
+                input: ${input}
+                output: ${output}
+                rands: ${JSON.stringify(rands)}
+                logs:
+                ${Logger.logs.map((a: string) => `                  ${a}`).join('\n')}
+              `;
+              expect(messageWithRands.trim()).to.equal(output, errorMessage);
             });
+          });
       });
     });
   });
