@@ -37,10 +37,13 @@ describe('DiceBots', () => {
           .split(/\n=+\n?/g)
           .filter(a => a !== '')
           .forEach((testCaseSrc) => {
-            const m = testCaseSrc.match(/input:((.|\n)*)?output:((.|\n)*)rand:((.|\n)*)/)
+            const ptn = /input:\n((\n|.)+)\noutput:((\n|.)*)\nrand:\n?(.*)/;
+            expect(testCaseSrc).to.matches(ptn);
+            const m = testCaseSrc.match(ptn);
 
             const input = m ? m[1].trim() : '';
             const output = m ? m[3].trim() : '';
+
             const rands = m
               ? m[5].trim()
                 .split(/,/g)
@@ -67,14 +70,12 @@ describe('DiceBots', () => {
                 ? `${message}ダイス残り：${surplusRands}`
                 : message;
 
-              const errorMessage = `
-                gameType: ${gameType}
-                input: ${input}
-                output: ${output}
-                rands: ${JSON.stringify(rands)}
-                logs:
-                ${Logger.logs.map((a: string) => `                  ${a}`).join('\n')}
-              `;
+              const errorMessage = `gameType: ${gameType}
+input: ${input}
+output: ${output}
+rands: ${JSON.stringify(rands)}
+logs:
+${Logger.logs.map((a: string) => `\t${a}`).join('\n')}`;
               expect(messageWithRands.trim()).to.equal(output, errorMessage);
             });
           });
