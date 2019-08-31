@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Object#freezeのスタブ
 module ObjectFreezeStub
   def freeze
     self
@@ -5,14 +8,16 @@ module ObjectFreezeStub
 end
 Object.send(:prepend, ObjectFreezeStub)
 
+# FileTestクラスのスタブ
 class FileTest
   def self.directory?
     true
   end
 end
 
+# Fileモジュールのスタブ
 module FileStub
-  def self.read()
+  def self.read
     ''
   end
 end

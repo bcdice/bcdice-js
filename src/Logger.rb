@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# デバッグログを保持するモジュール
 module Logger
   attr_reader :logs
 
@@ -10,7 +13,7 @@ module Logger
   end
 
   def self.add_log(*args)
-    @logs <<= args if ($isDebug)
+    @logs <<= args if $isDebug
   end
 end
 

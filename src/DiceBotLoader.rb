@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# frozen_string_literal: true
 
 # ダイスボットの読み込みを担当するクラス
 class DiceBotLoader
@@ -7,14 +7,14 @@ class DiceBotLoader
   # @return [DiceBot] ダイスボットが存在した場合
   # @return [nil] 読み込み時にエラーが発生した場合
   def self.loadUnknownGame(gameTitle)
-    debug("loadUnknownGame gameTitle", gameTitle)
+    debug('loadUnknownGame gameTitle', gameTitle)
 
-    escapedGameTitle = gameTitle.gsub(/(\.\.|\/|:|-)/, '_')
+    escapedGameTitle = gameTitle.gsub(%r{(\.\.|/|:|-)}, '_')
 
     begin
-      Object.const_get(gameTitle).new
+      Object.const_get(escapedGameTitle).new
     rescue LoadError, StandardError => e
-      debug("DiceBot load ERROR!!!", e.to_s)
+      debug('DiceBot load ERROR!!!', e.to_s)
       nil
     end
   end
@@ -104,13 +104,13 @@ class DiceBotLoader
     when Regexp
       unless options[:filenames]
         raise ArgumentError,
-          'options[:filenames] is required when gameTitlePattern is a Regexp'
+              'options[:filenames] is required when gameTitlePattern is a Regexp'
       end
 
       @gameTitlePattern = gameTitlePattern
     else
       raise TypeError,
-        'gameTitlePattern must be a String or an Array<String> or a Regexp'
+            'gameTitlePattern must be a String or an Array<String> or a Regexp'
     end
 
     # 既定の読み込むファイル名の配列
@@ -142,7 +142,7 @@ class DiceBotLoader
     when Array
       @gameTitlePattern.include?(gameTitle.downcase)
     when Regexp
-      @gameTitlePattern === gameTitle
+      @gameTitlePattern == gameTitle
     end
   end
 

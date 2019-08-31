@@ -18,6 +18,8 @@
   "main": "lib/BCDice.js",
   "scripts": {
     "clean": "rimraf lib patched",
+    "lint": "run-s lint:*",
+    "lint:rubocop": "bundle exec rubocop",
     "build": "run-s build:rake build:tsc build:post",
     "build:rake": "bundle exec rake",
     "build:tsc": "tsc -b src/tsconfig.json",

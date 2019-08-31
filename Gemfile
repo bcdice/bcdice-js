@@ -1,6 +1,9 @@
-source "https://rubygems.org"
+# frozen_string_literal: true
 
-git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
+source 'https://rubygems.org'
 
-gem "opal", "~> 1.0"
-gem "rake", "~> 12.3"
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+
+gem 'opal', '~> 1.0'
+gem 'rake', '~> 12.3'
+gem 'rubocop', '~> 0.68.1'
