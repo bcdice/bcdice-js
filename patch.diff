@@ -465,6 +465,58 @@ index 69a502d..4dbba4b 100644
      calculateArray.each do |i| # 配列内ループで補正率を計算
        i =~ %r{([\*/])(\d*)}i
        result *= Regexp.last_match(2).to_i if Regexp.last_match(1) == '*'
+diff --git a/src/diceBot/NinjaSlayer.rb b/src/diceBot/NinjaSlayer.rb
+index 6b8c14c..9688475 100644
+--- a/src/diceBot/NinjaSlayer.rb
++++ b/src/diceBot/NinjaSlayer.rb
+@@ -48,14 +48,14 @@ MESSAGETEXT
+   # 難易度の値の正規表現
+   DIFFICULTY_VALUE_RE = /UH|[2-6KENH]/i.freeze
+   # 難易度の正規表現
+-  DIFFICULTY_RE = /\[(#{DIFFICULTY_VALUE_RE})\]|@(#{DIFFICULTY_VALUE_RE})/io.freeze
++  DIFFICULTY_RE = /(\[(#{DIFFICULTY_VALUE_RE.source})\]|@(#{DIFFICULTY_VALUE_RE.source}))/io.freeze
+ 
+   # 通常判定の正規表現
+-  NJ_RE = /\ANJ(\d+)#{DIFFICULTY_RE}?\z/io.freeze
++  NJ_RE = /\ANJ(\d+)#{DIFFICULTY_RE.source}?\z/io.freeze
+   # 回避判定の正規表現
+-  EV_RE = %r{\AEV(\d+)#{DIFFICULTY_RE}?(?:/(\d+))?\z}io.freeze
++  EV_RE = %r{\AEV(\d+)#{DIFFICULTY_RE.source}?(?:/(\d+))?\z}io.freeze
+   # 近接攻撃の正規表現
+-  AT_RE = /\AAT(\d+)#{DIFFICULTY_RE}?\z/io.freeze
++  AT_RE = /\AAT(\d+)#{DIFFICULTY_RE.source}?\z/io.freeze
+ 
+   # バラバラロール結果の "(" の前までの先頭部分
+   B_ROLL_RESULT_HEAD_RE = /\A[^(]+/.freeze
+@@ -78,7 +78,7 @@ MESSAGETEXT
+     m = NJ_RE.match(str)
+     return str unless m
+ 
+-    return bRollCommand(m[1], integerValueOfDifficulty(m[2] || m[3]))
++    bRollCommand(m[1], integerValueOfDifficulty(m[3] || m[4]))
+   end
+ 
+   def rollDiceCommand(command)
+@@ -115,8 +115,8 @@ MESSAGETEXT
+   # @return [EV]
+   def parseEV(m)
+     num = m[1].to_i
+-    difficulty = integerValueOfDifficulty(m[2] || m[3])
+-    targetValue = m[4] && m[4].to_i
++    difficulty = integerValueOfDifficulty(m[3] || m[4])
++    targetValue = m[5] && m[5].to_i
+ 
+     return EV.new(num, difficulty, targetValue)
+   end
+@@ -126,7 +126,7 @@ MESSAGETEXT
+   # @return [AT]
+   def parseAT(m)
+     num = m[1].to_i
+-    difficulty = integerValueOfDifficulty(m[2] || m[3])
++    difficulty = integerValueOfDifficulty(m[3] || m[4])
+ 
+     return AT.new(num, difficulty)
+   end
 diff --git a/src/diceBot/Postman.rb b/src/diceBot/Postman.rb
 index 4763ab6..6bdf3d8 100644
 --- a/src/diceBot/Postman.rb
