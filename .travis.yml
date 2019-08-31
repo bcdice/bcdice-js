@@ -12,6 +12,7 @@ install:
 before_script:
 - npm run clean
 script:
+- npm run lint
 - npm run build
 - npm run test
 - npm run example

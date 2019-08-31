@@ -2,6 +2,7 @@ import '@lib/opal';
 import '@lib/cgiDiceBot';
 import * as diceBot from '@lib/diceBot.json';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const Opal: any;
 
 export interface Info {
@@ -16,6 +17,7 @@ export default class BCDice {
     return diceBot.infoList;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public readonly cgiDiceBot: any;
 
   public constructor() {
@@ -31,15 +33,15 @@ export default class BCDice {
   }
 
   public roll(input: string, gameType: string): [string, number[][] | null] {
-    const [
-      result,
-      rands,
-    ] = this.cgiDiceBot.$roll(input, gameType, [], '', true);
+    const [result, rands] = this.cgiDiceBot.$roll(
+      input,
+      gameType,
+      [],
+      '',
+      true,
+    );
 
-    return [
-      result,
-      rands === Opal.nil ? null : rands,
-    ];
+    return [result, rands === Opal.nil ? null : rands];
   }
 
   public get rands(): number[][] {

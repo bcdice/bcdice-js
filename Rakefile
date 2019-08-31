@@ -101,8 +101,3 @@ task build_dicebot: [:patch] do
   end
   print "\n"
 end
-
-# RuboCop
-require 'rubocop/rake_task'
-RuboCop::RakeTask.new
-task default: :rubocop
