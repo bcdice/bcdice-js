@@ -1,18 +1,9 @@
 diff --git a/src/bcdiceCore.rb b/src/bcdiceCore.rb
-index b555846..641d4a7 100755
+index 3aca1cd..dbbf41e 100755
 --- a/src/bcdiceCore.rb
 +++ b/src/bcdiceCore.rb
-@@ -175,7 +175,7 @@ class BCDice
-   end
- 
-   def printErrorMessage(e)
--    sendMessageToOnlySender("error " + e.to_s + $@.join("\n"))
-+    sendMessageToOnlySender("error " + e.to_s + e.backtrace.join("\n"))
-   end
- 
-   def recieveMessageCatched(nick_e, tnick)
-@@ -866,7 +866,7 @@ class BCDice
-     string, secret, count, swapMarker = getD66Infos(dice)
+@@ -863,7 +863,7 @@ class BCDice
+     string, _secret, _count, swapMarker = getD66Infos(dice)
      unless  string.nil?
        value = getD66ValueByMarker(swapMarker)
 -      diceText = (value / 10).to_s + "," + (value % 10).to_s
@@ -20,91 +11,11 @@ index b555846..641d4a7 100755
        return value, diceText
      end
  
-@@ -1232,8 +1232,9 @@ class BCDice
-     nick ||= @nick_e
-     nick = nick.upcase
- 
--    /[_\d]*(.+)[_\d]*/ =~ nick
--    nick = Regexp.last_match(1) # Nick端の数字はカウンター変わりに使われることが多いので除去
-+    if /[_\d]*(.+)[_\d]*/ =~ nick
-+      nick = Regexp.last_match(1) # Nick端の数字はカウンター変わりに使われることが多いので除去
-+    end
- 
-     return nick
-   end
-diff --git a/src/diceBot/Amadeus.rb b/src/diceBot/Amadeus.rb
-index dbd3fe9..3a47b42 100644
---- a/src/diceBot/Amadeus.rb
-+++ b/src/diceBot/Amadeus.rb
-@@ -117,7 +117,7 @@ INFO_MESSAGE_TEXT
-     return "ファンブル！" if  dice_n == 1
-     return "スペシャル！" if  dice_n >= special_n
- 
--    success = @@bcdice.check_hit(total_n, signOfInequality, diff)
-+    success = bcdice.check_hit(total_n, signOfInequality, diff)
-     return "成功" if success >= 1
- 
-     return "失敗"
-diff --git a/src/diceBot/Amadeus_Korean.rb b/src/diceBot/Amadeus_Korean.rb
-index 56ff96b..c6f4929 100644
---- a/src/diceBot/Amadeus_Korean.rb
-+++ b/src/diceBot/Amadeus_Korean.rb
-@@ -118,7 +118,7 @@ INFO_MESSAGE_TEXT
-     return "펌블！" if dice_n == 1
-     return "스페셜！" if dice_n >= special_n
- 
--    success = @@bcdice.check_hit(total_n, signOfInequality, diff)
-+    success = bcdice.check_hit(total_n, signOfInequality, diff)
-     return "성공" if success >= 1
- 
-     return "실패"
-diff --git a/src/diceBot/BarnaKronika.rb b/src/diceBot/BarnaKronika.rb
-index 079ced5..6effe13 100644
---- a/src/diceBot/BarnaKronika.rb
-+++ b/src/diceBot/BarnaKronika.rb
-@@ -12,12 +12,12 @@ class BarnaKronika < DiceBot
-   # ダイスボット設定後に行う処理
-   # @return [void]
-   def postSet
--    if @@bcdice
--      @@bcdice.cardTrader.set1Deck2Jokers
-+    if bcdice
-+      bcdice.cardTrader.set1Deck2Jokers
-       # 手札の他のカード置き場
--      @@bcdice.cardTrader.card_place = 0
-+      bcdice.cardTrader.card_place = 0
-       # 場札のタップ処理の必要があるか？
--      @@bcdice.cardTrader.canTapCard = false
-+      bcdice.cardTrader.canTapCard = false
-     end
-   end
- 
-diff --git a/src/diceBot/ChaosFlare.rb b/src/diceBot/ChaosFlare.rb
-index 1507530..f455dbd 100644
---- a/src/diceBot/ChaosFlare.rb
-+++ b/src/diceBot/ChaosFlare.rb
-@@ -4,12 +4,12 @@ class ChaosFlare < DiceBot
-   # ダイスボット設定後に行う処理
-   # @return [void]
-   def postSet
--    if @@bcdice
--      @@bcdice.cardTrader.set2Decks2Jokers
-+    if bcdice
-+      bcdice.cardTrader.set2Decks2Jokers
-       # 手札の他のカード置き場
--      @@bcdice.cardTrader.card_place = 0
-+      bcdice.cardTrader.card_place = 0
-       # 場札のタップ処理の必要があるか？
--      @@bcdice.cardTrader.canTapCard = false
-+      bcdice.cardTrader.canTapCard = false
-     end
-   end
- 
 diff --git a/src/diceBot/Cthulhu7th.rb b/src/diceBot/Cthulhu7th.rb
-index cf9f85b..2c330c9 100644
+index 9eb77e8..0e12427 100644
 --- a/src/diceBot/Cthulhu7th.rb
 +++ b/src/diceBot/Cthulhu7th.rb
-@@ -342,7 +342,7 @@ INFO_MESSAGE_TEXT
+@@ -422,7 +422,7 @@ INFO_MESSAGE_TEXT
    end
  
    def getSetOfBullet(diff)
@@ -113,7 +24,7 @@ index cf9f85b..2c330c9 100644
  
      if (diff >= 1) && (diff < 10)
        bullet_set_count = 1 # 技能値が9以下での最低値保障処理
-@@ -352,7 +352,7 @@ INFO_MESSAGE_TEXT
+@@ -432,7 +432,7 @@ INFO_MESSAGE_TEXT
    end
  
    def getHitBulletCountBase(diff, bullet_set_count)
@@ -179,46 +90,11 @@ index ba83a8c..92b2bd4 100644
        return " ＞ ファンブル"
      end
  
-diff --git a/src/diceBot/DetatokoSaga.rb b/src/diceBot/DetatokoSaga.rb
-index 54a97fa..3a35391 100644
---- a/src/diceBot/DetatokoSaga.rb
-+++ b/src/diceBot/DetatokoSaga.rb
-@@ -155,6 +155,8 @@ INFO_MESSAGE_TEXT
-   end
- 
-   def getModifyText(operator, value)
-+    return '' if value == 0
-+
-     operatorText =
-       case operator
-       when "+"
-diff --git a/src/diceBot/DetatokoSaga_Korean.rb b/src/diceBot/DetatokoSaga_Korean.rb
-index 012d285..69bcd6d 100644
---- a/src/diceBot/DetatokoSaga_Korean.rb
-+++ b/src/diceBot/DetatokoSaga_Korean.rb
-@@ -155,6 +155,8 @@ INFO_MESSAGE_TEXT
-   end
- 
-   def getModifyText(operator, value)
-+    return '' if value == 0
-+
-     operatorText =
-       case operator
-       when "+"
 diff --git a/src/diceBot/DiceBot.rb b/src/diceBot/DiceBot.rb
-index 8a352c0..0a4c097 100644
+index a4b773d..4f7e7a5 100644
 --- a/src/diceBot/DiceBot.rb
 +++ b/src/diceBot/DiceBot.rb
-@@ -228,7 +228,7 @@ class DiceBot
-       debug('call rollDiceCommand command', command)
-       result, secret_flg = rollDiceCommand(command)
-     rescue StandardError => e
--      debug("executeCommand exception", e.to_s, $@.join("\n"))
-+      debug("executeCommand exception", e.to_s, e.backtrace.join("\n"))
-     end
- 
-     debug('rollDiceCommand result', result)
-@@ -470,13 +470,13 @@ class DiceBot
+@@ -472,13 +472,13 @@ class DiceBot
          item, value = get_table_by_d66(table)
          value = value.to_i
          output = item[1]
@@ -234,35 +110,6 @@ index 8a352c0..0a4c097 100644
          [output, value, diceText]
        else
          raise "invalid dice Type #{command}"
-diff --git a/src/diceBot/DiceBotLoader.rb b/src/diceBot/DiceBotLoader.rb
-index 6855865..a092291 100644
---- a/src/diceBot/DiceBotLoader.rb
-+++ b/src/diceBot/DiceBotLoader.rb
-@@ -229,9 +229,8 @@ class DiceBotLoader
-   # @return [DiceBot]
-   def loadDiceBot
-     @filenames.each do |filename|
--      require(
--        File.expand_path(filename, File.dirname(__FILE__))
--      )
-+      require_path = File.expand_path(filename, File.dirname(__FILE__))
-+      require(require_path)
-     end
- 
-     Object.const_get(@diceBotClass).new
-diff --git a/src/diceBot/DoubleCross.rb b/src/diceBot/DoubleCross.rb
-index 2cc0712..350b848 100644
---- a/src/diceBot/DoubleCross.rb
-+++ b/src/diceBot/DoubleCross.rb
-@@ -196,7 +196,7 @@ INFO_MESSAGE_TEXT
-         output += "#{subtotal}[#{dice_dat[1]}]"
-         total_n += subtotal
- 
--        break unless @@bcdice.isReRollAgain(dice_cnt, round)
-+        break unless bcdice.isReRollAgain(dice_cnt, round)
-       end
-     end
- 
 diff --git a/src/diceBot/Dracurouge.rb b/src/diceBot/Dracurouge.rb
 index baee0b3..53243f1 100644
 --- a/src/diceBot/Dracurouge.rb
@@ -277,7 +124,7 @@ index baee0b3..53243f1 100644
    end
  
 diff --git a/src/diceBot/Dracurouge_Korean.rb b/src/diceBot/Dracurouge_Korean.rb
-index 9f71651..a761a01 100644
+index 865164b..d982d8e 100644
 --- a/src/diceBot/Dracurouge_Korean.rb
 +++ b/src/diceBot/Dracurouge_Korean.rb
 @@ -87,7 +87,7 @@ MESSAGETEXT
@@ -299,7 +146,7 @@ index 9f71651..a761a01 100644
      type = (isBefore ? type1 : type2)
      indexTexts = (isBefore ? type1_indexTexts : type2_indexTexts)
 diff --git a/src/diceBot/EarthDawn3.rb b/src/diceBot/EarthDawn3.rb
-index 1dcf2a0..8f931df 100644
+index ee6f3e3..8e5f32c 100644
 --- a/src/diceBot/EarthDawn3.rb
 +++ b/src/diceBot/EarthDawn3.rb
 @@ -145,7 +145,7 @@ INFO_MESSAGE_TEXT
@@ -312,7 +159,7 @@ index 1dcf2a0..8f931df 100644
      loopCount.times do
        addStepToResult(result, baseStepInfo)
 diff --git a/src/diceBot/EarthDawn4.rb b/src/diceBot/EarthDawn4.rb
-index c4be6c4..c85e90d 100644
+index a1dcdb9..0433cb4 100644
 --- a/src/diceBot/EarthDawn4.rb
 +++ b/src/diceBot/EarthDawn4.rb
 @@ -191,7 +191,7 @@ INFO_MESSAGE_TEXT
@@ -347,10 +194,10 @@ index d0f9b31..b09d16a 100644
  
      debug("total_n", total_n)
 diff --git a/src/diceBot/FilledWith.rb b/src/diceBot/FilledWith.rb
-index 9b247b7..cc0fc4d 100644
+index 0c1b641..f96a41d 100644
 --- a/src/diceBot/FilledWith.rb
 +++ b/src/diceBot/FilledWith.rb
-@@ -1532,7 +1532,7 @@ MESSAGETEXT
+@@ -1512,7 +1512,7 @@ MESSAGETEXT
            '『白銀の猛将』ジェネラル(CL55/ネームド)1匹([命中]+4、あらゆる致傷力+20、[HP]+500)'
          ]],
        ]
@@ -360,7 +207,7 @@ index 9b247b7..cc0fc4d 100644
          areaText = "洞窟"
        when 2
 diff --git a/src/diceBot/GardenOrder.rb b/src/diceBot/GardenOrder.rb
-index b3c9dfa..088bcc8 100644
+index 53e896a..edc8725 100644
 --- a/src/diceBot/GardenOrder.rb
 +++ b/src/diceBot/GardenOrder.rb
 @@ -50,12 +50,12 @@ INFO_MESSAGE_TEXT
@@ -379,7 +226,7 @@ index b3c9dfa..088bcc8 100644
      check_roll(success_rate_per_one, critical_border)
    end
 diff --git a/src/diceBot/GurpsFW.rb b/src/diceBot/GurpsFW.rb
-index 88a084b..52cc2f9 100644
+index 2a1300c..23dca56 100644
 --- a/src/diceBot/GurpsFW.rb
 +++ b/src/diceBot/GurpsFW.rb
 @@ -341,7 +341,7 @@ INFO_MESSAGE_TEXT
@@ -391,19 +238,6 @@ index 88a084b..52cc2f9 100644
        if num >= 6
          num = 5
        end
-diff --git a/src/diceBot/HatsuneMiku.rb b/src/diceBot/HatsuneMiku.rb
-index 16f6155..99ed48a 100644
---- a/src/diceBot/HatsuneMiku.rb
-+++ b/src/diceBot/HatsuneMiku.rb
-@@ -134,7 +134,7 @@ INFO_MESSAGE_TEXT
-     return "ファンブル" if  dice_n == 1
-     return "スペシャル" if  dice_n >= special_n
- 
--    success = @@bcdice.check_hit(total_n, signOfInequality, diff)
-+    success = bcdice.check_hit(total_n, signOfInequality, diff)
-     return "成功" if success >= 1
- 
-     return "失敗"
 diff --git a/src/diceBot/IthaWenUa.rb b/src/diceBot/IthaWenUa.rb
 index 1dd4f10..22ead4a 100644
 --- a/src/diceBot/IthaWenUa.rb
@@ -431,7 +265,7 @@ index 70d1316..527ece4 100644
      index = [0, index].max
      index = [index, (tables.size - 1)].min
 diff --git a/src/diceBot/LogHorizon_Korean.rb b/src/diceBot/LogHorizon_Korean.rb
-index 6f71fd3..3f52519 100644
+index 4ca1194..2a29e41 100644
 --- a/src/diceBot/LogHorizon_Korean.rb
 +++ b/src/diceBot/LogHorizon_Korean.rb
 @@ -315,7 +315,7 @@ MESSAGETEXT
@@ -443,33 +277,11 @@ index 6f71fd3..3f52519 100644
  
      index = [0, index].max
      index = [index, (tables.size - 1)].min
-diff --git a/src/diceBot/MetalHeadExtream.rb b/src/diceBot/MetalHeadExtream.rb
-index 69a502d..4dbba4b 100644
---- a/src/diceBot/MetalHeadExtream.rb
-+++ b/src/diceBot/MetalHeadExtream.rb
-@@ -585,7 +585,7 @@ MESSAGETEXT
-                    ['H', '(HW)'],
-                    ['O', '(MO)']]
- 
--    index = damageInfos.index { |type, _text| type == damageStage }
-+    index = damageInfos.index { |i| i.first == damageStage }
-     return nil if index == -1
- 
-     damageIndex = index + 1
-@@ -906,7 +906,7 @@ MESSAGETEXT
-   # 端数が使いたいので、parren_killer未使用
-   def get_value(originalValue, calculateText)
-     result = originalValue.to_f
--    calculateArray = calculateText.scan(%r{[\*/]\d*}) # 修正値を分割して配列へ
-+    calculateArray = (calculateText || '').scan(%r{[\*/]\d*}) # 修正値を分割して配列へ
-     calculateArray.each do |i| # 配列内ループで補正率を計算
-       i =~ %r{([\*/])(\d*)}i
-       result *= Regexp.last_match(2).to_i if Regexp.last_match(1) == '*'
 diff --git a/src/diceBot/NinjaSlayer.rb b/src/diceBot/NinjaSlayer.rb
-index 6b8c14c..9688475 100644
+index 5b735f1..a93f145 100644
 --- a/src/diceBot/NinjaSlayer.rb
 +++ b/src/diceBot/NinjaSlayer.rb
-@@ -48,14 +48,14 @@ MESSAGETEXT
+@@ -55,16 +55,16 @@ MESSAGETEXT
    # 難易度の値の正規表現
    DIFFICULTY_VALUE_RE = /UH|[2-6KENH]/i.freeze
    # 難易度の正規表現
@@ -485,10 +297,13 @@ index 6b8c14c..9688475 100644
    # 近接攻撃の正規表現
 -  AT_RE = /\AAT(\d+)#{DIFFICULTY_RE}?\z/io.freeze
 +  AT_RE = /\AAT(\d+)#{DIFFICULTY_RE.source}?\z/io.freeze
+   # 電子戦の正規表現
+-  EL_RE = /\AEL(\d+)#{DIFFICULTY_RE}?\z/io.freeze
++  EL_RE = /\AEL(\d+)#{DIFFICULTY_RE.source}?\z/io.freeze
  
    # バラバラロール結果の "(" の前までの先頭部分
    B_ROLL_RESULT_HEAD_RE = /\A[^(]+/.freeze
-@@ -78,7 +78,7 @@ MESSAGETEXT
+@@ -89,7 +89,7 @@ MESSAGETEXT
      m = NJ_RE.match(str)
      return str unless m
  
@@ -497,7 +312,7 @@ index 6b8c14c..9688475 100644
    end
  
    def rollDiceCommand(command)
-@@ -115,8 +115,8 @@ MESSAGETEXT
+@@ -134,8 +134,8 @@ MESSAGETEXT
    # @return [EV]
    def parseEV(m)
      num = m[1].to_i
@@ -508,7 +323,7 @@ index 6b8c14c..9688475 100644
  
      return EV.new(num, difficulty, targetValue)
    end
-@@ -126,7 +126,7 @@ MESSAGETEXT
+@@ -145,7 +145,7 @@ MESSAGETEXT
    # @return [AT]
    def parseAT(m)
      num = m[1].to_i
@@ -517,24 +332,15 @@ index 6b8c14c..9688475 100644
  
      return AT.new(num, difficulty)
    end
-diff --git a/src/diceBot/Postman.rb b/src/diceBot/Postman.rb
-index 4763ab6..6bdf3d8 100644
---- a/src/diceBot/Postman.rb
-+++ b/src/diceBot/Postman.rb
-@@ -55,11 +55,11 @@ MESSAGETEXT
-         diceCount = 2 if diceCount < 2
+@@ -155,7 +155,7 @@ MESSAGETEXT
+   # @return [EL]
+   def parseEL(m)
+     num = m[1].to_i
+-    difficulty = integerValueOfDifficulty(m[2] || m[3])
++    difficulty = integerValueOfDifficulty(m[3] || m[4])
  
-         modify = (Regexp.last_match(2) || 0).to_i
--        modifyAddString = Regexp.last_match(3)
-+        modifyAddString = (Regexp.last_match(3) || '')
- 
-         type = (Regexp.last_match(6) || '')
-         target = (Regexp.last_match(7) || 0).to_i
--        targetAddString = Regexp.last_match(8)
-+        targetAddString = (Regexp.last_match(8) || '')
- 
-         modify_list = modifyAddString.scan(/[+-]\d+/)
-         modify_list.each { |i| modify += i.to_i }
+     return EL.new(num, difficulty)
+   end
 diff --git a/src/diceBot/Ryutama.rb b/src/diceBot/Ryutama.rb
 index 590545e..6a9478c 100644
 --- a/src/diceBot/Ryutama.rb
@@ -556,6 +362,30 @@ index 590545e..6a9478c 100644
      dice2 = diceBase % 100
  
      if isValidDice(dice1, dice2)
+diff --git a/src/diceBot/SRS.rb b/src/diceBot/SRS.rb
+index 744fe6c..7d8cbcb 100644
+--- a/src/diceBot/SRS.rb
++++ b/src/diceBot/SRS.rb
+@@ -72,15 +72,15 @@ HELP_MESSAGE
+                      join('|')
+ 
+       @aliases_re_for_srs_roll_with_target_value = Regexp.new(
+-        '\A' \
++        '^' \
+         "(?:#{aliases_part})" \
+-        '((?:[-+][-+\d]+)?>=\d+(?:\[\d*(?:,\d+)?\])?)\z'
++        '((?:[-+][-+\d]+)?>=\d+(?:\[\d*(?:,\d+)?\])?)$'
+       )
+ 
+       @aliases_re_for_srs_roll_without_target_value = Regexp.new(
+-        '\A' \
++        '^' \
+         "(?:#{aliases_part})" \
+-        '([-+][-+\d]+)?(\[\d*(?:,\d+)?\])?\z'
++        '([-+][-+\d]+)?(\[\d*(?:,\d+)?\])?$'
+       )
+ 
+       prepare_help_msg_for_aliases_for_srs_roll(aliases_upcase)
 diff --git a/src/diceBot/ShinMegamiTenseiKakuseihen.rb b/src/diceBot/ShinMegamiTenseiKakuseihen.rb
 index 479ed39..bce1448 100644
 --- a/src/diceBot/ShinMegamiTenseiKakuseihen.rb
@@ -570,7 +400,7 @@ index 479ed39..bce1448 100644
  
      return [dice1, dice2]
 diff --git a/src/diceBot/Skynauts.rb b/src/diceBot/Skynauts.rb
-index 68e50d0..f4be751 100644
+index d488f10..f32ee9c 100644
 --- a/src/diceBot/Skynauts.rb
 +++ b/src/diceBot/Skynauts.rb
 @@ -97,7 +97,7 @@ MESSAGETEXT
@@ -581,22 +411,6 @@ index 68e50d0..f4be751 100644
 +    movePointBase = total.div(2) <= 0 ? 1 : total.div(2)
      movePoint = movePointBase + bonus
      debug("移動エリア数", movePoint)
- 
-diff --git a/src/diceBot/SwordWorld2_0.rb b/src/diceBot/SwordWorld2_0.rb
-index 7cc3dc3..add8f85 100644
---- a/src/diceBot/SwordWorld2_0.rb
-+++ b/src/diceBot/SwordWorld2_0.rb
-@@ -153,9 +153,9 @@ INFO_MESSAGE_TEXT
-     debug("check_nD6")
-     result = super(total_n, dice_n, signOfInequality, diff, dice_cnt, dice_max, n1, n_max)
- 
--    return result unless  result == ""
-+    return result unless result == ""
- 
--    string = @@bcdice.getOriginalMessage
-+    string = bcdice.getOriginalMessage
- 
-     superSuccessValue = 41
  
 diff --git a/src/diceBot/Warhammer.rb b/src/diceBot/Warhammer.rb
 index c60aabc..6d93666 100644
