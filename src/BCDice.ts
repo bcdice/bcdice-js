@@ -12,6 +12,12 @@ export interface Info {
   info: string;
 }
 
+export interface RandResult {
+  kind: string;
+  sides: number;
+  value: number;
+}
+
 export default class BCDice {
   public static get infoList(): Info[] {
     return diceBot.infoList;
@@ -46,5 +52,9 @@ export default class BCDice {
 
   public get rands(): number[][] {
     return this.cgiDiceBot.rands;
+  }
+
+  public get detailedRands(): RandResult[] {
+    return this.cgiDiceBot.$detailed_rand_results().map((r: { $$data: RandResult; }) => r.$$data);
   }
 }
