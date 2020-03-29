@@ -53,7 +53,7 @@ task extract_info_list: [:patch] do
 
     {
       gameType: gameType,
-      gameName: diceBot.id,
+      gameName: diceBot.gameName,
       prefixes: diceBot.prefixes.flatten,
       info: diceBot.help_message
     }
