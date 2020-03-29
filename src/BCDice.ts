@@ -55,6 +55,8 @@ export default class BCDice {
   }
 
   public get detailedRands(): RandResult[] {
-    return this.cgiDiceBot.$detailed_rand_results().map((r: { $$data: RandResult; }) => r.$$data);
+    return this.cgiDiceBot
+      .$detailed_rand_results()
+      .map((r: { $$data: RandResult }) => r.$$data);
   }
 }
