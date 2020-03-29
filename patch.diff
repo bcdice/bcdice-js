@@ -251,6 +251,19 @@ index 1dd4f10..22ead4a 100644
      dice1 = diceValue % 10 # 1の位を代入
  
      debug("total_n", total_n)
+diff --git a/src/diceBot/KemonoNoMori.rb b/src/diceBot/KemonoNoMori.rb
+index ab4b100..163a0bd 100644
+--- a/src/diceBot/KemonoNoMori.rb
++++ b/src/diceBot/KemonoNoMori.rb
+@@ -67,7 +67,7 @@ MESSAGETEXT
+ 
+     # 行為判定の成功度は [目標値の10の位の数+1]
+     # 継続判定の成功度は固定で+1
+-    success_degree = is_action_judge ? target_total / 10 + 1 : 1
++    success_degree = is_action_judge ? target_total.div(10) + 1 : 1
+ 
+     dice_total, = roll(1, 12)
+     debug('dice_total, target_total, success_degree = ', dice_total, target_total, success_degree)
 diff --git a/src/diceBot/LogHorizon.rb b/src/diceBot/LogHorizon.rb
 index 70d1316..527ece4 100644
 --- a/src/diceBot/LogHorizon.rb
@@ -278,19 +291,19 @@ index 4ca1194..2a29e41 100644
      index = [0, index].max
      index = [index, (tables.size - 1)].min
 diff --git a/src/diceBot/NinjaSlayer.rb b/src/diceBot/NinjaSlayer.rb
-index 5b735f1..a93f145 100644
+index 6dddff8..4f55fdf 100644
 --- a/src/diceBot/NinjaSlayer.rb
 +++ b/src/diceBot/NinjaSlayer.rb
-@@ -55,16 +55,16 @@ MESSAGETEXT
+@@ -57,16 +57,16 @@ MESSAGETEXT
    # 難易度の値の正規表現
    DIFFICULTY_VALUE_RE = /UH|[2-6KENH]/i.freeze
    # 難易度の正規表現
 -  DIFFICULTY_RE = /\[(#{DIFFICULTY_VALUE_RE})\]|@(#{DIFFICULTY_VALUE_RE})/io.freeze
-+  DIFFICULTY_RE = /(\[(#{DIFFICULTY_VALUE_RE.source})\]|@(#{DIFFICULTY_VALUE_RE.source}))/io.freeze
++  DIFFICULTY_RE = /(?:\[(#{DIFFICULTY_VALUE_RE.source})\]|@(#{DIFFICULTY_VALUE_RE.source}))/io.freeze
  
    # 通常判定の正規表現
--  NJ_RE = /\ANJ(\d+)#{DIFFICULTY_RE}?\z/io.freeze
-+  NJ_RE = /\ANJ(\d+)#{DIFFICULTY_RE.source}?\z/io.freeze
+-  NJ_RE = /\A(S)?NJ(\d+)#{DIFFICULTY_RE}?\z/io.freeze
++  NJ_RE = /\A(S)?NJ(\d+)#{DIFFICULTY_RE.source}?\z/io.freeze
    # 回避判定の正規表現
 -  EV_RE = %r{\AEV(\d+)#{DIFFICULTY_RE}?(?:/(\d+))?\z}io.freeze
 +  EV_RE = %r{\AEV(\d+)#{DIFFICULTY_RE.source}?(?:/(\d+))?\z}io.freeze
@@ -303,44 +316,6 @@ index 5b735f1..a93f145 100644
  
    # バラバラロール結果の "(" の前までの先頭部分
    B_ROLL_RESULT_HEAD_RE = /\A[^(]+/.freeze
-@@ -89,7 +89,7 @@ MESSAGETEXT
-     m = NJ_RE.match(str)
-     return str unless m
- 
--    return bRollCommand(m[1], integerValueOfDifficulty(m[2] || m[3]))
-+    bRollCommand(m[1], integerValueOfDifficulty(m[3] || m[4]))
-   end
- 
-   def rollDiceCommand(command)
-@@ -134,8 +134,8 @@ MESSAGETEXT
-   # @return [EV]
-   def parseEV(m)
-     num = m[1].to_i
--    difficulty = integerValueOfDifficulty(m[2] || m[3])
--    targetValue = m[4] && m[4].to_i
-+    difficulty = integerValueOfDifficulty(m[3] || m[4])
-+    targetValue = m[5] && m[5].to_i
- 
-     return EV.new(num, difficulty, targetValue)
-   end
-@@ -145,7 +145,7 @@ MESSAGETEXT
-   # @return [AT]
-   def parseAT(m)
-     num = m[1].to_i
--    difficulty = integerValueOfDifficulty(m[2] || m[3])
-+    difficulty = integerValueOfDifficulty(m[3] || m[4])
- 
-     return AT.new(num, difficulty)
-   end
-@@ -155,7 +155,7 @@ MESSAGETEXT
-   # @return [EL]
-   def parseEL(m)
-     num = m[1].to_i
--    difficulty = integerValueOfDifficulty(m[2] || m[3])
-+    difficulty = integerValueOfDifficulty(m[3] || m[4])
- 
-     return EL.new(num, difficulty)
-   end
 diff --git a/src/diceBot/Ryutama.rb b/src/diceBot/Ryutama.rb
 index 590545e..6a9478c 100644
 --- a/src/diceBot/Ryutama.rb
@@ -441,4 +416,3 @@ index ad4cfa6..4876a07 100644
 +      return left.div(right)
      end
    end
- 

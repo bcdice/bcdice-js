@@ -53,9 +53,9 @@ task extract_info_list: [:patch] do
 
     {
       gameType: gameType,
-      gameName: diceBot.gameName,
+      gameName: diceBot.id,
       prefixes: diceBot.prefixes.flatten,
-      info: diceBot.getHelpMessage
+      info: diceBot.help_message
     }
   end
   print "\n"
