@@ -1,7 +1,7 @@
 # BCDice
-![npm](https://img.shields.io/npm/v/bcdice.svg)
-![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/bcdice.svg)
-![Travis (.org)](https://img.shields.io/travis/bcdice/bcdice-js.svg)
+[![npm](https://img.shields.io/npm/v/bcdice.svg)](https://www.npmjs.com/package/bcdice)
+[![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/bcdice.svg)](#)
+[![Travis (.org)](https://img.shields.io/travis/bcdice/bcdice-js.svg)](https://travis-ci.org/github/bcdice/bcdice-js)
 [![GitHub issues](https://img.shields.io/github/issues/bcdice/bcdice-js.svg)](https://github.com/bcdice/bcdice-js/issues)
 [![GitHub forks](https://img.shields.io/github/forks/bcdice/bcdice-js.svg)](https://github.com/bcdice/bcdice-js/network)
 [![GitHub stars](https://img.shields.io/github/stars/bcdice/bcdice-js.svg)](https://github.com/bcdice/bcdice-js/stargazers)
