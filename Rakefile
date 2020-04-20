@@ -54,11 +54,14 @@ task extract_info_list: [:patch] do
     {
       gameType: gameType,
       gameName: diceBot.name,
+      sortKey: diceBot.sort_key,
       prefixes: diceBot.prefixes.flatten,
       info: diceBot.help_message
     }
   end
   print "\n"
+
+  infoList.sort_by! { |info| info[:sortKey] }
 
   json = JSON.pretty_generate(
     infoList: infoList
