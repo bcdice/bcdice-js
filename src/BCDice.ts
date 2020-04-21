@@ -8,6 +8,7 @@ declare const Opal: any;
 export interface Info {
   gameType: string;
   gameName: string;
+  sortKey: string;
   prefixes: string;
   info: string;
 }
