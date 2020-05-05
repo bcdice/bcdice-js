@@ -11,6 +11,32 @@ index 23286c3..661a98b 100755
        return value, diceText
      end
  
+diff --git a/src/dice/add_dice/node.rb b/src/dice/add_dice/node.rb
+index 7ddc2b4..e9f0073 100644
+--- a/src/dice/add_dice/node.rb
++++ b/src/dice/add_dice/node.rb
+@@ -231,7 +231,7 @@ class AddDice
+       # @param [Integer] divisor 除数（0以外）
+       # @return [Integer]
+       def divide_and_round(dividend, divisor)
+-        dividend / divisor
++        dividend.div(divisor)
+       end
+     end
+ 
+diff --git a/src/diceBot/Chill3.rb b/src/diceBot/Chill3.rb
+index 273d65b..06d61fd 100644
+--- a/src/diceBot/Chill3.rb
++++ b/src/diceBot/Chill3.rb
+@@ -22,7 +22,7 @@ INFO_MESSAGE_TEXT
+     return '' unless cmp_op == :<=
+ 
+     # ゾロ目ならC-ResultかBotch
+-    tens = (dice_total / 10) % 10
++    tens = (dice_total.div(10)) % 10
+     ones = dice_total % 10
+ 
+     if tens == ones
 diff --git a/src/diceBot/Cthulhu7th.rb b/src/diceBot/Cthulhu7th.rb
 index 1e85d2c..6262c58 100644
 --- a/src/diceBot/Cthulhu7th.rb
@@ -225,6 +251,32 @@ index 0fe5902..e508e19 100644
  
      check_roll(success_rate_per_one, critical_border)
    end
+diff --git a/src/diceBot/Gundog.rb b/src/diceBot/Gundog.rb
+index cb3aa49..9771a7a 100644
+--- a/src/diceBot/Gundog.rb
++++ b/src/diceBot/Gundog.rb
+@@ -26,7 +26,7 @@ INFO_MESSAGE_TEXT
+     elsif total <= 1
+       " ＞ 絶対成功(達成値1+SL)"
+     elsif total <= target
+-      dig10 = total / 10
++      dig10 = total.div(10)
+       dig1 = total - dig10 * 10
+       dig10 = 0 if dig10 >= 10
+       dig1 = 0 if dig1 >= 10 # 条件的にはあり得ない(笑
+diff --git a/src/diceBot/GundogRevised.rb b/src/diceBot/GundogRevised.rb
+index 24be4c7..c4e144e 100644
+--- a/src/diceBot/GundogRevised.rb
++++ b/src/diceBot/GundogRevised.rb
+@@ -37,7 +37,7 @@ INFO_MESSAGE_TEXT
+     elsif total <= 1
+       " ＞ ベアリー(達成値1+SL)"
+     elsif total <= target
+-      dig10 = total / 10
++      dig10 = total.div(10)
+       dig1 = total - dig10 * 10
+       dig10 = 0 if dig10 >= 10
+       dig1 = 0 if dig1 >= 10 # 条件的にはあり得ない(笑
 diff --git a/src/diceBot/GurpsFW.rb b/src/diceBot/GurpsFW.rb
 index 431b608..d2ffe89 100644
 --- a/src/diceBot/GurpsFW.rb
@@ -387,6 +439,87 @@ index 7440c39..1b85f59 100644
      movePoint = movePointBase + bonus
      debug("移動エリア数", movePoint)
  
+diff --git a/src/diceBot/TorgEternity.rb b/src/diceBot/TorgEternity.rb
+index da1fcc5..fe04d55 100644
+--- a/src/diceBot/TorgEternity.rb
++++ b/src/diceBot/TorgEternity.rb
+@@ -99,12 +99,11 @@ INFO_MESSAGE_TEXT
+   def getRolld20DiceCommandResult(command)
+     debug("Torg Eternity Dice Roll Command ? ", command)
+     m = /(^|\s)(S)?(TE)/i =~ command
+-    debug(Regexp.last_match(2))
+-    secret = !Regexp.last_match(2).nil?
+     unless m
+       debug("None")
+       return nil
+     end
++    secret = !Regexp.last_match(2).nil?
+     debug("Yes!")
+     skilled, unskilled, dice_str, mishap = torg_eternity_dice(false, true)
+     if mishap == 1
+@@ -126,12 +125,11 @@ INFO_MESSAGE_TEXT
+   def getUpRollDiceCommandResult(command)
+     debug("Torg Eternity Dice Roll ( UP ) Command ? ", command)
+     m = /(^|\s)(S)?(UP)/i =~ command
+-    debug(Regexp.last_match(2))
+-    secret = !Regexp.last_match(2).nil?
+     unless m
+       debug("None")
+       return nil
+     end
++    secret = !Regexp.last_match(2).nil?
+     debug("Yes!")
+     skilled1, unskilled1, dice_str1, mishap = torg_eternity_dice(false, true)
+     if mishap == 1
+@@ -156,13 +154,11 @@ INFO_MESSAGE_TEXT
+   def getPossibilityRollDiceCommandResult(command)
+     debug("Torg Eternity Possibility Roll Command ? ", command)
+     m = /(^|\s)(S)?(POS)((\d+)(\+\d+)?)/i =~ command
+-    debug(Regexp.last_match(2))
+-    debug(Regexp.last_match(4))
+-    secret = !Regexp.last_match(2).nil?
+     unless m
+       debug("None")
+       return nil
+     end
++    secret = !Regexp.last_match(2).nil?
+     debug("Yes!")
+     output_modifier = parren_killer("(0#{Regexp.last_match(4)})").to_i
+     skilled, unskilled, dice_str, = torg_eternity_dice(true, false)
+@@ -183,8 +179,6 @@ INFO_MESSAGE_TEXT
+   def getBonusDamageDiceCommandResult(command)
+     debug("TorgEternity Bonus Damage Roll Command ? ", command)
+     m = /(\d+)(BD)(([\+\-]\d+)*)/i.match(command)
+-    debug(Regexp.last_match(1))
+-    debug(Regexp.last_match(3))
+     unless m
+       debug("None")
+       return nil
+@@ -206,7 +200,6 @@ INFO_MESSAGE_TEXT
+   def getSuccessLevelDiceCommandResult(command)
+     debug("TorgEternity Success Level Table Command ? ", command)
+     m = /(RT|Result)(\d+([\+\-]\d+)*)/i.match(command)
+-    debug(Regexp.last_match(2))
+     unless m
+       debug("None")
+       return nil
+@@ -228,7 +221,6 @@ INFO_MESSAGE_TEXT
+   def getDamageResultDiceCommandResult(command)
+     debug("TorgEternity Damage Result Table Command ? ", command)
+     m = /(DT|Damage)(\d+([\+\-]\d+)*)/i.match(command)
+-    debug(Regexp.last_match(2))
+     unless m
+       debug("None")
+       return nil
+@@ -246,8 +238,6 @@ INFO_MESSAGE_TEXT
+   def getRollBonusDiceCommandResult(command)
+     debug("TorgEternity Roll Bonus Table Command ? ", command)
+     m = /(BT|Bonus)(\d+)(([\+\-]\d+)*)/i.match(command)
+-    debug(Regexp.last_match(2))
+-    debug(Regexp.last_match(3))
+     unless m
+       debug("None")
+       return nil
 diff --git a/src/diceBot/Warhammer.rb b/src/diceBot/Warhammer.rb
 index 5c39bc9..301c11f 100644
 --- a/src/diceBot/Warhammer.rb
