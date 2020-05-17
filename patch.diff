@@ -549,3 +549,16 @@ index ad4cfa6..4876a07 100644
      end
    end
  
+diff --git a/src/diceBot/VampireTheMasquerade5th.rb b/src/diceBot/VampireTheMasquerade5th.rb
+index d8ac7e7..5fe6168 100644
+--- a/src/diceBot/VampireTheMasquerade5th.rb
++++ b/src/diceBot/VampireTheMasquerade5th.rb
+@@ -93,7 +93,7 @@ MESSAGETEXT
+ 
+   def getCriticalSuccess(tenDice)
+     # 10の目が2個毎に追加2成功
+-    return ((tenDice / 2) * 2)
++    return tenDice.div(2) * 2
+   end
+ 
+   def makeDiceRoll(dicePool)
