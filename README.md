@@ -19,6 +19,13 @@ $ npm install --save bcdice
 import BCDice, { Info } from 'bcdice';
 import 'bcdice/lib/diceBot/Cthulhu';
 
+/* or CommonJS
+const BCDice = require('bcdice').default; // Do not forget ".default"
+const Info = BCDice.Info;
+
+require('bcdice/lib/diceBot/Cthulhu');
+*/
+
 function getInfo(gameType: string): Info | undefined {
   return BCDice.infoList.find(info => info.gameType === gameType);
 }
