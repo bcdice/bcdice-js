@@ -21,7 +21,6 @@ import 'bcdice/lib/diceBot/Cthulhu';
 
 /* or CommonJS
 const BCDice = require('bcdice').default; // Do not forget ".default"
-const Info = BCDice.Info;
 
 require('bcdice/lib/diceBot/Cthulhu');
 */
