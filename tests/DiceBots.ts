@@ -26,7 +26,7 @@ describe('DiceBots', () => {
 
     testDataList.forEach(([gameType, testData]) => {
       describe(gameType, () => {
-        if (!gameType.match(/^(TestDummy|PlotTest|None|dummyBot|Misonzai)$/)) {
+        if (!gameType.match(/^(TestDummy|PlotTest|None|dummyBot|Misonzai|UpperDice)$/)) {
           it('can import', async () => {
             await import(`../lib/diceBot/${gameType}`);
           });

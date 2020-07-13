@@ -10,6 +10,7 @@ class DiceBotLoader
     debug('loadUnknownGame gameTitle', gameTitle)
 
     escapedGameTitle = gameTitle.gsub(%r{(\.\.|/|:|-)}, '_')
+    escapedGameTitle = 'DiceBot' if ['UpperDice'].include?(escapedGameTitle)
 
     begin
       Object.const_get(escapedGameTitle).new
