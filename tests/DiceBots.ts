@@ -11,6 +11,7 @@ describe('DiceBots', () => {
 
     beforeEach(() => {
       Logger.$clear();
+      Logger.$setDebug(true);
     });
 
     const testDataDir = path.join(__dirname, '../BCDice/src/test/data');

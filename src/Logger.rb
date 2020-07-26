@@ -15,6 +15,10 @@ module Logger
   def self.add_log(*args)
     @logs <<= args if $isDebug
   end
+
+  def self.setDebug(b)
+    $isDebug = b
+  end
 end
 
 def debug(*args)
