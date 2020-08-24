@@ -469,13 +469,13 @@ diff --git a/src/diceBot/VampireTheMasquerade5th.rb b/src/diceBot/VampireTheMasq
 +++ b/src/diceBot/VampireTheMasquerade5th.rb
 @@ -93,7 +93,7 @@ MESSAGETEXT
  
-   def getCriticalSuccess(tenDice)
+   def get_critical_success(ten_dice)
      # 10の目が2個毎に追加2成功
--    return ((tenDice / 2) * 2)
-+    return tenDice.div(2) * 2
+-    return ((ten_dice / 2) * 2)
++    return ten_dice.div(2) * 2
    end
  
-   def makeDiceRoll(dicePool)
+   def make_dice_roll(dice_pool)
 diff --git a/src/diceBot/Warhammer.rb b/src/diceBot/Warhammer.rb
 --- a/src/diceBot/Warhammer.rb
 +++ b/src/diceBot/Warhammer.rb
