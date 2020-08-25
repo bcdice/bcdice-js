@@ -1,0 +1,27 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Auto update BCDice
+
+on:
+  schedule:
+    - cron: '0 0/6 * * *'
+
+jobs:
+  auto_update:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: bcdice-next
+    - run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git submodule update --init
+    - run: |
+        ./scripts/autopatch_rebase.sh master
+        ./scripts/autopatch_apply.sh master
+    - run: |
+        git add patch.diff BCDice
+        git commit -m ":heavy_plus_sign: Update BCDice to $(git -C BCDice rev-parse --short HEAD)"
+        git push
+      continue-on-error: true
