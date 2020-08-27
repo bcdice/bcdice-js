@@ -58,7 +58,7 @@ diff --git a/src/diceBot/Chill3.rb b/src/diceBot/Chill3.rb
 diff --git a/src/diceBot/Cthulhu7th.rb b/src/diceBot/Cthulhu7th.rb
 --- a/src/diceBot/Cthulhu7th.rb
 +++ b/src/diceBot/Cthulhu7th.rb
-@@ -164,8 +164,8 @@ INFO_MESSAGE_TEXT
+@@ -166,8 +166,8 @@ INFO_MESSAGE_TEXT
    def getCheckResultText(total, diff, fumbleable = false)
      if total <= diff
        return "クリティカル" if total == 1
@@ -69,7 +69,7 @@ diff --git a/src/diceBot/Cthulhu7th.rb b/src/diceBot/Cthulhu7th.rb
  
        return "レギュラー成功"
      end
-@@ -223,7 +223,7 @@ INFO_MESSAGE_TEXT
+@@ -225,7 +225,7 @@ INFO_MESSAGE_TEXT
      broken_number = Regexp.last_match(3).to_i
      bonus_dice_count = (Regexp.last_match(4) || 0).to_i
      stop_count = (Regexp.last_match(5) || "").to_s.downcase
@@ -78,7 +78,7 @@ diff --git a/src/diceBot/Cthulhu7th.rb b/src/diceBot/Cthulhu7th.rb
  
      output = ""
  
-@@ -235,8 +235,8 @@ INFO_MESSAGE_TEXT
+@@ -237,8 +237,8 @@ INFO_MESSAGE_TEXT
      end
  
      # ボレーの上限の設定がおかしい場合の注意表示
