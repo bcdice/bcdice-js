@@ -28,6 +28,7 @@
     "example": "run-s example:*",
     "example:basic": "ts-node --files examples/basic.ts",
     "example:import": "ts-node --files examples/import.ts",
+    "example:webpack": "cd examples/webpack && npm run build",
     "test": "cross-env TS_NODE_FILES=true mocha -R dot -r ts-node/register -r source-map-support/register tests/**/*.ts"
   },
   "devDependencies": {
