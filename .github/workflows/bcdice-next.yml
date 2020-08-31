@@ -18,8 +18,8 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git submodule update --init
     - run: |
-        ./scripts/autopatch_rebase.sh master
-        ./scripts/autopatch_apply.sh master
+        ./scripts/autopatch_rebase.sh v2
+        ./scripts/autopatch_apply.sh v2
     - run: |
         git add patch.diff BCDice
         git commit -m ":heavy_plus_sign: Update BCDice to $(git -C BCDice rev-parse --short HEAD)"
