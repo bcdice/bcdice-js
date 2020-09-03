@@ -3,8 +3,8 @@
 ```
 $ cd path/to/bcdice-js
 $ npm install
-& npm run build
-& cd examples/webpack
+$ npm run build
+$ cd examples/webpack
 $ npm install
 $ npm start
 ```
