@@ -1,106 +1,77 @@
-# frozen_string_literal: true
+require 'opal'
 
-require 'rake'
-require 'json'
+def createBuilder()
+  builder = Opal::Builder.new
 
-require './scripts/builder.rb'
+  builder.compiler_options = {
+    method_missing: false,
+  }
+  builder.stubs = {
+    'i18n' => {},
+    'i18n/backend/fallbacks' => {},
+  }
 
-$srcDir = 'src'
-$bcdiceDir = 'BCDice/src'
-$patchesDir = 'patches'
-$patchedDir = 'patched'
-$outputDir = 'lib'
+  builder.append_paths('BCDice/lib')
 
-$LOAD_PATH.unshift("./#{$bcdiceDir}")
-
-def getGameTypes
-  Dir
-    .glob("#{$patchedDir}/diceBot/*.rb")
-    .map { |file| file.match(%r{([^/]+)\.rb$}) }
-    .select { |m| m }
-    .map { |m| m[1] }
-    .reject { |gameType| gameType.match(/^(_.*|DiceBotLoader(List)?|test)$/) }
+  builder
 end
 
-task default: :build
-
-task :copy do
-  FileUtils.mkdir_p($patchedDir)
-  sh "cp -r #{$bcdiceDir}/* #{$patchedDir}"
+def decleation(source)
+  File.write "lib/#{source}.d.ts", 'export default undefined;'
 end
 
-task patch: [:copy] do
-  sh 'patch -p2 < ../patch.diff', { chdir: $patchedDir }, {}
+def compile(source)
+  puts source
+  builder = createBuilder()
+
+  builder.build_require source;
+
+  opal_path = Pathname.new('bcdice/opal').relative_path_from(File.dirname(source))
+
+  File.write "lib/#{source}.js", "require('./#{opal_path}');\n\n#{builder.to_s}"
+  File.write "lib/#{source}.js.map", builder.source_map
+  decleation(source)
 end
 
-task build: %i[
-  extract_info_list
-  build_opal
-  build_core
-  build_dicebot
-] do
-end
-
-task extract_info_list: [:patch] do
-  require("./#{$bcdiceDir}/diceBot/DiceBot")
-
-  print 'extracting DiceBot '
-  infoList = getGameTypes.map do |gameType|
-    require("./#{$bcdiceDir}/diceBot/#{gameType}.rb")
-    diceBot = Object.const_get(gameType).new
-
-    print '.'
-
-    {
-      gameType: gameType,
-      gameName: diceBot.name,
-      sortKey: diceBot.sort_key,
-      prefixes: diceBot.prefixes.flatten,
-      info: diceBot.help_message
-    }
-  end
-  print "\n"
-
-  infoList.sort_by! { |info| info[:sortKey] }
-
-  json = JSON.pretty_generate(
-    infoList: infoList
-  )
-
-  FileUtils.mkdir_p($outputDir)
-  File.write("#{$outputDir}/diceBot.json", json)
-end
-
-task :build_opal do
-  puts 'building opal'
-
-  builder = Builder.new
+directory 'lib/bcdice'
+task :compile_core => 'lib/bcdice' do
+  builder = createBuilder()
 
   builder.build('opal')
-  builder.build("./#{$srcDir}/rubyfix.rb")
+  builder.build('opal-parser')
+  builder.build('./src/RubyFix.rb')
 
-  builder.write("#{$outputDir}/opal.js")
+  # builder.build_require('bcdice/common_command')
+  # builder.build_require('bcdice/base')
+  # builder.build_require('bcdice/preprocessor')
+  # builder.build_require('bcdice/randomizer')
+  # builder.build_require('bcdice/version')
+
+  File.write 'lib/bcdice/opal.js', "require('source-map-support/register');\nObject.defineProperty(String.prototype, '$freeze', { value() { return this; } });\n#{builder.to_s}"
+  File.write 'lib/bcdice/opal.js.map', builder.source_map
+  decleation('bcdice/opal')
+
+  [
+    'bcdice/base',
+    'bcdice/common_command',
+    'bcdice/preprocessor',
+    'bcdice/randomizer',
+    'bcdice/version',
+  ].each {|source| compile(source) }
 end
 
-task build_core: [:patch] do
-  puts 'building cgiDiceBot'
+directory 'lib/bcdice/game_system'
+task :compile_game_system => 'lib/bcdice/game_system' do
+  index_js = "require('../opal');\nrequire('../base'); Opal.require('bcdice/base');\n"
 
-  builder = Builder.new
-
-  builder.build("./#{$patchedDir}/cgiDiceBot.rb")
-  builder.build("./#{$srcDir}/DiceBotLoader.rb")
-  builder.build("./#{$srcDir}/Logger.rb")
-
-  builder.write("#{$outputDir}/cgiDiceBot.js")
-end
-
-task build_dicebot: [:patch] do
-  print 'building DiceBot '
-  getGameTypes.each do |gameType|
-    builder = Builder.new
-    builder.build("./#{$patchedDir}/diceBot/#{gameType}.rb")
-    builder.write("#{$outputDir}/diceBot/#{gameType}.js")
-    print '.'
+  File.read('BCDice/lib/bcdice/game_system.rb').scan(/require "([^"]+)"/).each do |m|
+    source = m[0]
+    compile(source)
+    index_js += "require('../../#{source}'); Opal.require('#{source}');\n"
   end
-  print "\n"
+
+  File.write 'lib/bcdice/game_system/index.js', index_js
+  decleation('bcdice/game_system/index')
 end
+
+task :compile => [:compile_core, :compile_game_system]
