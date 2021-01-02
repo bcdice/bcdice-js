@@ -1,49 +1,40 @@
-import path from 'path';
+import { expect } from 'chai';
 import fs from 'fs';
-import { parse } from 'toml';
+import path from 'path';
 import Opal from './Opal';
 import { mockRandomizer } from './testutils';
-import { expect } from 'chai';
+import TestData from '../lib/test/data.json';
 
-// describe('GameSystem', () => {
-//   it('can be imported', async () => {
-//     await import('../lib/bcdice/game_system');
-//   });
-// });
+type TestDataType = Record<string, {
+  test: {
+    game_system: string;
+    input: string;
+    output: string;
+    rands: {
+      sides: number,
+      value: number,
+    }[];
+  }[];
+}>;
 
-const dataDir = path.join(__dirname, '../BCDice/test/data');
-const ext = '.toml';
-const testDataList = (fs.readdirSync(dataDir)).filter(a => a.endsWith(ext));
+Object.keys(TestData).forEach(id => {
+  describe(id, () => {
+    (TestData as TestDataType)[id].test.map((test, i) => {
+      const filename = test.game_system.replace(/[:\.]/g, '_');
+      const output = test.output === '' ? undefined : test.output;
 
-testDataList.forEach(filename => {
-  const dataPath = path.join(dataDir, filename);
-  const name = filename.slice(0, -ext.length);
-
-  describe(name, () => {
-    const toml = fs.readFileSync(dataPath).toString();
-    const data = parse(toml.toString()) as {
-      test: {
-        game_system: string;
-        input: string;
-        output: string;
-        rands: {
-          sides: number,
-          value: number,
-        }[];
-      }[];
-    };
-
-    data.test.forEach((test, i) => {
-      it(`evals ${test.input} with ${test.game_system}`, async () => {
-        await import(`../lib/bcdice/game_system/${test.game_system}`);
+      it(`evals ${test.input} to ${output}`, () => {
+        require(`../lib/bcdice/game_system/${filename}`);
 
         const system = Opal.module<any>(null, 'BCDice').GameSystem[test.game_system].$new(test.input);
+
         var $random = mockRandomizer(system);
         test.rands.forEach(({ value }, i) => {
           $random.onCall(i).returns(value);
         });
         const res = system.$eval();
-        expect(res.text).to.equal(test.output);
+
+        expect(res.text).to.equal(output);
       });
     });
   });

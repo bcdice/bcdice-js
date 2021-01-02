@@ -17,7 +17,7 @@
   "author": "bcdice",
   "main": "lib/BCDice.js",
   "scripts": {
-    "test": "mocha -r ts-node/register -r source-map-support/register --reporter dot src/**/*.test.ts"
+    "test": "mocha -r ts-node/register -r source-map-support/register --reporter dot --timeout 5000 src/**/*.test.ts"
   },
   "devDependencies": {
     "@types/chai": "^4.2.14",
@@ -35,7 +35,6 @@
   },
   "dependencies": {
     "lodash": "^4.17.20",
-    "source-map-support": "^0.5.19",
-    "toml": "^3.0.0"
+    "source-map-support": "^0.5.19"
   }
 }

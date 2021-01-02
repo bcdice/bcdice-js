@@ -1,6 +1,7 @@
 require 'opal'
 require 'json'
 require 'yaml'
+require 'tomlrb'
 
 def createBuilder()
   builder = Opal::Builder.new
@@ -87,4 +88,16 @@ task :compile_i18n => 'lib/bcdice' do
   File.write 'lib/bcdice/i18n.json', JSON.dump(i18n)
 end
 
-task :compile => [:compile_core, :compile_game_system, :compile_i18n]
+
+directory 'lib/test'
+task :compile_test => 'lib/test' do
+  puts 'lib/test/data.json'
+  tests = {}
+  Dir['BCDice/test/**/*.toml'].each do |path|
+    id = File.basename(path, '.toml')
+    tests[id] = Tomlrb.load_file(path)
+  end
+  File.write 'lib/test/data.json', JSON.dump(tests)
+end
+
+task :compile => [:compile_core, :compile_game_system, :compile_i18n, :compile_test]
