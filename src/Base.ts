@@ -1,3 +1,4 @@
+import '../lib/i18n';
 import '../lib/bcdice/common_command';
 import '../lib/bcdice/base';
 import '../lib/bcdice/preprocessor';
@@ -5,10 +6,6 @@ import '../lib/bcdice/preprocessor';
 import Opal from "./Opal";
 import Result from "./Result";
 import { RandomizerInstance } from './Randomizer';
-
-Opal.require('bcdice/base');
-Opal.require('bcdice/common_command');
-Opal.require('bcdice/preprocessor');
 
 export interface BaseInstance {
   $eval(): Result;

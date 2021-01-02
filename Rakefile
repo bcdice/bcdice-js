@@ -1,4 +1,6 @@
 require 'opal'
+require 'json'
+require 'yaml'
 
 def createBuilder()
   builder = Opal::Builder.new
@@ -7,11 +9,14 @@ def createBuilder()
     method_missing: false,
   }
   builder.stubs = {
-    'i18n' => {},
-    'i18n/backend/fallbacks' => {},
+    # 'i18n' => {},
   }
 
-  builder.append_paths('BCDice/lib')
+  builder.append_paths(
+    'BCDice/lib',
+    'src/emurators',
+    *$LOAD_PATH
+  )
 
   builder
 end
@@ -24,7 +29,7 @@ def compile(source)
   puts source
   builder = createBuilder()
 
-  builder.build_require source;
+  builder.build source;
 
   opal_path = Pathname.new('bcdice/opal').relative_path_from(File.dirname(source))
 
@@ -35,23 +40,17 @@ end
 
 directory 'lib/bcdice'
 task :compile_core => 'lib/bcdice' do
+  puts 'bcdice/opal'
   builder = createBuilder()
-
   builder.build('opal')
   builder.build('opal-parser')
   builder.build('./src/RubyFix.rb')
-
-  # builder.build_require('bcdice/common_command')
-  # builder.build_require('bcdice/base')
-  # builder.build_require('bcdice/preprocessor')
-  # builder.build_require('bcdice/randomizer')
-  # builder.build_require('bcdice/version')
-
-  File.write 'lib/bcdice/opal.js', "require('source-map-support/register');\nObject.defineProperty(String.prototype, '$freeze', { value() { return this; } });\n#{builder.to_s}"
+  File.write 'lib/bcdice/opal.js', "Object.defineProperty(String.prototype, '$freeze', { value() { return this; } });\n#{builder.to_s}"
   File.write 'lib/bcdice/opal.js.map', builder.source_map
   decleation('bcdice/opal')
 
   [
+    'i18n',
     'bcdice/base',
     'bcdice/common_command',
     'bcdice/preprocessor',
@@ -62,16 +61,30 @@ end
 
 directory 'lib/bcdice/game_system'
 task :compile_game_system => 'lib/bcdice/game_system' do
-  index_js = "require('../opal');\nrequire('../base'); Opal.require('bcdice/base');\n"
+  index_js = "require('../opal');\nrequire('../base');\n"
 
   File.read('BCDice/lib/bcdice/game_system.rb').scan(/require "([^"]+)"/).each do |m|
     source = m[0]
     compile(source)
-    index_js += "require('../../#{source}'); Opal.require('#{source}');\n"
+    index_js += "require('../../#{source}');\n"
   end
 
+  puts 'bcdice/game_system'
   File.write 'lib/bcdice/game_system/index.js', index_js
   decleation('bcdice/game_system/index')
 end
 
-task :compile => [:compile_core, :compile_game_system]
+directory 'lib/bcdice'
+task :compile_i18n => 'lib/bcdice' do
+  i18n = {}
+  Dir['BCDice/i18n/**/*.yml'].each do |path|
+    i18n = i18n.merge(YAML.load_file(path)) do |key, oldval, newval|
+      oldval.merge(newval)
+    end
+  end
+
+  File.write 'lib/bcdice/i18n.yml', YAML.dump(i18n)
+  File.write 'lib/bcdice/i18n.json', JSON.dump(i18n)
+end
+
+task :compile => [:compile_core, :compile_game_system, :compile_i18n]

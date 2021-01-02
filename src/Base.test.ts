@@ -25,7 +25,6 @@ describe('Base', () => {
 describe('SwordWorld 2.5', () => {
   it('can be imported', async () => {
     await import('../lib/bcdice/game_system/SwordWorld2_5');
-    expect(Opal.require('bcdice/game_system/SwordWorld2_5')).toBe(true);
   });
 
   it('evaluet "K20"', () => {
