@@ -5,7 +5,7 @@
 
 ```bash
 $ git clone https://github.com/bcdice/bcdice-js.git
-$ cd bcdice-js.git
+$ cd bcdice-js
 $ git checkout next
 $ git submodule update --init
 $ bundle install
