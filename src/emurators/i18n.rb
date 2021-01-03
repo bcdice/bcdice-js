@@ -20,19 +20,20 @@ module I18n
         var get = require('lodash/get');
         var toPairs = require('lodash/toPairs');
         var flatten = require('lodash/flatten');
-        function toHash(object) {
-          var pairs = toPairs(object).map(([key, value]) => {
-            if (typeof value === 'object') {
-              return [key, toHash(value)];
-            }
-            return [key, value];
-          });
-          return Opal.hash.apply(Opal, flatten(pairs));
+
+        function toOpal(value) {
+          if (Array.isArray(value)) return value.map(toOpal);
+          if (typeof value == 'object') {
+            var pairs = toPairs(value).map(([key, v]) => [key, toOpal(v)]);
+            return Opal.hash.apply(Opal, flatten(pairs));
+          }
+          return value;
         }
+
         var i18n = require('./i18n.json');
       }
 
-      @@table = `toHash(i18n)`
+      @@table = `toOpal(i18n)`
     end
 
     def translate(key, locale: nil, **options)
