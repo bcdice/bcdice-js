@@ -3,6 +3,8 @@ require 'json'
 require 'yaml'
 require 'tomlrb'
 
+task :default => :compile
+
 def createBuilder()
   builder = Opal::Builder.new
 

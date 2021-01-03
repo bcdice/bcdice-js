@@ -1,4 +1,3 @@
-
 class Dir
   class << self
     def []
