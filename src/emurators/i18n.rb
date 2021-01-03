@@ -35,7 +35,7 @@ module I18n
       @@table = `toHash(i18n)`
     end
 
-    def translate(key, locale)
+    def translate(key, locale: nil)
       load_translations
 
       path = key.split('.').map(&:to_sym)

@@ -52,6 +52,7 @@ task :compile_core => 'lib/bcdice' do
 
   [
     'i18n',
+    'bcdice/arithmetic_evaluator',
     'bcdice/base',
     'bcdice/common_command',
     'bcdice/preprocessor',
