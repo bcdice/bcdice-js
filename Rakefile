@@ -92,7 +92,7 @@ end
 
 directory 'lib/test'
 task :compile_test => 'lib/test' do
-  puts 'lib/test/data.json'
+  puts 'test/data.json'
   tests = {}
   Dir['BCDice/test/**/*.toml'].each do |path|
     id = File.basename(path, '.toml')
