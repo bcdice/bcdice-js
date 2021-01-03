@@ -35,14 +35,17 @@ module I18n
       @@table = `toHash(i18n)`
     end
 
-    def translate(key, locale: nil)
+    def translate(key, locale: nil, **options)
       load_translations
 
       path = key.split('.').map(&:to_sym)
       table = @@table
       default_locale = @@default_locale
 
-      return table.dig(locale, *path) || table.dig(default_locale, *path) || Hash.new
+      result = table.dig(locale, *path) || table.dig(default_locale, *path)
+
+      return format(result, **options) if result.kind_of?(String)
+      return result
     end
     alias :t :translate
   end
