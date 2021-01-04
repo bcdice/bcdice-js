@@ -44,7 +44,10 @@ module I18n
       default_locale = @@default_locale
 
       result = table.dig(locale, *path) || table.dig(default_locale, *path)
-      result = format(result, **options) if result.kind_of?(String)
+      begin
+        result = format(result, **options) if result.kind_of?(String)
+      rescue ArgumentError
+      end
 
       result || options[:default]
     end

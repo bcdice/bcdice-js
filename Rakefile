@@ -71,7 +71,6 @@ task :compile_core => 'lib/bcdice' do
   decleation('bcdice/opal')
 
   [
-    'i18n',
     'bcdice/arithmetic_evaluator',
     'bcdice/base',
     'bcdice/common_command',
@@ -121,4 +120,4 @@ task :compile_test => 'lib/test' do
   File.write 'lib/test/data.json', JSON.dump(tests)
 end
 
-task :compile => [:compile_core, :compile_game_system, :compile_test]
+task :compile => [:compile_core, :compile_game_system, :compile_i18n, :compile_test]
