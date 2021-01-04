@@ -46,7 +46,7 @@ module I18n
       result = table.dig(locale, *path) || table.dig(default_locale, *path)
       begin
         result = format(result, **options) if result.kind_of?(String)
-      rescue ArgumentError
+      rescue ArgumentError, KeyError
       end
 
       result || options[:default]
