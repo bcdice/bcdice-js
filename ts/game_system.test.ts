@@ -1,8 +1,9 @@
 import { expect } from 'chai';
-import Opal from './Opal';
-import './Base';
-import { mockRandomizer } from './testutils';
-import TestData from '../lib/test/data.json';
+import fs from 'fs';
+import path from 'path';
+import Opal from './opal';
+import './base';
+import { mockRandomizer } from './test_utils';
 
 type TestDataType = Record<string, {
   test: {
@@ -16,9 +17,10 @@ type TestDataType = Record<string, {
   }[];
 }>;
 
-Object.keys(TestData).forEach(id => {
+const testData = JSON.parse(fs.readFileSync(path.join(__dirname, '../lib/bcdice/test_data.json')).toString());
+Object.keys(testData).forEach(id => {
   describe(id, () => {
-    (TestData as TestDataType)[id].test.map((test, i) => {
+    (testData as TestDataType)[id].test.map((test, i) => {
       const game_system = test.game_system.replace(/[:\.]/g, '_');
       const output = test.output === '' ? undefined : test.output;
 

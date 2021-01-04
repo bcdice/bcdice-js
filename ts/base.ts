@@ -2,17 +2,20 @@ import '../lib/bcdice/common_command';
 import '../lib/bcdice/base';
 import '../lib/bcdice/preprocessor';
 
-import Opal from "./Opal";
-import Result from "./Result";
-import { RandomizerInstance } from './Randomizer';
+import Result from "./result";
+import { RandomizerInstance } from './randomizer';
+import BCDice from './bcdice';
 
 export interface BaseInstance {
   $eval(): Result;
   randomizer: RandomizerInstance;
 }
-export interface BaseClass {
+export interface BaseClass extends Function {
+  ID: string;
+
   $new(command: string): BaseInstance
+  $eval(command: string): Result
 }
 
-const { Base } = Opal.module<{ Base: BaseClass }>(null, 'BCDice');
+const { Base } = BCDice;
 export default Base;

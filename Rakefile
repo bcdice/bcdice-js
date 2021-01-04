@@ -21,7 +21,8 @@ module CallNodeLambdaFix
 end
 Opal::Nodes::CallNode.send(:prepend, CallNodeLambdaFix)
 
-task :default => :compile
+task :default => :build
+task :build => [:build_core, :build_game_system, :build_i18n, :build_test]
 
 def createBuilder()
   builder = Opal::Builder.new
@@ -35,7 +36,7 @@ def createBuilder()
 
   builder.append_paths(
     'BCDice/lib',
-    'src/emurators',
+    'ruby/emurators',
     *$LOAD_PATH
   )
 
@@ -46,7 +47,7 @@ def decleation(source)
   File.write "lib/#{source}.d.ts", 'export default undefined;'
 end
 
-def compile(source)
+def build(source)
   puts source
   builder = createBuilder()
 
@@ -60,12 +61,13 @@ def compile(source)
 end
 
 directory 'lib/bcdice'
-task :compile_core => 'lib/bcdice' do
+task :build_core => 'lib/bcdice' do
   puts 'bcdice/opal'
+
   builder = createBuilder()
   builder.build('opal')
   builder.build('opal-parser')
-  builder.build('./src/RubyFix.rb')
+  builder.build('./ruby/patch.rb')
   File.write 'lib/bcdice/opal.js', "Object.defineProperty(String.prototype, '$freeze', { value() { return this; } });\n#{builder.to_s}"
   File.write 'lib/bcdice/opal.js.map', builder.source_map
   decleation('bcdice/opal')
@@ -77,16 +79,16 @@ task :compile_core => 'lib/bcdice' do
     'bcdice/preprocessor',
     'bcdice/randomizer',
     'bcdice/version',
-  ].each {|source| compile(source) }
+  ].each {|source| build(source) }
 end
 
 directory 'lib/bcdice/game_system'
-task :compile_game_system => 'lib/bcdice/game_system' do
+task :build_game_system => 'lib/bcdice/game_system' do
   index_js = "require('../opal');\nrequire('../base');\n"
 
   File.read('BCDice/lib/bcdice/game_system.rb').scan(/require "([^"]+)"/).each do |m|
     source = m[0]
-    compile(source)
+    build(source)
     index_js += "require('../../#{source}');\n"
   end
 
@@ -96,7 +98,7 @@ task :compile_game_system => 'lib/bcdice/game_system' do
 end
 
 directory 'lib/bcdice'
-task :compile_i18n => 'lib/bcdice' do
+task :build_i18n => 'lib/bcdice' do
   i18n = {}
   Dir['BCDice/i18n/**/*.yml'].each do |path|
     i18n = i18n.merge(YAML.load_file(path)) do |key, oldval, newval|
@@ -108,16 +110,13 @@ task :compile_i18n => 'lib/bcdice' do
   File.write 'lib/bcdice/i18n.json', JSON.dump(i18n)
 end
 
-
-directory 'lib/test'
-task :compile_test => 'lib/test' do
-  puts 'test/data.json'
+directory 'lib/bcdice'
+task :build_test => 'lib/bcdice' do
+  puts 'bcdice/test_data.json'
   tests = {}
   Dir['BCDice/test/**/*.toml'].each do |path|
     id = File.basename(path, '.toml')
     tests[id] = Tomlrb.load_file(path)
   end
-  File.write 'lib/test/data.json', JSON.dump(tests)
+  File.write 'lib/bcdice/test_data.json', JSON.dump(tests)
 end
-
-task :compile => [:compile_core, :compile_game_system, :compile_i18n, :compile_test]

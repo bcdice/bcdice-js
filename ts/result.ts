@@ -2,9 +2,9 @@ export default interface Result {
   text: string;
   rands: [number, number][];
   detailed_rands: {
-    kind: string;
-    sides: number;
-    value: number;
+    $kind(): string;
+    $sides(): number;
+    $value(): number;
   }[];
   secret: boolean;
   success: boolean;
