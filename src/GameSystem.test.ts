@@ -31,6 +31,8 @@ Object.keys(TestData).forEach(id => {
         test.rands.forEach(({ value }, i) => {
           $random.onCall(i).returns(value);
         });
+        $random.onCall(test.rands.length).throwsException(new Error('Unexpected call for $random'));
+
         const res = system.$eval();
 
         expect(res.text).to.equal(output);

@@ -3,6 +3,24 @@ require 'json'
 require 'yaml'
 require 'tomlrb'
 
+# Lambdaにスコープを作るパッチ
+module CallNodeLambdaFix
+  def compile_block_pass
+    return unless iter
+
+    if meth == :lambda
+      parent_scope = compiler.scope
+      node = AST::Node.new(:lambda_scope, [iter], {})
+      compiler.scope = Opal::Nodes::ScopeNode.new(node, @level, compiler)
+      push ', ', expr(iter)
+      compiler.scope = parent_scope
+    else
+      push ', ', expr(iter)
+    end
+  end
+end
+Opal::Nodes::CallNode.send(:prepend, CallNodeLambdaFix)
+
 task :default => :compile
 
 def createBuilder()
@@ -103,4 +121,4 @@ task :compile_test => 'lib/test' do
   File.write 'lib/test/data.json', JSON.dump(tests)
 end
 
-task :compile => [:compile_core, :compile_game_system, :compile_i18n, :compile_test]
+task :compile => [:compile_core, :compile_game_system, :compile_test]

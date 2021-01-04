@@ -44,9 +44,9 @@ module I18n
       default_locale = @@default_locale
 
       result = table.dig(locale, *path) || table.dig(default_locale, *path)
+      result = format(result, **options) if result.kind_of?(String)
 
-      return format(result, **options) if result.kind_of?(String)
-      return result
+      result || options[:default]
     end
     alias :t :translate
   end
