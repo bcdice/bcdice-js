@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import Opal from './opal';
 import './base';
-import { mockRandomizer } from './test_utils';
+import { mockRandomizer } from './test/randomizer';
 
 type TestDataType = Record<string, {
   test: {

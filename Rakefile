@@ -67,6 +67,7 @@ task :build_core => 'lib/bcdice' do
   builder = createBuilder()
   builder.build('opal')
   builder.build('opal-parser')
+  builder.build('native')
   builder.build('./ruby/patch.rb')
   File.write 'lib/bcdice/opal.js', "Object.defineProperty(String.prototype, '$freeze', { value() { return this; } });\n#{builder.to_s}"
   File.write 'lib/bcdice/opal.js.map', builder.source_map
@@ -78,6 +79,7 @@ task :build_core => 'lib/bcdice' do
     'bcdice/common_command',
     'bcdice/preprocessor',
     'bcdice/randomizer',
+    'bcdice/user_defined_dice_table',
     'bcdice/version',
   ].each {|source| build(source) }
 end

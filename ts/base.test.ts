@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Base from './base';
-import { mockRandomizer } from './test_utils';
+import { mockRandomizer } from './test/randomizer';
 
 describe('Base', () => {
   it('evaluates "2D6>=2"', () => {
