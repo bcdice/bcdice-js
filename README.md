@@ -17,13 +17,12 @@ async function main(): Promise<void> {
   const GameSystem = await loader.dynamicLoad('Cthulhu7th');
   const result = GameSystem.eval('CC<=54');
 
-  console.log(result.text);
+  console.log(result?.text);
 }
 
 main();
 ```
 
-## Advanced Usage
 ### UserDefinedDiceTable
 ```ts
 import { UserDefinedDiceTable } from "bcdice-js";
