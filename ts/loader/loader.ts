@@ -1,29 +1,53 @@
-import { BaseClass } from "../base";
-import BCDice from "../bcdice";
+import Base from "../base";
+import { BaseClass, BaseInstance } from "../internal/types/base";
+import { BCDice } from "../internal";
+import Result, { parseResult } from "../result";
+
+type GameSystemClassType = Function & {
+  new (command: string, internal?: BaseInstance): Base;
+  eval(command: string): Result | null;
+  ID: string;
+}
+
+function getGameSystemClass(gameSystemClass: BaseClass): GameSystemClassType {
+  return class extends Base {
+    static readonly ID = gameSystemClass.ID;
+
+    static eval(command: string): Result | null {
+      return parseResult(gameSystemClass.$eval(command));
+    }
+
+    constructor(command: string, internal?: BaseInstance) {
+      super(command, internal ?? gameSystemClass.$new(command));
+    }
+  };
+}
 
 export default class Loader {
-  game_system_class(id: string): BaseClass {
-    const gameSystem = this.all_game_systems().find(a => a.ID === id);
+  gameSystemClass(id: string): GameSystemClassType {
+    const gameSystem = this.allGameSystems().find(a => a.ID === id);
     if (!gameSystem) throw new Error(`GameSystem ${id} is not loaded`);
     return gameSystem;
   }
 
-  all_game_systems(): BaseClass[] {
-    return BCDice.GameSystem?.$constants()?.map(className => BCDice.GameSystem[className]) ?? [];
+  allGameSystems(): GameSystemClassType[] {
+    return BCDice.GameSystem
+      ?.$constants()
+      ?.map(className => getGameSystemClass(BCDice.GameSystem[className])) ?? [];
   }
 
-  async dynamic_load(className: string): Promise<BaseClass> {
+  async dynamicLoad(className: string): Promise<GameSystemClassType> {
     if (!className.match(/^[A-Z]\w*$/)) throw new Error('Invalid class name');
 
-    await this.dynamic_import(`../../lib/bcdice/game_system/${className}`);
+    await this.dynamicImport(`../../lib/bcdice/game_system/${className}`);
 
-    const gameSystem = BCDice.GameSystem.$const_get<BaseClass>(className);
-    if (!gameSystem) throw new Error('Failed to load game system');
+    const gameSystemClass = BCDice.GameSystem.$const_get<BaseClass>(className);
+    if (!gameSystemClass) throw new Error('Failed to load game system');
 
-    return gameSystem;
+    return getGameSystemClass(gameSystemClass);
   }
 
-  dynamic_import(path: string): Promise<void> {
+  dynamicImport(path: string): Promise<void> {
     throw new Error('Not implemented');
   }
 }

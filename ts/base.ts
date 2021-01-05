@@ -2,20 +2,28 @@ import '../lib/bcdice/common_command';
 import '../lib/bcdice/base';
 import '../lib/bcdice/preprocessor';
 
-import Result from "./result";
-import { RandomizerInstance } from './randomizer';
-import BCDice from './bcdice';
+import { BCDice } from "./internal";
+import { BaseInstance } from "./internal/types/base";
+import Result, { parseResult } from "./result";
 
-export interface BaseInstance {
-  $eval(): Result;
-  randomizer: RandomizerInstance;
+export default class Base {
+  static eval(command: string): Result | null {
+    const result = BCDice.Base.$eval(command);
+    return parseResult(result);
+  }
+
+  private readonly internal: BaseInstance;
+
+  get randomizer() {
+    return this.internal.randomizer;
+  }
+
+  constructor(command: string, internal?: BaseInstance) {
+    this.internal = internal ?? BCDice.Base.$new(command);
+  }
+
+  eval(): Result | null {
+    const result = this.internal.$eval();
+    return parseResult(result);
+  }
 }
-export interface BaseClass extends Function {
-  ID: string;
-
-  $new(command: string): BaseInstance
-  $eval(command: string): Result
-}
-
-const { Base } = BCDice;
-export default Base;

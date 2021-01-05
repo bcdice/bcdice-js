@@ -22,7 +22,7 @@ end
 Opal::Nodes::CallNode.send(:prepend, CallNodeLambdaFix)
 
 task :default => :build
-task :build => [:build_core, :build_game_system, :build_i18n, :build_test]
+task :build => [:build_opal, :build_core, :build_game_system, :build_i18n, :build_test]
 
 def createBuilder()
   builder = Opal::Builder.new
@@ -61,9 +61,8 @@ def build(source)
 end
 
 directory 'lib/bcdice'
-task :build_core => 'lib/bcdice' do
+task :build_opal => 'lib/bcdice' do
   puts 'bcdice/opal'
-
   builder = createBuilder()
   builder.build('opal')
   builder.build('opal-parser')
@@ -72,7 +71,10 @@ task :build_core => 'lib/bcdice' do
   File.write 'lib/bcdice/opal.js', "Object.defineProperty(String.prototype, '$freeze', { value() { return this; } });\n#{builder.to_s}"
   File.write 'lib/bcdice/opal.js.map', builder.source_map
   decleation('bcdice/opal')
+end
 
+directory 'lib/bcdice'
+task :build_core => 'lib/bcdice' do
   [
     'bcdice/arithmetic_evaluator',
     'bcdice/base',

@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import fs from 'fs';
 import path from 'path';
-import Opal from './opal';
-import './base';
-import { mockRandomizer } from './test/randomizer';
+import ESModuleLoader from '../loader/esmodule_loader';
+import { mockRandomizer } from './randomizer';
 
 type TestDataType = Record<string, {
   test: {
@@ -17,27 +16,27 @@ type TestDataType = Record<string, {
   }[];
 }>;
 
-const testData = JSON.parse(fs.readFileSync(path.join(__dirname, '../lib/bcdice/test_data.json')).toString());
+const testData = JSON.parse(fs.readFileSync(path.join(__dirname, '../../lib/bcdice/test_data.json')).toString());
 Object.keys(testData).forEach(id => {
   describe(id, () => {
     (testData as TestDataType)[id].test.map((test, i) => {
-      const game_system = test.game_system.replace(/[:\.]/g, '_');
+      const gameSystemClassName = test.game_system.replace(/[:\.]/g, '_');
       const output = test.output === '' ? undefined : test.output;
 
-      it(`evals ${test.input} to ${output}`, () => {
-        require(`../lib/bcdice/game_system/${game_system}`);
+      it(`evals ${test.input} to ${output}`, async () => {
+        const loader = new ESModuleLoader();
+        const GameSystemClass = await loader.dynamicLoad(gameSystemClassName);
+        const gameSystem = new GameSystemClass(test.input);
 
-        const system = Opal.module<any>(null, 'BCDice').GameSystem[game_system].$new(test.input);
-
-        var $random = mockRandomizer(system);
+        var $random = mockRandomizer(gameSystem);
         test.rands.forEach(({ value }, i) => {
           $random.onCall(i).returns(value);
         });
         $random.onCall(test.rands.length).throwsException(new Error('Unexpected call for $random'));
 
-        const res = system.$eval();
+        const res = gameSystem.eval();
 
-        expect(res.text).to.equal(output);
+        expect(res?.text).to.equal(output);
       });
     });
   });

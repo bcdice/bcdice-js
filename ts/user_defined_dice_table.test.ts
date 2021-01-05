@@ -1,9 +1,8 @@
 import { expect } from "chai";
-import Opal from "./opal";
 import { mockedRandomizer } from "./test/randomizer";
 import UserDefinedDiceTable from "./user_defined_dice_table";
 
-describe('UserDefinedTable', () => {
+describe('UserDefinedDiceTable', () => {
   const text_1d6 = `テスト表
 1D6
 1:いち
@@ -113,73 +112,72 @@ D66d
 65:a
 66:a`;
   it('id6_1', () => {
-    const table = UserDefinedDiceTable.$new(text_1d6);
-    const [randomizer, $random] = mockedRandomizer([[1, 6]]);
-    const result = table.$roll(Opal.hash({ randomizer }));
-    expect(result.text).to.equal('テスト表(1) ＞ いち');
+    const table = new UserDefinedDiceTable(text_1d6);
+    const result = table.roll(mockedRandomizer([[1, 6]])[0]);
+    expect(result?.text).to.equal('テスト表(1) ＞ いち');
   });
 
   it('1d6_6', () => {
-    const table = UserDefinedDiceTable.$new(text_1d6)
-    const result = table.$roll(Opal.hash({ randomizer: mockedRandomizer([[6, 6]])[0] }));
+    const table = new UserDefinedDiceTable(text_1d6)
+    const result = table.roll(mockedRandomizer([[6, 6]])[0]);
 
-    expect(result.text).to.equal("テスト表(6) ＞ ろく");
+    expect(result?.text).to.equal("テスト表(6) ＞ ろく");
   });
 
   it('3d4_3', () => {
-    const table = UserDefinedDiceTable.$new(text_3d4);
-    const result = table.$roll(Opal.hash({ randomizer: mockedRandomizer([[1, 4], [1, 4], [1, 4]])[0] }));
+    const table = new UserDefinedDiceTable(text_3d4);
+    const result = table.roll(mockedRandomizer([[1, 4], [1, 4], [1, 4]])[0]);
 
-    expect(result.text).to.equal("3-4テスト表(3) ＞ さん");
+    expect(result?.text).to.equal("3-4テスト表(3) ＞ さん");
   });
 
   it('3d4_12', () => {
-    const table = UserDefinedDiceTable.$new(text_3d4);
-    const result = table.$roll(Opal.hash({ randomizer: mockedRandomizer([[4, 4], [4, 4], [4, 4]])[0] }));
+    const table = new UserDefinedDiceTable(text_3d4);
+    const result = table.roll(mockedRandomizer([[4, 4], [4, 4], [4, 4]])[0]);
 
-    expect(result.text).to.equal("3-4テスト表(12) ＞ じゅうに");
+    expect(result?.text).to.equal("3-4テスト表(12) ＞ じゅうに");
   });
 
   it('d66_16', () => {
-    const table = UserDefinedDiceTable.$new(text_d66);
-    const result = table.$roll(Opal.hash({ randomizer: mockedRandomizer([[1, 6], [6, 6]])[0] }));
+    const table = new UserDefinedDiceTable(text_d66);
+    const result = table.roll(mockedRandomizer([[1, 6], [6, 6]])[0]);
 
-    expect(result.text).to.equal("ソートなし表(16) ＞ いちろく");
+    expect(result?.text).to.equal("ソートなし表(16) ＞ いちろく");
   });
 
   it('d66_61', () => {
-    const table = UserDefinedDiceTable.$new(text_d66);
-    const result = table.$roll(Opal.hash({ randomizer: mockedRandomizer([[6, 6], [1, 6]])[0] }));
+    const table = new UserDefinedDiceTable(text_d66);
+    const result = table.roll(mockedRandomizer([[6, 6], [1, 6]])[0]);
 
-    expect(result.text).to.equal("ソートなし表(61) ＞ ろくいち");
+    expect(result?.text).to.equal("ソートなし表(61) ＞ ろくいち");
   });
 
   it('d66a_16', () => {
-    const table = UserDefinedDiceTable.$new(text_d66a);
-    const result = table.$roll(Opal.hash({ randomizer: mockedRandomizer([[1, 6], [6, 6]])[0] }));
+    const table = new UserDefinedDiceTable(text_d66a);
+    const result = table.roll(mockedRandomizer([[1, 6], [6, 6]])[0]);
 
-    expect(result.text).to.equal("ソート昇順表(16) ＞ いちろく");
+    expect(result?.text).to.equal("ソート昇順表(16) ＞ いちろく");
   });
 
   it('d66a_61', () => {
-    const table = UserDefinedDiceTable.$new(text_d66a)
-    const result = table.$roll(Opal.hash({ randomizer: mockedRandomizer([[6, 6], [1, 6]])[0] }));
+    const table = new UserDefinedDiceTable(text_d66a)
+    const result = table.roll(mockedRandomizer([[6, 6], [1, 6]])[0]);
 
-    expect(result.text).to.equal("ソート昇順表(16) ＞ いちろく");
+    expect(result?.text).to.equal("ソート昇順表(16) ＞ いちろく");
   });
 
   it('d66d_16', () => {
-    const table = UserDefinedDiceTable.$new(text_d66d)
-    const result = table.$roll(Opal.hash({ randomizer: mockedRandomizer([[1, 6], [6, 6]])[0] }));
+    const table = new UserDefinedDiceTable(text_d66d)
+    const result = table.roll(mockedRandomizer([[1, 6], [6, 6]])[0]);
 
-    expect(result.text).to.equal("ソート降順表(61) ＞ ろくいち");
+    expect(result?.text).to.equal("ソート降順表(61) ＞ ろくいち");
   });
 
   it('d66d_61', () => {
-    const table = UserDefinedDiceTable.$new(text_d66d)
-    const result = table.$roll(Opal.hash({ randomizer: mockedRandomizer([[6, 6], [1, 6]])[0] }));
+    const table = new UserDefinedDiceTable(text_d66d)
+    const result = table.roll(mockedRandomizer([[6, 6], [1, 6]])[0]);
 
-    expect(result.text).to.equal("ソート降順表(61) ＞ ろくいち");
+    expect(result?.text).to.equal("ソート降順表(61) ＞ ろくいち");
   });
 
   it('invalid_dice_type', () => {
@@ -187,29 +185,29 @@ D66d
 D100
 100:ひゃく`;
 
-    const table = UserDefinedDiceTable.$new(text);
-    expect(table.$roll()).to.equal(Opal.nil);
+    const table = new UserDefinedDiceTable(text);
+    expect(table.roll()).to.be.null;
   });
 
   it('verify_1d6', () => {
-    const table = UserDefinedDiceTable.$new(text_1d6)
+    const table = new UserDefinedDiceTable(text_1d6)
 
-    expect(table['$valid?']()).to.be.true;
+    expect(table.validate()).to.be.true;
   });
 
   it('verify_d66', () => {
-    const table = UserDefinedDiceTable.$new(text_d66)
-    expect(table['$valid?']()).to.be.true;
+    const table = new UserDefinedDiceTable(text_d66)
+    expect(table.validate()).to.be.true;
   });
 
   it('verify_d66a', () => {
-    const table = UserDefinedDiceTable.$new(text_d66a)
-    expect(table['$valid?']()).to.be.true;
+    const table = new UserDefinedDiceTable(text_d66a)
+    expect(table.validate()).to.be.true;
   });
 
   it('verify_d66d', () => {
-    const table = UserDefinedDiceTable.$new(text_d66d)
-    expect(table['$valid?']()).to.be.true;
+    const table = new UserDefinedDiceTable(text_d66d)
+    expect(table.validate()).to.be.true;
   });
 
   it('verify_3d4_miss_rows', () => {
@@ -221,8 +219,8 @@ D100
 6:ろく
 12:じゅうに`;
 
-    const table = UserDefinedDiceTable.$new(text)
-    expect(table['$valid?']()).to.be.false;
+    const table = new UserDefinedDiceTable(text)
+    expect(table.validate()).to.be.false;
   });
 
   it('verify_invalid_dice_type', () => {
@@ -230,8 +228,8 @@ D100
 D100
 100:ひゃく`;
 
-    const table = UserDefinedDiceTable.$new(text)
-    expect(table['$valid?']()).to.be.false;
+    const table = new UserDefinedDiceTable(text)
+    expect(table.validate()).to.be.false;
   });
 
   it('verify_dup_rows', () => {
@@ -245,8 +243,8 @@ D100
 7:f
 8:g`;
 
-    const table = UserDefinedDiceTable.$new(text)
-    expect(table['$valid?']()).to.be.false;
+    const table = new UserDefinedDiceTable(text)
+    expect(table.validate()).to.be.false;
   });
 
   it('verify_outrange_row', () => {
@@ -257,8 +255,8 @@ D100
     3:c
     5:d`;
 
-    const table = UserDefinedDiceTable.$new(text)
-    expect(table['$valid?']()).to.be.false;
+    const table = new UserDefinedDiceTable(text)
+    expect(table.validate()).to.be.false;
   });
 
   it('invalid_d66', () => {
@@ -287,8 +285,8 @@ D66
 56:a
 66:a`;
 
-    const table = UserDefinedDiceTable.$new(text)
-    expect(table['$valid?']()).to.be.false;
+    const table = new UserDefinedDiceTable(text)
+    expect(table.validate()).to.be.false;
   });
 
   it('invalid_d66a', () => {
@@ -318,8 +316,8 @@ D66a
 66:a`;
 
 
-    const table = UserDefinedDiceTable.$new(text)
-    expect(table['$valid?']()).to.be.false;
+    const table = new UserDefinedDiceTable(text)
+    expect(table.validate()).to.be.false;
   });
 
   it('invalid_d66d', () => {
@@ -348,7 +346,7 @@ D66d
 56:a
 66:a`;
 
-    const table = UserDefinedDiceTable.$new(text)
-    expect(table['$valid?']()).to.be.false;
-  });
+    const table = new UserDefinedDiceTable(text)
+    expect(table.validate()).to.be.false;
+});
 });

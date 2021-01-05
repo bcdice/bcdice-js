@@ -1,17 +1,23 @@
-import { Opal } from "./opal";
-import BCDice from "./bcdice";
-import Result from "./result";
 import '../lib/bcdice/user_defined_dice_table';
 
-export interface UserDefinedDiceTableInstance {
-  $roll($kwargs?: Opal['Hash']): Result;
-  ['$valid?'](): boolean;
-}
+import { UserDefinedDiceTableInstance } from "./internal/types/user_defined_dice_table";
+import {BCDice, Opal} from "./internal";
+import { RandomizerInstance } from "./internal/types/randomizer";
+import Result, { parseResult } from "./result";
 
-export interface UserDefinedDiceTableClass extends Function {
-  $new(text: string): UserDefinedDiceTableInstance;
-  $roll(text: string): Result;
-}
+export default class UserDefinedDiceTable {
+  private readonly internal: UserDefinedDiceTableInstance;
 
-const { UserDefinedDiceTable } = BCDice;
-export default UserDefinedDiceTable;
+  constructor(text: string, internal?: UserDefinedDiceTableInstance) {
+    this.internal = internal ?? BCDice.UserDefinedDiceTable.$new(text);
+  }
+
+  roll(randomizer?: RandomizerInstance): Result | null {
+    const result = this.internal.$roll(randomizer && Opal.hash({ randomizer }));
+    return parseResult(result);
+  }
+
+  validate(): boolean {
+    return this.internal["$valid?"]();
+  }
+}

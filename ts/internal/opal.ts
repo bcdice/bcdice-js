@@ -1,5 +1,6 @@
-import { Hash } from 'crypto';
-import '../lib/bcdice/opal';
+import '../../lib/bcdice/opal';
+
+export type Hash = unknown;
 
 export interface Module {
   $constants(): string[];
@@ -11,8 +12,12 @@ export interface Opal {
   module<M extends Module = Module>(parent?: string | null, name?: string): M;
   hash(obj: Record<string, unknown>): Hash;
   nil: any;
-  Hash: unknown;
+  Hash: Hash;
 }
 
 declare const Opal: Opal;
 export default Opal;
+
+export function nilToNull<T>(value: T): T | null {
+  return value === Opal.nil ? null : value;
+}
