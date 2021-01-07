@@ -1,4 +1,4 @@
-import { DynamicLoader } from "..";
+import { DynamicLoader } from '..';
 
 async function main(): Promise<void> {
   const loader = new DynamicLoader();

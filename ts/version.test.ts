@@ -1,5 +1,5 @@
 import semver from 'semver';
-import { expect } from "chai";
+import { expect } from 'chai';
 import Version from './version';
 
 describe('Version', () => {

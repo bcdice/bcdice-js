@@ -1,6 +1,6 @@
 
-import { Hash } from "../opal";
-import Result from "./result";
+import { Hash } from '../opal';
+import Result from './result';
 
 export interface UserDefinedDiceTableInstance {
   $roll($kwargs?: Hash): Result;

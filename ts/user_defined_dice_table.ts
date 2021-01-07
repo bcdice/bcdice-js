@@ -1,9 +1,9 @@
 import '../lib/bcdice/user_defined_dice_table';
 
-import { UserDefinedDiceTableInstance } from "./internal/types/user_defined_dice_table";
-import {BCDice, Opal} from "./internal";
-import { RandomizerInstance } from "./internal/types/randomizer";
-import Result, { parseResult } from "./result";
+import { UserDefinedDiceTableInstance } from './internal/types/user_defined_dice_table';
+import {BCDice, Opal} from './internal';
+import { RandomizerInstance } from './internal/types/randomizer';
+import Result, { parseResult } from './result';
 
 export default class UserDefinedDiceTable {
   private readonly internal: UserDefinedDiceTableInstance;
@@ -18,6 +18,6 @@ export default class UserDefinedDiceTable {
   }
 
   validate(): boolean {
-    return this.internal["$valid?"]();
+    return this.internal['$valid?']();
   }
 }

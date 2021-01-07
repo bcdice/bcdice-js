@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require 'strscan'
 
+# Stub
 class Dir
   class << self
     def []
@@ -8,15 +11,20 @@ class Dir
   end
 end
 
+# Stub
 module ObjectFreezeStub
   def freeze
     self
   end
 end
-Object.send(:prepend, ObjectFreezeStub)
+Object.prepend ObjectFreezeStub
 
+# Opal Fix
 module StringScannerPatch
+  # rubocop:disable Lint/UnusedMethodArgument
   def scan_until(pattern)
+    # rubocop:enable Lint/UnusedMethodArgument
+
     %x{
       var self = this;
 
@@ -51,7 +59,7 @@ module StringScannerPatch
     }
   end
 end
-StringScanner.send(:prepend, StringScannerPatch)
+StringScanner.prepend StringScannerPatch
 
 `Opal.top.$__dir__ = () => __dirname`
 

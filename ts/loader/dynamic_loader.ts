@@ -1,4 +1,4 @@
-import Loader from "./loader";
+import Loader from './loader';
 
 export default class DynamicLoader extends Loader {
   async dynamicImport(path: string): Promise<void> {

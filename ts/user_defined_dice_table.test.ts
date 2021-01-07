@@ -1,6 +1,6 @@
-import { expect } from "chai";
-import { mockedRandomizer } from "./test/randomizer";
-import UserDefinedDiceTable from "./user_defined_dice_table";
+import { expect } from 'chai';
+import { mockedRandomizer } from './test/randomizer';
+import UserDefinedDiceTable from './user_defined_dice_table';
 
 describe('UserDefinedDiceTable', () => {
   const text_1d6 = `テスト表
@@ -121,63 +121,63 @@ D66d
     const table = new UserDefinedDiceTable(text_1d6)
     const result = table.roll(mockedRandomizer([[6, 6]])[0]);
 
-    expect(result?.text).to.equal("テスト表(6) ＞ ろく");
+    expect(result?.text).to.equal('テスト表(6) ＞ ろく');
   });
 
   it('3d4_3', () => {
     const table = new UserDefinedDiceTable(text_3d4);
     const result = table.roll(mockedRandomizer([[1, 4], [1, 4], [1, 4]])[0]);
 
-    expect(result?.text).to.equal("3-4テスト表(3) ＞ さん");
+    expect(result?.text).to.equal('3-4テスト表(3) ＞ さん');
   });
 
   it('3d4_12', () => {
     const table = new UserDefinedDiceTable(text_3d4);
     const result = table.roll(mockedRandomizer([[4, 4], [4, 4], [4, 4]])[0]);
 
-    expect(result?.text).to.equal("3-4テスト表(12) ＞ じゅうに");
+    expect(result?.text).to.equal('3-4テスト表(12) ＞ じゅうに');
   });
 
   it('d66_16', () => {
     const table = new UserDefinedDiceTable(text_d66);
     const result = table.roll(mockedRandomizer([[1, 6], [6, 6]])[0]);
 
-    expect(result?.text).to.equal("ソートなし表(16) ＞ いちろく");
+    expect(result?.text).to.equal('ソートなし表(16) ＞ いちろく');
   });
 
   it('d66_61', () => {
     const table = new UserDefinedDiceTable(text_d66);
     const result = table.roll(mockedRandomizer([[6, 6], [1, 6]])[0]);
 
-    expect(result?.text).to.equal("ソートなし表(61) ＞ ろくいち");
+    expect(result?.text).to.equal('ソートなし表(61) ＞ ろくいち');
   });
 
   it('d66a_16', () => {
     const table = new UserDefinedDiceTable(text_d66a);
     const result = table.roll(mockedRandomizer([[1, 6], [6, 6]])[0]);
 
-    expect(result?.text).to.equal("ソート昇順表(16) ＞ いちろく");
+    expect(result?.text).to.equal('ソート昇順表(16) ＞ いちろく');
   });
 
   it('d66a_61', () => {
     const table = new UserDefinedDiceTable(text_d66a)
     const result = table.roll(mockedRandomizer([[6, 6], [1, 6]])[0]);
 
-    expect(result?.text).to.equal("ソート昇順表(16) ＞ いちろく");
+    expect(result?.text).to.equal('ソート昇順表(16) ＞ いちろく');
   });
 
   it('d66d_16', () => {
     const table = new UserDefinedDiceTable(text_d66d)
     const result = table.roll(mockedRandomizer([[1, 6], [6, 6]])[0]);
 
-    expect(result?.text).to.equal("ソート降順表(61) ＞ ろくいち");
+    expect(result?.text).to.equal('ソート降順表(61) ＞ ろくいち');
   });
 
   it('d66d_61', () => {
     const table = new UserDefinedDiceTable(text_d66d)
     const result = table.roll(mockedRandomizer([[6, 6], [1, 6]])[0]);
 
-    expect(result?.text).to.equal("ソート降順表(61) ＞ ろくいち");
+    expect(result?.text).to.equal('ソート降順表(61) ＞ ろくいち');
   });
 
   it('invalid_dice_type', () => {

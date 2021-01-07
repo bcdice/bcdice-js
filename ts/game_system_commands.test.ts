@@ -1,6 +1,6 @@
-import { expect } from 'chai';
 import fs from 'fs';
 import path from 'path';
+import { expect } from 'chai';
 import DynamicLoader from './loader/dynamic_loader';
 import { mockRandomizer } from './test/randomizer';
 
@@ -19,7 +19,7 @@ type TestDataType = Record<string, {
 const testData = JSON.parse(fs.readFileSync(path.join(__dirname, '../lib/bcdice/test_data.json')).toString());
 Object.keys(testData).forEach(id => {
   describe(id, () => {
-    (testData as TestDataType)[id].test.map((test, i) => {
+    (testData as TestDataType)[id].test.map((test) => {
       const output = test.output === '' ? undefined : test.output;
 
       const loader = new DynamicLoader();
@@ -27,7 +27,7 @@ Object.keys(testData).forEach(id => {
         const GameSystemClass = await loader.dynamicLoad(test.game_system);
         const gameSystem = new GameSystemClass(test.input);
 
-        var $random = mockRandomizer(gameSystem);
+        const $random = mockRandomizer(gameSystem);
         test.rands.forEach(({ value }, i) => {
           $random.onCall(i).returns(value);
         });

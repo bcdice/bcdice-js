@@ -1,5 +1,5 @@
 import { RandomizerInstance } from './randomizer';
-import Result from "./result";
+import Result from './result';
 
 export interface BaseInstance {
   $eval(): Result;

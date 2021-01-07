@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Simple emulator
 module I18n
   class << self
     @@load_path = []
@@ -5,7 +8,6 @@ module I18n
       @@load_path
     end
 
-    @@default_locale
     def default_locale=(locale)
       @@default_locale = locale
     end
@@ -15,7 +17,8 @@ module I18n
     end
 
     def load_translations
-      return if (@@table != nil)
+      return unless @@table.nil?
+
       %x{
         var get = require('lodash/get');
         var toPairs = require('lodash/toPairs');
@@ -45,23 +48,25 @@ module I18n
 
       result = table.dig(locale, *path) || table.dig(default_locale, *path)
       begin
-        result = format(result, **options) if result.kind_of?(String)
+        result = format(result, **options) if result.is_a?(String)
       rescue ArgumentError, KeyError
+        # Ignore
       end
 
       result || options[:default]
     end
-    alias :t :translate
+    alias t translate
   end
 
   module Locale
+    # Stub
     class Fallbacks < Hash
-      def defaults=(value)
-      end
+      def defaults=(value); end
     end
   end
 
   module Backend
+    # Stub
     module Simple
     end
   end

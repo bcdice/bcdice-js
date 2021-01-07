@@ -9,7 +9,7 @@ $ npm install --save bcdice-js
 
 ## Usage
 ```ts
-import { DynamicLoader } from "bcdice-js";
+import { DynamicLoader } from 'bcdice-js';
 
 async function main(): Promise<void> {
   const loader = new DynamicLoader();
@@ -27,7 +27,7 @@ main();
 
 ### UserDefinedDiceTable
 ```ts
-import { UserDefinedDiceTable } from "bcdice-js";
+import { UserDefinedDiceTable } from 'bcdice-js';
 
 const table = new UserDefinedDiceTable(`テスト表
 1D6

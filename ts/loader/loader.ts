@@ -1,10 +1,10 @@
-import Base from "../base";
-import { BaseClass, BaseInstance } from "../internal/types/base";
-import { BCDice } from "../internal";
-import Result, { parseResult } from "../result";
-import GameSystemList, { GameSystemInfo } from "../../lib/bcdice/game_system_list.json";
+import Base from '../base';
+import { BaseClass, BaseInstance } from '../internal/types/base';
+import { BCDice } from '../internal';
+import Result, { parseResult } from '../result';
+import GameSystemList, { GameSystemInfo } from '../../lib/bcdice/game_system_list.json';
 
-type GameSystemClassType = Function & {
+type GameSystemClassType = {
   new (command: string, internal?: BaseInstance): Base;
   eval(command: string): Result | null;
   ID: string;
@@ -33,7 +33,7 @@ export default class Loader {
 
   getGameSystemInfo(id: string): GameSystemInfo {
     const info = this.listAvailableGameSystems().find(info => info.id === id);
-    if (!info) throw new Error(`GameSystem is not found`);
+    if (!info) throw new Error('GameSystem is not found');
 
     return info;
   }
@@ -66,6 +66,7 @@ export default class Loader {
     return getGameSystemClass(gameSystemClass);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   dynamicImport(path: string): Promise<void> {
     throw new Error('Not implemented');
   }

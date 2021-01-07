@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig-template.json",
+  "extends": "../tsconfig-template.json",
   "compilerOptions": {
     "outDir": "../lib/examples",
     "rootDir": ".",

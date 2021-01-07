@@ -1,5 +1,5 @@
-import { Opal } from "./internal";
-import { BaseInstance } from "./internal/types/base";
+import { Opal } from './internal';
+import { BaseInstance } from './internal/types/base';
 
 export default interface Result {
   text: string;

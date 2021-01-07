@@ -1,0 +1,23 @@
+root: true
+parser: "@typescript-eslint/parser"
+plugins:
+  - "@typescript-eslint"
+  - import
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:import/errors
+  - plugin:import/warnings
+  - plugin:import/typescript
+  - prettier
+  - prettier/@typescript-eslint
+rules:
+  quotes:
+    - error
+    - single
+  import/no-unresolved:
+    - error
+    - ignore:
+      - ^..$
+      - ^../../lib
+  import/order: error

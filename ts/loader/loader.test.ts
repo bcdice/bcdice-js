@@ -1,12 +1,12 @@
-import { expect } from "chai";
-import Loader from "./loader";
+import { expect } from 'chai';
+import Loader from './loader';
 
 const loaders: [string, string, boolean][] = [
   ['./dynamic_loader', 'DynamicLoader', true],
   ['./static_loader', 'StaticLoader', false],
 ];
 
-loaders.forEach(([path, title, dynamic]) => {
+loaders.forEach(([path, title /*, dynamic */ ]) => {
   describe(title, () => {
 
     let loader: Loader;
