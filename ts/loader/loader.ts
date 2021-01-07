@@ -2,6 +2,7 @@ import Base from "../base";
 import { BaseClass, BaseInstance } from "../internal/types/base";
 import { BCDice } from "../internal";
 import Result, { parseResult } from "../result";
+import GameSystemList, { GameSystemInfo } from "../../lib/bcdice/game_system_list.json";
 
 type GameSystemClassType = Function & {
   new (command: string, internal?: BaseInstance): Base;
@@ -24,20 +25,38 @@ function getGameSystemClass(gameSystemClass: BaseClass): GameSystemClassType {
 }
 
 export default class Loader {
-  gameSystemClass(id: string): GameSystemClassType {
-    const gameSystem = this.allGameSystems().find(a => a.ID === id);
+  getGameSystemIdByName(name: string): string {
+    const id = this.listAvailableGameSystems().find(info => info.name === name)?.id;
+    if (!id) throw new Error(`GameSystem named ${name} does not exists`);
+    return id;
+  }
+
+  getGameSystemInfo(id: string): GameSystemInfo {
+    const info = this.listAvailableGameSystems().find(info => info.id === id);
+    if (!info) throw new Error(`GameSystem is not found`);
+
+    return info;
+  }
+
+  getGameSystemClass(id: string): GameSystemClassType {
+    const gameSystem = this.listLoadedGameSystems().find(a => a.ID === id);
     if (!gameSystem) throw new Error(`GameSystem ${id} is not loaded`);
     return gameSystem;
   }
 
-  allGameSystems(): GameSystemClassType[] {
+  listLoadedGameSystems(): GameSystemClassType[] {
     return BCDice.GameSystem
       ?.$constants()
       ?.map(className => getGameSystemClass(BCDice.GameSystem[className])) ?? [];
   }
 
-  async dynamicLoad(className: string): Promise<GameSystemClassType> {
-    if (!className.match(/^[A-Z]\w*$/)) throw new Error('Invalid class name');
+  listAvailableGameSystems(): GameSystemInfo[] {
+    return GameSystemList.gameSystems;
+  }
+
+  async dynamicLoad(id: string): Promise<GameSystemClassType> {
+    const className = this.getGameSystemInfo(id)?.className ?? id;
+    if (!className.match(/^[A-Z]\w*$/)) throw new Error('Invalid id');
 
     await this.dynamicImport(`../../lib/bcdice/game_system/${className}`);
 

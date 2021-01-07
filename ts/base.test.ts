@@ -21,7 +21,7 @@ describe('Base', () => {
     expect(result?.critical).to.be.false;
     expect(result?.fumble).to.be.false;
 
-    expect(result?.detailed_rands).to.deep.equal([
+    expect(result?.detailedRands).to.deep.equal([
       { kind: 'normal', sides: 6, value: 1 },
       { kind: 'normal', sides: 6, value: 2 },
     ]);

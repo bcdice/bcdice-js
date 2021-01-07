@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import fs from 'fs';
 import path from 'path';
-import ESModuleLoader from '../loader/esmodule_loader';
-import { mockRandomizer } from './randomizer';
+import DynamicLoader from './loader/dynamic_loader';
+import { mockRandomizer } from './test/randomizer';
 
 type TestDataType = Record<string, {
   test: {
@@ -16,16 +16,15 @@ type TestDataType = Record<string, {
   }[];
 }>;
 
-const testData = JSON.parse(fs.readFileSync(path.join(__dirname, '../../lib/bcdice/test_data.json')).toString());
+const testData = JSON.parse(fs.readFileSync(path.join(__dirname, '../lib/bcdice/test_data.json')).toString());
 Object.keys(testData).forEach(id => {
   describe(id, () => {
     (testData as TestDataType)[id].test.map((test, i) => {
-      const gameSystemClassName = test.game_system.replace(/[:\.]/g, '_');
       const output = test.output === '' ? undefined : test.output;
 
+      const loader = new DynamicLoader();
       it(`evals ${test.input} to ${output}`, async () => {
-        const loader = new ESModuleLoader();
-        const GameSystemClass = await loader.dynamicLoad(gameSystemClassName);
+        const GameSystemClass = await loader.dynamicLoad(test.game_system);
         const gameSystem = new GameSystemClass(test.input);
 
         var $random = mockRandomizer(gameSystem);

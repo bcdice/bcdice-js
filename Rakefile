@@ -22,7 +22,14 @@ end
 Opal::Nodes::CallNode.send(:prepend, CallNodeLambdaFix)
 
 task :default => :build
-task :build => [:build_opal, :build_core, :build_game_system, :build_i18n, :build_test]
+task :build => [
+  :build_opal,
+  :build_core,
+  :build_game_system,
+  :build_i18n,
+  :build_test,
+  :build_game_system_list,
+]
 
 def createBuilder()
   builder = Opal::Builder.new
@@ -123,4 +130,27 @@ task :build_test => 'lib/bcdice' do
     tests[id] = Tomlrb.load_file(path)
   end
   File.write 'lib/bcdice/test_data.json', JSON.dump(tests)
+end
+
+directory 'lib/bcdice'
+task :build_game_system_list => 'lib/bcdice' do
+  puts 'bcdice/game_system_list.json'
+
+  require './BCDice/lib/bcdice.rb'
+  require './BCDice/lib/bcdice/game_system.rb'
+
+  game_systems = BCDice.all_game_systems().map do |gameSystemClass|
+    {
+      id: gameSystemClass::ID,
+      name: gameSystemClass::NAME,
+      className: gameSystemClass.name.gsub(/^.*::/, ''),
+      sortKey: gameSystemClass::SORT_KEY,
+      prefixes: gameSystemClass.prefixes,
+    }
+  end
+
+  File.write 'lib/bcdice/game_system_list.json', JSON.dump({ gameSystems: game_systems })
+
+  puts 'bcdice/game_system_list.json.d.ts'
+  FileUtils.copy 'ts/bcdice/game_system_list.json.d.ts', 'lib/bcdice/game_system_list.json.d.ts'
 end

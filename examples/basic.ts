@@ -1,7 +1,9 @@
-import { ESModuleLoader } from "../../lib";
+import { DynamicLoader } from "..";
 
 async function main(): Promise<void> {
-  const loader = new ESModuleLoader();
+  const loader = new DynamicLoader();
+
+  console.log(loader.listAvailableGameSystems().map(info => info.id));
 
   const GameSystem = await loader.dynamicLoad('Cthulhu7th');
   const result = GameSystem.eval('CC<=54');

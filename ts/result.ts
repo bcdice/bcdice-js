@@ -4,7 +4,7 @@ import { BaseInstance } from "./internal/types/base";
 export default interface Result {
   text: string;
   rands: [number, number][];
-  detailed_rands: {
+  detailedRands: {
     kind: string;
     sides: number;
     value: number;
@@ -22,6 +22,6 @@ export function parseResult(opal: ReturnType<BaseInstance['$eval']>): Result | n
   const { detailed_rands, ...result } = opal;
   return {
     ...result,
-    detailed_rands: detailed_rands.map(a => a.$to_n()),
+    detailedRands: detailed_rands.map(a => a.$to_n()),
   }
 }

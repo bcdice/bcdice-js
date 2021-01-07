@@ -1,7 +1,7 @@
 import Loader from "./loader";
 
-export default class CommonJSLoader extends Loader {
+export default class DynamicLoader extends Loader {
   async dynamicImport(path: string): Promise<void> {
-    require(path);
+    await import(path);
   }
 }

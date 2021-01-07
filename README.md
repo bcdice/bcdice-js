@@ -7,12 +7,14 @@
 $ npm install --save bcdice-js
 ```
 
-## Basic Usage
+## Usage
 ```ts
-import { ESModuleLoader } from "bcdice-js";
+import { DynamicLoader } from "bcdice-js";
 
 async function main(): Promise<void> {
-  const loader = new ESModuleLoader();
+  const loader = new DynamicLoader();
+
+  console.log(loader.listAvailableGameSystems().map(info => info.id));
 
   const GameSystem = await loader.dynamicLoad('Cthulhu7th');
   const result = GameSystem.eval('CC<=54');
@@ -38,6 +40,12 @@ const table = new UserDefinedDiceTable(`テスト表
 
 console.log(table.roll()?.text);
 ```
+
+### Loaders
+* `StaticLoader`: `import StaticLoader from 'bcdice/lib/loaders/static_loader';`
+* `DynamicLoader`: `import { DynamicLoader } from 'bcdice';`
+
+or extend `Loader` (`improt Loader from 'bcdice/lib/loaders/loader'`) and make your custom loader.
 
 ## Development
 * Node.js >= v14
