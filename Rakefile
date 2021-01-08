@@ -147,8 +147,7 @@ task build_game_system_list: 'lib/bcdice' do
       id: game_system_class::ID,
       name: game_system_class::NAME,
       className: game_system_class.name.gsub(/^.*::/, ''),
-      sortKey: game_system_class::SORT_KEY,
-      prefixes: game_system_class.prefixes
+      sortKey: game_system_class::SORT_KEY
     }
   end
 

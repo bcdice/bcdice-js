@@ -3,7 +3,6 @@ export interface GameSystemInfo {
   className: string;
   name: string;
   sortKey: string;
-  prefixes: string[] | null;
 }
 
 const gameSystems: GameSystemInfo[];
