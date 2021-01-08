@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+$LOAD_PATH.push(File.join(__dir__, 'BCDice/lib'))
+
 require 'opal'
 require 'json'
 require 'yaml'
@@ -44,8 +46,8 @@ def create_builder
   }
 
   builder.append_paths(
-    'BCDice/lib',
-    'ruby/emurators',
+    File.join(__dir__, 'BCDice/lib'),
+    File.join(__dir__, 'ruby/emurators'),
     *$LOAD_PATH
   )
 
