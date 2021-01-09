@@ -28,7 +28,7 @@
     "lint": "run-s lint:*",
     "lint:eslint": "eslint ts/**/*.ts examples/**/*.ts",
     "lint:rubocop": "bundle exec rubocop ruby Rakefile",
-    "test": "cd ts && mocha -r ts-node/register -r source-map-support/register --reporter dot --timeout 5000 ./**/*.test.ts"
+    "test": "cd ts && mocha -r ts-node/register -r source-map-support/register --reporter dot --timeout 5000 \"**/*.test.ts\""
   },
   "devDependencies": {
     "@types/chai": "^4.2.14",
