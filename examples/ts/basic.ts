@@ -1,4 +1,5 @@
-import { DynamicLoader } from '..';
+// import { DynamicLoader } from 'bcdice';
+import { DynamicLoader } from '../../lib';
 
 async function main(): Promise<void> {
   const loader = new DynamicLoader();

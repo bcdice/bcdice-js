@@ -1,4 +1,5 @@
-import { UserDefinedDiceTable } from '..';
+// import { UserDefinedDiceTable } from 'bcdice';
+import { UserDefinedDiceTable } from '../../lib';
 
 const table = new UserDefinedDiceTable(`テスト表
 1D6
