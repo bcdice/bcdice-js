@@ -1,8 +1,12 @@
 name: CI
 
 on:
-  - push
-  - pull_request
+  push:
+    branches: '*'
+    tags: 'v*'
+
+  pull_request: '*'
+
 
 jobs:
   build:
@@ -34,3 +38,6 @@ jobs:
     - run: BUNDLE_PATH="$(pwd)/../vendor/bundle" npm run build
     - run: npm test
     - run: npm run example
+
+    - run: npm publish
+      if: ${{ matrix.node-version == '10.x' && startsWith(github.ref, 'refs/tags/v') }}
