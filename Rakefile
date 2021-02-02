@@ -25,6 +25,7 @@ Opal::Nodes::CallNode.prepend CallNodeLambdaFix
 
 task default: :build
 task build: %i[
+  racc
   build_opal
   build_core
   build_game_system
@@ -76,6 +77,11 @@ end
 
 task patch: [:copy] do
   sh 'patch -p1 < ../patch.diff', { chdir: 'patched' }, {}
+  $LOAD_PATH.prepend "#{__dir__}/patched/lib"
+end
+
+task racc: [:copy] do
+  sh 'bundle exec rake racc', { chdir: 'patched' }, {}
 end
 
 directory 'lib/bcdice'
@@ -145,11 +151,11 @@ task build_test: 'lib/bcdice' do
 end
 
 directory 'lib/bcdice'
-task build_game_system_list: 'lib/bcdice' do
+task build_game_system_list: [:patch, 'lib/bcdice'] do
   puts 'bcdice/game_system_list.json'
 
-  require './patched/lib/bcdice'
-  require './patched/lib/bcdice/game_system'
+  require 'bcdice'
+  require 'bcdice/game_system'
 
   game_systems = BCDice.all_game_systems.map do |game_system_class|
     {

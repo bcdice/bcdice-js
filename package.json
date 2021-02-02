@@ -22,8 +22,7 @@
     "ts"
   ],
   "scripts": {
-    "build": "run-s build:racc build:rake build:tsc",
-    "build:racc": "cd BCDice && bundle exec rake racc",
+    "build": "run-s build:rake build:tsc",
     "build:rake": "bundle exec rake",
     "build:tsc": "tsc -b ts",
     "clean": "rimraf lib patched",
