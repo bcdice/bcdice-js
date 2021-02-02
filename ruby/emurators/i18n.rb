@@ -71,9 +71,10 @@ module I18n
     end
   end
 
+  # Stub
   module Thread
     class << self
-      def current()
+      def current
         {
           i18n_fallbacks: nil
         }

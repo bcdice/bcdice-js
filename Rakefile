@@ -71,7 +71,7 @@ end
 
 directory 'patched'
 task copy: 'patched' do
-  sh "cp -r BCDice/* patched"
+  sh 'cp -r BCDice/* patched'
 end
 
 task patch: [:copy] do
