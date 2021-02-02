@@ -70,4 +70,14 @@ module I18n
     module Simple
     end
   end
+
+  module Thread
+    class << self
+      def current()
+        {
+          i18n_fallbacks: nil
+        }
+      end
+    end
+  end
 end
