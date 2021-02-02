@@ -33,7 +33,7 @@ jobs:
     - run: npm ci
     - run: npm run clean
     - run: npm run lint
-    - run: BUNDLE_PATH="$(pwd)/../vendor/bundle" npm run build
+    - run: BUNDLE_PATH="$(pwd)/vendor/bundle" npm run build
     - run: npm test
     - run: npm run example
 
