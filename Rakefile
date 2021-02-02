@@ -44,7 +44,7 @@ def create_builder
   }
 
   builder.append_paths(
-    'BCDice/lib',
+    'patched/lib',
     'ruby/emurators',
     *$LOAD_PATH
   )
@@ -69,8 +69,17 @@ def build(source)
   decleation(source)
 end
 
+directory 'patched'
+task copy: 'patched' do
+  sh "cp -r BCDice/* patched"
+end
+
+task patch: [:copy] do
+  sh 'patch -p1 < ../patch.diff', { chdir: 'patched' }, {}
+end
+
 directory 'lib/bcdice'
-task build_opal: 'lib/bcdice' do
+task build_opal: [:patch, 'lib/bcdice'] do
   puts 'bcdice/opal'
   builder = create_builder
   builder.build('opal')
@@ -84,7 +93,7 @@ task build_opal: 'lib/bcdice' do
 end
 
 directory 'lib/bcdice'
-task build_core: 'lib/bcdice' do
+task build_core: [:patch, 'lib/bcdice'] do
   [
     'bcdice/arithmetic_evaluator',
     'bcdice/base',
@@ -100,7 +109,7 @@ directory 'lib/bcdice/game_system'
 task build_game_system: 'lib/bcdice/game_system' do
   index_js = "require('../opal');\nrequire('../base');\n"
 
-  File.read('BCDice/lib/bcdice/game_system.rb').scan(/require "([^"]+)"/).each do |m|
+  File.read('patched/lib/bcdice/game_system.rb').scan(/require "([^"]+)"/).each do |m|
     source = m[0]
     build(source)
     index_js += "require('../../#{source}');\n"
@@ -139,8 +148,8 @@ directory 'lib/bcdice'
 task build_game_system_list: 'lib/bcdice' do
   puts 'bcdice/game_system_list.json'
 
-  require './BCDice/lib/bcdice'
-  require './BCDice/lib/bcdice/game_system'
+  require './patched/lib/bcdice'
+  require './patched/lib/bcdice/game_system'
 
   game_systems = BCDice.all_game_systems.map do |game_system_class|
     {
