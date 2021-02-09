@@ -1,3 +1,4 @@
+import '../lib/bcdice/arithmetic_evaluator';
 import '../lib/bcdice/common_command';
 import '../lib/bcdice/base';
 import '../lib/bcdice/preprocessor';
