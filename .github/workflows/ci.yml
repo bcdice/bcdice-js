@@ -26,6 +26,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+        registry-url: https://registry.npmjs.org
     - uses: actions/cache@v2
       with:
         path: '**/node_modules'
@@ -39,3 +40,5 @@ jobs:
 
     - run: npm publish
       if: ${{ matrix.node-version == '10.x' && startsWith(github.ref, 'refs/tags/v') }}
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
