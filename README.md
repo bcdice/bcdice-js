@@ -12,7 +12,7 @@ BCDice ported package for TypeScript/JavaScript by Opal.
 
 ## Installation
 ```bash
-$ npm install --save bcdice-js
+$ npm install --save bcdice
 ```
 
 ## Usage
