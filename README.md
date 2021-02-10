@@ -1,12 +1,12 @@
 # bcdice-js
 [![npm](https://img.shields.io/npm/v/bcdice.svg)](https://www.npmjs.com/package/bcdice)
-![CI](https://github.com/bcdice/bcdice-js/workflows/CI/badge.svg)
+[![CI](https://github.com/bcdice/bcdice-js/workflows/CI/badge.svg)](https://github.com/bcdice/bcdice-js/actions)
 [![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/bcdice.svg)](#)
 [![GitHub issues](https://img.shields.io/github/issues/bcdice/bcdice-js.svg)](https://github.com/bcdice/bcdice-js/issues)
 [![GitHub forks](https://img.shields.io/github/forks/bcdice/bcdice-js.svg)](https://github.com/bcdice/bcdice-js/network)
 [![GitHub stars](https://img.shields.io/github/stars/bcdice/bcdice-js.svg)](https://github.com/bcdice/bcdice-js/stargazers)
 [![GitHub license](https://img.shields.io/github/license/bcdice/bcdice-js.svg)](https://github.com/bcdice/bcdice-js/blob/master/LICENSE)
-[![Discord](https://img.shields.io/discord/597133335243784192.svg?color=7289DA&logo=discord&logoColor=fff)][invite discord]
+[![Discord](https://img.shields.io/discord/597133335243784192.svg?color=7289DA&logo=discord&logoColor=fff)](https://discord.gg/x5MMKWA)
 
 BCDice ported package for TypeScript/JavaScript by Opal.
 
