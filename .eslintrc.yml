@@ -2,6 +2,7 @@ root: true
 parser: "@typescript-eslint/parser"
 plugins:
   - "@typescript-eslint"
+  - eslint-plugin-tsdoc
   - import
 extends:
   - eslint:recommended
@@ -21,3 +22,4 @@ rules:
       - ^..$
       - ^../../lib
   import/order: error
+  tsdoc/syntax: error

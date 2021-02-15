@@ -10,6 +10,9 @@ async function main() {
   console.log(loader.listAvailableGameSystems().map(info => info.id));
 
   const GameSystem = await loader.dynamicLoad('Cthulhu7th');
+  console.log(GameSystem.NAME);
+  console.log(GameSystem.HELP_MESSAGE);
+
   const result = GameSystem.eval('CC<=54');
 
   console.log(result && result.text);

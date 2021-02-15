@@ -3,16 +3,14 @@ import { BaseClass, BaseInstance } from '../internal/types/base';
 import { BCDice } from '../internal';
 import Result, { parseResult } from '../result';
 import GameSystemList, { GameSystemInfo } from '../../lib/bcdice/game_system_list.json';
+import GameSystemClass from '../game_system';
 
-type GameSystemClassType = {
-  new (command: string, internal?: BaseInstance): Base;
-  eval(command: string): Result | null;
-  ID: string;
-}
-
-function getGameSystemClass(gameSystemClass: BaseClass): GameSystemClassType {
+function getGameSystemClass(gameSystemClass: BaseClass): GameSystemClass {
   return class extends Base {
-    static readonly ID = gameSystemClass.ID;
+    static readonly ID = gameSystemClass.$const_get('ID');
+    static readonly NAME = gameSystemClass.$const_get('NAME');
+    static readonly SORT_KEY = gameSystemClass.$const_get('SORT_KEY');
+    static readonly HELP_MESSAGE = gameSystemClass.$const_get('HELP_MESSAGE');
 
     static eval(command: string): Result | null {
       return parseResult(gameSystemClass.$eval(command));
@@ -38,13 +36,13 @@ export default class Loader {
     return info;
   }
 
-  getGameSystemClass(id: string): GameSystemClassType {
+  getGameSystemClass(id: string): GameSystemClass {
     const gameSystem = this.listLoadedGameSystems().find(a => a.ID === id);
     if (!gameSystem) throw new Error(`GameSystem ${id} is not loaded`);
     return gameSystem;
   }
 
-  listLoadedGameSystems(): GameSystemClassType[] {
+  listLoadedGameSystems(): GameSystemClass[] {
     return BCDice.GameSystem
       ?.$constants()
       ?.map(className => getGameSystemClass(BCDice.GameSystem[className])) ?? [];
@@ -54,7 +52,7 @@ export default class Loader {
     return GameSystemList.gameSystems;
   }
 
-  async dynamicLoad(id: string): Promise<GameSystemClassType> {
+  async dynamicLoad(id: string): Promise<GameSystemClass> {
     const className = this.getGameSystemInfo(id)?.className ?? id;
     if (!className.match(/^[A-Z]\w*$/)) throw new Error('Invalid id');
 

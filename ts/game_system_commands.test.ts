@@ -16,6 +16,8 @@ type TestDataType = Record<string, {
   }[];
 }>;
 
+const langPattern = /_(Korean)$/;
+
 const testData = JSON.parse(fs.readFileSync(path.join(__dirname, '../lib/bcdice/test_data.json')).toString());
 Object.keys(testData).forEach(id => {
   describe(id, () => {
@@ -23,6 +25,33 @@ Object.keys(testData).forEach(id => {
       const output = test.output === '' ? undefined : test.output;
 
       const loader = new DynamicLoader();
+
+      it('should be valid GameSystem', async () => {
+        const loader = new DynamicLoader();
+        const GameSystemClass = await loader.dynamicLoad(test.game_system);
+
+        expect(GameSystemClass.ID).is.not.empty;
+        expect(GameSystemClass.NAME).is.not.empty;
+        expect(GameSystemClass.SORT_KEY).is.not.empty;
+        expect(GameSystemClass.HELP_MESSAGE).is.not.empty;
+
+        switch (id) {
+          case 'AddDice':
+          case 'calc':
+          case 'choice':
+          case 'dummyBot':
+          case 'Misonzai':
+          case 'None':
+          case 'Repeat':
+          case 'UpperDice':
+            expect(GameSystemClass.ID).to.equals('DiceBot');
+            break;
+          default:
+            expect(GameSystemClass.ID?.replace(/[^0-9A-Za-z_]/g, '_')?.replace(langPattern, '')).to.equal(id.replace(langPattern, '')); // ToDo: Language suffix
+            break;
+        }
+      });
+
       it(`evals ${test.input} to ${output}`, async () => {
         const GameSystemClass = await loader.dynamicLoad(test.game_system);
         const gameSystem = new GameSystemClass(test.input);
