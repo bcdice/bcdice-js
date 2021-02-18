@@ -5,5 +5,4 @@ export interface GameSystemInfo {
   sortKey: string;
 }
 
-declare const gameSystems: GameSystemInfo[];
-export { gameSystems };
+export declare const gameSystems: GameSystemInfo[];
