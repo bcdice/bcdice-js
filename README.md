@@ -114,6 +114,6 @@ $ npm install
 ```
 
 ```bash
-$ bundle exec rake
+$ npm run build
 $ npm test
 ```
