@@ -108,13 +108,12 @@ or extend `Loader` (`improt Loader from 'bcdice/lib/loaders/loader'`) and make y
 ```bash
 $ git clone https://github.com/bcdice/bcdice-js.git
 $ cd bcdice-js
-$ git checkout next
 $ git submodule update --init
 $ bundle install
 $ npm install
 ```
 
 ```bash
-$ bundle exec rake
+$ npm run build
 $ npm test
 ```

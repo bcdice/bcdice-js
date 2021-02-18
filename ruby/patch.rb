@@ -61,6 +61,6 @@ module StringScannerPatch
 end
 StringScanner.prepend StringScannerPatch
 
-`Opal.top.$__dir__ = () => __dirname`
+`Opal.top.$__dir__ = () => '/'`
 
 nil
