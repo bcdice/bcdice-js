@@ -95,11 +95,11 @@ console.log(table.roll()?.text);
 ```
 
 ### Loaders
-* `StaticLoader`: `import StaticLoader from 'bcdice/lib/loaders/static_loader';`
+* `StaticLoader`: `import StaticLoader from 'bcdice/lib/loader/static_loader';`
   * Load all GameSystems on startup.
 * `DynamicLoader`: `import { DynamicLoader } from 'bcdice';`
 
-or extend `Loader` (`improt Loader from 'bcdice/lib/loaders/loader'`) and make your custom loader.
+or extend `Loader` (`import Loader from 'bcdice/lib/loader/loader'`) and make your custom loader.
 
 ## Development
 * Node.js >= v14
