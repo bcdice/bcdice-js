@@ -896,11 +896,13 @@ diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/Ninj
 diff --git a/lib/bcdice/game_system/RuinBreakers.rb b/lib/bcdice/game_system/RuinBreakers.rb
 --- a/lib/bcdice/game_system/RuinBreakers.rb
 +++ b/lib/bcdice/game_system/RuinBreakers.rb
-@@ -68,7 +68,7 @@ module BCDice
+@@ -67,8 +67,8 @@ module BCDice
+           return nil
          end
  
-         success_rate = ArithmeticEvaluator.eval(m[1])
+-        success_rate = ArithmeticEvaluator.eval(m[1])
 -        critical_border = m[4]&.to_i || [success_rate / 5, 1].max
++        success_rate = ArithmeticEvaluator.eval(m[1]).to_i
 +        critical_border = m[4]&.to_i || [(success_rate / 5).to_i, 1].max
          fumble_border = m[6]&.to_i || (success_rate < 100 ? 96 : 99)
  
