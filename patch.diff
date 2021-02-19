@@ -236,17 +236,6 @@ diff --git a/lib/bcdice/game_system/AFF2e.rb b/lib/bcdice/game_system/AFF2e.rb
            unless md
              return 'ダメージスロットは必須です。'
            end
-diff --git a/lib/bcdice/game_system/AlchemiaStruggle.rb b/lib/bcdice/game_system/AlchemiaStruggle.rb
---- a/lib/bcdice/game_system/AlchemiaStruggle.rb
-+++ b/lib/bcdice/game_system/AlchemiaStruggle.rb
-@@ -1,7 +1,5 @@
- # frozen_string_literal: true
- 
--require "bcdice"
--
- module BCDice
-   module GameSystem
-     class AlchemiaStruggle < Base
 diff --git a/lib/bcdice/game_system/Amadeus.rb b/lib/bcdice/game_system/Amadeus.rb
 --- a/lib/bcdice/game_system/Amadeus.rb
 +++ b/lib/bcdice/game_system/Amadeus.rb
@@ -475,17 +464,6 @@ diff --git a/lib/bcdice/game_system/CthulhuTech.rb b/lib/bcdice/game_system/Cthu
  
        # 構文解析する
        # @param [String] command コマンド
-diff --git a/lib/bcdice/game_system/DesperateRun.rb b/lib/bcdice/game_system/DesperateRun.rb
---- a/lib/bcdice/game_system/DesperateRun.rb
-+++ b/lib/bcdice/game_system/DesperateRun.rb
-@@ -1,7 +1,5 @@
- # frozen_string_literal: true
- 
--require "bcdice/base"
--
- module BCDice
-   module GameSystem
-     class DesperateRun < Base
 diff --git a/lib/bcdice/game_system/Dracurouge.rb b/lib/bcdice/game_system/Dracurouge.rb
 --- a/lib/bcdice/game_system/Dracurouge.rb
 +++ b/lib/bcdice/game_system/Dracurouge.rb
@@ -714,15 +692,15 @@ diff --git a/lib/bcdice/game_system/KemonoNoMori.rb b/lib/bcdice/game_system/Kem
 diff --git a/lib/bcdice/game_system/LogHorizon.rb b/lib/bcdice/game_system/LogHorizon.rb
 --- a/lib/bcdice/game_system/LogHorizon.rb
 +++ b/lib/bcdice/game_system/LogHorizon.rb
-@@ -1,6 +1,6 @@
+@@ -1,6 +1,7 @@
  # frozen_string_literal: true
  
--require "bcdice/base"
+ require "bcdice/base"
 +require "bcdice/arithmetic_evaluator"
  
  module BCDice
    module GameSystem
-@@ -358,13 +358,13 @@ module BCDice
+@@ -358,13 +359,13 @@ module BCDice
            if index <= 6
              translate("LogHorizon.TRS.below_lower_limit", value: 6) # 6以下の出目は未定義です
            elsif index <= 62
@@ -740,7 +718,7 @@ diff --git a/lib/bcdice/game_system/LogHorizon.rb b/lib/bcdice/game_system/LogHo
            else
              translate("LogHorizon.TRS.exceed_upper_limit", value: 88) # 88以上の出目は未定義です
            end
-@@ -379,7 +379,7 @@ module BCDice
+@@ -379,7 +380,7 @@ module BCDice
            if index <= 6
              translate("LogHorizon.TRS.below_lower_limit", value: 6)
            elsif index <= 53
@@ -749,7 +727,7 @@ diff --git a/lib/bcdice/game_system/LogHorizon.rb b/lib/bcdice/game_system/LogHo
            else
              translate("LogHorizon.TRS.exceed_upper_limit", value: 54)
            end
-@@ -394,13 +394,13 @@ module BCDice
+@@ -394,13 +395,13 @@ module BCDice
            if index <= 6
              translate("LogHorizon.TRS.below_lower_limit", value: 6)
            elsif index <= 162
@@ -767,7 +745,7 @@ diff --git a/lib/bcdice/game_system/LogHorizon.rb b/lib/bcdice/game_system/LogHo
            else
              translate("LogHorizon.TRS.exceed_upper_limit", value: 188)
            end
-@@ -509,7 +509,7 @@ module BCDice
+@@ -509,7 +510,7 @@ module BCDice
  
          table_name = translate("LogHorizon.ESTL.name")
          table = translate("LogHorizon.ESTL.items")
@@ -776,17 +754,6 @@ diff --git a/lib/bcdice/game_system/LogHorizon.rb b/lib/bcdice/game_system/LogHo
  
          return "#{table_name}(#{total}#{dice_str})\n#{chosen}"
        end
-diff --git a/lib/bcdice/game_system/MagicaLogia.rb b/lib/bcdice/game_system/MagicaLogia.rb
---- a/lib/bcdice/game_system/MagicaLogia.rb
-+++ b/lib/bcdice/game_system/MagicaLogia.rb
-@@ -1,7 +1,5 @@
- # frozen_string_literal: true
- 
--require "bcdice/base"
--
- module BCDice
-   module GameSystem
-     class MagicaLogia < Base
 diff --git a/lib/bcdice/game_system/MetalHead.rb b/lib/bcdice/game_system/MetalHead.rb
 --- a/lib/bcdice/game_system/MetalHead.rb
 +++ b/lib/bcdice/game_system/MetalHead.rb
@@ -1035,17 +1002,6 @@ diff --git a/lib/bcdice/game_system/TunnelsAndTrolls.rb b/lib/bcdice/game_system
          if level <= 0
            "失敗 ＞ 経験値#{dice_total}"
          else
-diff --git a/lib/bcdice/game_system/UnsungDuet.rb b/lib/bcdice/game_system/UnsungDuet.rb
---- a/lib/bcdice/game_system/UnsungDuet.rb
-+++ b/lib/bcdice/game_system/UnsungDuet.rb
-@@ -1,7 +1,5 @@
- # frozen_string_literal: true
- 
--require "bcdice"
--
- module BCDice
-   module GameSystem
-     class UnsungDuet < Base
 diff --git a/lib/bcdice/game_system/VampireTheMasquerade5th.rb b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 --- a/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 +++ b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
@@ -1155,15 +1111,7 @@ diff --git a/lib/bcdice/game_system/YearZeroEngine.rb b/lib/bcdice/game_system/Y
 diff --git a/lib/bcdice/game_system/Yggdrasill.rb b/lib/bcdice/game_system/Yggdrasill.rb
 --- a/lib/bcdice/game_system/Yggdrasill.rb
 +++ b/lib/bcdice/game_system/Yggdrasill.rb
-@@ -1,7 +1,5 @@
- # frozen_string_literal: true
- 
--require "bcdice/base"
--
- module BCDice
-   module GameSystem
-     class Yggdrasill < Base
-@@ -198,7 +196,7 @@ module BCDice
+@@ -198,7 +198,7 @@ module BCDice
              1
            elsif value <= 11
              dice = @randomizer.roll_once(6)
