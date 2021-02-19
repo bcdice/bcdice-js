@@ -57,9 +57,10 @@ def decleation(source)
   File.write "lib/#{source}.d.ts", 'export default undefined;'
 end
 
-def build(source)
+def build(source, prerequired: [])
   puts source
   builder = create_builder
+  builder.prerequired = prerequired if prerequired
 
   builder.build source
 
@@ -117,7 +118,7 @@ task build_game_system: 'lib/bcdice/game_system' do
 
   File.read('patched/lib/bcdice/game_system.rb').scan(/require "([^"]+)"/).each do |m|
     source = m[0]
-    build(source)
+    build(source, prerequired: ["i18n"])
     index_js += "require('../../#{source}');\n"
   end
 
