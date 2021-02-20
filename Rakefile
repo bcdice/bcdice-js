@@ -118,7 +118,7 @@ task build_game_system: 'lib/bcdice/game_system' do
 
   File.read('patched/lib/bcdice/game_system.rb').scan(/require "([^"]+)"/).each do |m|
     source = m[0]
-    build(source, prerequired: ["i18n"])
+    build(source, prerequired: ['i18n'])
     index_js += "require('../../#{source}');\n"
   end
 
