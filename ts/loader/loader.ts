@@ -58,7 +58,7 @@ export default class Loader {
 
     await this.dynamicImport(className);
 
-    gameSystemClass = BCDice.GameSystem.$const_get<BaseClass>(className);
+    const gameSystemClass = BCDice.GameSystem.$const_get<BaseClass>(className);
     if (!gameSystemClass) throw new Error('Failed to load game system');
 
     return getGameSystemClass(gameSystemClass);
