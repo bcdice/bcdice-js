@@ -1,7 +1,7 @@
 import Loader from './loader';
 
 export default class DynamicLoader extends Loader {
-  async dynamicImport(path: string): Promise<void> {
-    await import(path);
+  async dynamicImport(className: string): Promise<void> {
+    await import(`../../lib/bcdice/game_system/${className}`);
   }
 }
