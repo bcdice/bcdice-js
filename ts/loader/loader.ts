@@ -56,7 +56,7 @@ export default class Loader {
     const className = this.getGameSystemInfo(id)?.className ?? id;
     if (!className.match(/^[A-Z]\w*$/)) throw new Error('Invalid id');
 
-    await this.dynamicImport(`../../lib/bcdice/game_system/${className}`);
+    await this.dynamicImport(className);
 
     const gameSystemClass = BCDice.GameSystem.$const_get<BaseClass>(className);
     if (!gameSystemClass) throw new Error('Failed to load game system');
@@ -65,7 +65,7 @@ export default class Loader {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  dynamicImport(path: string): Promise<void> {
+  dynamicImport(className: string): Promise<void> {
     throw new Error('Not implemented');
   }
 }
