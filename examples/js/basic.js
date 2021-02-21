@@ -1,10 +1,12 @@
 /* eslint-env node */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-// const { DynamicLoader } = require('bcdice');
-const { DynamicLoader } = require('../../lib');
+// const { DynamicLoader, Version } = require('bcdice');
+const { DynamicLoader, Version } = require('../../lib');
 
 async function main() {
+  console.log('BCDice Version:', Version);
+
   const loader = new DynamicLoader();
 
   console.log(loader.listAvailableGameSystems().map(info => info.id));

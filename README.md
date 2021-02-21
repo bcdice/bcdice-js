@@ -18,9 +18,11 @@ $ npm install --save bcdice
 ## Usage
 JavaScript (CommonJS)
 ```js
-const { DynamicLoader } = require('bcdice');
+const { DynamicLoader, Version } = require('bcdice');
 
 async function main() {
+  console.log('BCDice Version:', Version);
+
   const loader = new DynamicLoader();
 
   console.log(loader.listAvailableGameSystems().map(info => info.id));
@@ -40,9 +42,11 @@ main();
 
 TypeScript
 ```ts
-import { DynamicLoader } from 'bcdice';
+import { DynamicLoader, Version } from 'bcdice';
 
 async function main(): Promise<void> {
+  console.log('BCDice Version:', Version);
+
   const loader = new DynamicLoader();
 
   console.log(loader.listAvailableGameSystems().map(info => info.id));

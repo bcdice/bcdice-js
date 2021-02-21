@@ -1,7 +1,9 @@
-// import { DynamicLoader } from 'bcdice';
-import { DynamicLoader } from '../../lib';
+// import { DynamicLoader, Version } from 'bcdice';
+import { DynamicLoader, Version } from '../../lib';
 
 async function main(): Promise<void> {
+  console.log('BCDice Version:', Version);
+
   const loader = new DynamicLoader();
 
   console.log(loader.listAvailableGameSystems().map(info => info.id));
