@@ -5,7 +5,7 @@ import Result, { parseResult } from '../result';
 import GameSystemList, { GameSystemInfo } from '../../lib/bcdice/game_system_list.json';
 import GameSystemClass from '../game_system';
 
-function getGameSystemClass(gameSystemClass: BaseClass): GameSystemClass {
+export function getGameSystemClass(gameSystemClass: BaseClass): GameSystemClass {
   return class extends Base {
     static readonly ID = gameSystemClass.$const_get('ID');
     static readonly NAME = gameSystemClass.$const_get('NAME');
