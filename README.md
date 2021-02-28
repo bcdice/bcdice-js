@@ -105,6 +105,14 @@ console.log(table.roll()?.text);
 
 or extend `Loader` (`import Loader from 'bcdice/lib/loader/loader'`) and make your custom loader.
 
+## Internal BCDice Versions
+Since v2.x, you can get the version of internal BCDice by importing `Version` from '`bcdice`'.
+
+| bcdice-js | BCDice |
+|---|---|
+| 2.0.0 | Ver3.00.00 |
+| 1.x.x | Ver2.xx.xx |
+
 ## Development
 * Node.js >= v14
 * Ruby >= 2.7
