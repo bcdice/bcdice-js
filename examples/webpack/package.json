@@ -1,0 +1,25 @@
+{
+  "name": "bcdice-js-example-webpack",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Example",
+  "license": "MIT",
+  "author": "",
+  "scripts": {
+    "build": "webpack",
+    "serve": "webpack serve --open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/webpack": "^4.41.26",
+    "@types/webpack-dev-server": "^3.11.1",
+    "ts-loader": "^8.0.17",
+    "typescript": "^4.2.2",
+    "webpack": "^5.24.2",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "bcdice": "file:../.."
+  }
+}
