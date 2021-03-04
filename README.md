@@ -110,6 +110,7 @@ Since v2.x, you can get the version of internal BCDice by importing `Version` fr
 
 | bcdice-js | BCDice |
 |---|---|
+| 3.0.0 | Ver3.00.00 |
 | 2.0.0 | Ver3.00.00 |
 | 1.x.x | Ver2.xx.xx |
 
@@ -129,3 +130,6 @@ $ npm install
 $ npm run build
 $ npm test
 ```
+
+## Migration from 2.x to 3.x
+`Loader.dynamicImport(className: string)` now accepts a `className` instead of a `path`. Custom loaders need to search for `GameSystem` from known path. See also [`DynamicLoader`](ts/loader/dynamic_loader.ts).
