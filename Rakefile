@@ -130,7 +130,7 @@ end
 directory 'lib/bcdice'
 task build_i18n: 'lib/bcdice' do
   i18n = {}
-  Dir['BCDice/i18n/**/*.yml'].each do |path|
+  Dir['patched/i18n/**/*.yml'].each do |path|
     i18n = i18n.merge(YAML.load_file(path)) do |_key, oldval, newval|
       oldval.merge(newval)
     end
@@ -144,7 +144,7 @@ directory 'lib/bcdice'
 task build_test: 'lib/bcdice' do
   puts 'bcdice/test_data.json'
   tests = {}
-  Dir['BCDice/test/**/*.toml'].each do |path|
+  Dir['patched/test/**/*.toml'].each do |path|
     id = File.basename(path, '.toml')
     tests[id] = Tomlrb.load_file(path)
   end
