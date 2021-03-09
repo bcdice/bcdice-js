@@ -966,30 +966,6 @@ diff --git a/lib/bcdice/game_system/SterileLife.rb b/lib/bcdice/game_system/Ster
 
          text = table[num]
 
-diff --git a/lib/bcdice/game_system/SwordWorld.rb b/lib/bcdice/game_system/SwordWorld.rb
---- a/lib/bcdice/game_system/SwordWorld.rb
-+++ b/lib/bcdice/game_system/SwordWorld.rb
-@@ -25,7 +25,7 @@ module BCDice
-       # change_textで使うレーティング表コマンドの正規表現
-       #
-       # SW 2.5のダイスボットでも必要なため、共通化のために定数として定義する
--      RATING_TABLE_RE_FOR_CHANGE_TEXT = /\AS?H?K\d+/i.freeze
-+      RATING_TABLE_RE_FOR_CHANGE_TEXT = /^S?H?K\d+/i.freeze
-
-       # コマンド実行前にメッセージを置換する
-       # @param [String] string 受信したメッセージ
-diff --git a/lib/bcdice/game_system/SwordWorld2_0.rb b/lib/bcdice/game_system/SwordWorld2_0.rb
---- a/lib/bcdice/game_system/SwordWorld2_0.rb
-+++ b/lib/bcdice/game_system/SwordWorld2_0.rb
-@@ -172,7 +172,7 @@ module BCDice
-       end
-
-       # 超越判定のパターン
--      TRANSCENDENT_TEST_RE = /\A2D6?@(\d+)([-+\d]+)?(?:(>=?)(\d+))?/.freeze
-+      TRANSCENDENT_TEST_RE = /^2D6?@(\d+)([-+\d]+)?(?:(>=?)(\d+))?/.freeze
-
-       def eval_game_system_specific_command(command)
-         case command
 diff --git a/lib/bcdice/game_system/TunnelsAndTrolls.rb b/lib/bcdice/game_system/TunnelsAndTrolls.rb
 --- a/lib/bcdice/game_system/TunnelsAndTrolls.rb
 +++ b/lib/bcdice/game_system/TunnelsAndTrolls.rb
