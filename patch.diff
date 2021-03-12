@@ -735,7 +735,7 @@ diff --git a/lib/bcdice/game_system/NightmareHunterDeep.rb b/lib/bcdice/game_sys
 diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/NinjaSlayer.rb
 --- a/lib/bcdice/game_system/NinjaSlayer.rb
 +++ b/lib/bcdice/game_system/NinjaSlayer.rb
-@@ -57,18 +57,18 @@ module BCDice
+@@ -48,18 +48,18 @@ module BCDice
        end
  
        # 難易度の値の正規表現
@@ -760,7 +760,7 @@ diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/Ninj
  
        # 回避判定のノード
        EV = Struct.new(:num, :difficulty, :targetValue)
-@@ -90,7 +90,7 @@ module BCDice
+@@ -81,7 +81,7 @@ module BCDice
          m = NJ_RE.match(str)
          return str unless m
  
@@ -769,7 +769,7 @@ diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/Ninj
          return "#{m[1]}#{b_roll}"
        end
  
-@@ -136,8 +136,8 @@ module BCDice
+@@ -127,8 +127,8 @@ module BCDice
        # @return [EV]
        def parseEV(m)
          num = m[1].to_i
@@ -780,7 +780,7 @@ diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/Ninj
  
          return EV.new(num, difficulty, targetValue)
        end
-@@ -147,7 +147,7 @@ module BCDice
+@@ -138,7 +138,7 @@ module BCDice
        # @return [AT]
        def parseAT(m)
          num = m[1].to_i
@@ -789,7 +789,7 @@ diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/Ninj
  
          return AT.new(num, difficulty)
        end
-@@ -157,7 +157,7 @@ module BCDice
+@@ -148,7 +148,7 @@ module BCDice
        # @return [EL]
        def parseEL(m)
          num = m[1].to_i
@@ -798,7 +798,7 @@ diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/Ninj
  
          return EL.new(num, difficulty)
        end
-@@ -228,7 +228,7 @@ module BCDice
+@@ -219,7 +219,7 @@ module BCDice
        def integerValueOfDifficulty(s)
          return 4 unless s
  
@@ -929,7 +929,7 @@ diff --git a/lib/bcdice/game_system/VampireTheMasquerade5th.rb b/lib/bcdice/game
 --- a/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 +++ b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 @@ -44,7 +44,7 @@ module BCDice
-       register_prefix('\d*VMF.*')
+       register_prefix('\d*VMF')
  
        def eval_game_system_specific_command(command)
 -        m = /\A(\d+)?(VMF)(\d+)(\+(\d+))?/.match(command)
