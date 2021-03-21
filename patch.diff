@@ -501,18 +501,6 @@ diff --git a/lib/bcdice/game_system/Emoklore.rb b/lib/bcdice/game_system/Emoklor
        end
  
        # @param [Integer] success
-diff --git a/lib/bcdice/game_system/FilledWith.rb b/lib/bcdice/game_system/FilledWith.rb
---- a/lib/bcdice/game_system/FilledWith.rb
-+++ b/lib/bcdice/game_system/FilledWith.rb
-@@ -1406,7 +1406,7 @@ module BCDice
-               '[現在エネミー未実装の為振り直ししてください]'
-             ]],
-           ]
--          case event / 100
-+          case (event / 100).to_i
-           when 1
-             areaText = "洞窟"
-           when 2
 diff --git a/lib/bcdice/game_system/GardenOrder.rb b/lib/bcdice/game_system/GardenOrder.rb
 --- a/lib/bcdice/game_system/GardenOrder.rb
 +++ b/lib/bcdice/game_system/GardenOrder.rb
