@@ -110,8 +110,9 @@ Since v2.x, you can get the version of internal BCDice by importing `Version` fr
 
 | bcdice-js | BCDice |
 |---|---|
-| 3.0.0 | Ver3.00.00 |
-| 2.0.0 | Ver3.00.00 |
+| 3.1.0 | Ver3.1.1 |
+| 3.0.0 | Ver3.0.0 |
+| 2.0.0 | Ver3.0.0 |
 | 1.x.x | Ver2.xx.xx |
 
 ## Development
