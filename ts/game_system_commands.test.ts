@@ -34,6 +34,7 @@ Object.keys(testData).forEach(id => {
         expect(GameSystemClass.NAME).is.not.empty;
         expect(GameSystemClass.SORT_KEY).is.not.empty;
         expect(GameSystemClass.HELP_MESSAGE).is.not.empty;
+        expect(GameSystemClass.COMMAND_PATTERN).exist;
 
         switch (id) {
           case 'AddDice':
