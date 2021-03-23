@@ -11,6 +11,7 @@ export function getGameSystemClass(gameSystemClass: BaseClass): GameSystemClass 
     static readonly NAME = gameSystemClass.$const_get('NAME');
     static readonly SORT_KEY = gameSystemClass.$const_get('SORT_KEY');
     static readonly HELP_MESSAGE = gameSystemClass.$const_get('HELP_MESSAGE');
+    static readonly COMMAND_PATTERN = gameSystemClass.$command_pattern();
 
     static eval(command: string): Result | null {
       return parseResult(gameSystemClass.$eval(command));

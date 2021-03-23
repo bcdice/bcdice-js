@@ -10,6 +10,7 @@ export default interface GameSystemClass {
   NAME: string;
   SORT_KEY: string;
   HELP_MESSAGE: string;
+  COMMAND_PATTERN: RegExp;
 
   new (command: string, internal?: BaseInstance): Base;
   eval(command: string): Result | null;

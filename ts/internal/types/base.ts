@@ -9,4 +9,5 @@ export interface BaseInstance {
 export interface BaseClass extends Function, RubyObject {
   $new(command: string): BaseInstance;
   $eval(command: string): Result;
+  $command_pattern(): RegExp;
 }
