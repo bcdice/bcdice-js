@@ -892,7 +892,7 @@ diff --git a/lib/bcdice/game_system/Skynauts.rb b/lib/bcdice/game_system/Skynaut
 diff --git a/lib/bcdice/game_system/SterileLife.rb b/lib/bcdice/game_system/SterileLife.rb
 --- a/lib/bcdice/game_system/SterileLife.rb
 +++ b/lib/bcdice/game_system/SterileLife.rb
-@@ -183,7 +183,7 @@ module BCDice
+@@ -182,7 +182,7 @@ module BCDice
          dice1 = @randomizer.roll_once(10)
          dice2 = @randomizer.roll_once(10)
  
