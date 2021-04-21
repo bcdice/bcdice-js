@@ -22,7 +22,7 @@ jobs:
         ./scripts/autopatch_rebase.sh master
         ./scripts/autopatch_apply.sh master
     - run: |
-        git add patch.diff BCDice
+        git add patch.diff BCDice Gemfile.lock
         git commit -m ":heavy_plus_sign: Update BCDice to $(git -C BCDice rev-parse --short HEAD)"
         git push
       continue-on-error: true
