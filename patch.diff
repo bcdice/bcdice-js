@@ -251,7 +251,7 @@ diff --git a/lib/bcdice/game_system/Amadeus.rb b/lib/bcdice/game_system/Amadeus.
 diff --git a/lib/bcdice/game_system/ChaosFlare.rb b/lib/bcdice/game_system/ChaosFlare.rb
 --- a/lib/bcdice/game_system/ChaosFlare.rb
 +++ b/lib/bcdice/game_system/ChaosFlare.rb
-@@ -87,7 +87,7 @@ module BCDice
+@@ -93,7 +93,7 @@ module BCDice
              return "因果表(#{num}) ＞ #{FATE_TABLE[num][0]}"
            end
 
@@ -260,7 +260,7 @@ diff --git a/lib/bcdice/game_system/ChaosFlare.rb b/lib/bcdice/game_system/Chaos
            dice2 = num % 10
            if !(1..6).include?(dice1) || !(1..6).include?(dice2)
              return nil
-@@ -98,7 +98,7 @@ module BCDice
+@@ -104,7 +104,7 @@ module BCDice
          end
 
          index1 = dice1
@@ -273,22 +273,22 @@ diff --git a/lib/bcdice/game_system/Chill.rb b/lib/bcdice/game_system/Chill.rb
 --- a/lib/bcdice/game_system/Chill.rb
 +++ b/lib/bcdice/game_system/Chill.rb
 @@ -34,9 +34,9 @@ module BCDice
-           " ＞ 失敗"
+           Result.failure("失敗")
          elsif total >= (target * 0.9)
-           " ＞ Ｌ成功"
+           Result.success("Ｌ成功")
 -        elsif total >= (target / 2)
 +        elsif total >= (target / 2).to_i
-           " ＞ Ｍ成功"
+           Result.success("Ｍ成功")
 -        elsif total >= (target / 10)
 +        elsif total >= (target / 10).to_i
-           " ＞ Ｈ成功"
+           Result.success("Ｈ成功")
          else
-           " ＞ Ｃ成功"
+           Result.critical("Ｃ成功")
 diff --git a/lib/bcdice/game_system/Chill3.rb b/lib/bcdice/game_system/Chill3.rb
 --- a/lib/bcdice/game_system/Chill3.rb
 +++ b/lib/bcdice/game_system/Chill3.rb
 @@ -24,7 +24,7 @@ module BCDice
-         return '' unless cmp_op == :<=
+         return nil unless cmp_op == :<=
 
          # ゾロ目ならC-ResultかBotch
 -        tens = (dice_total / 10) % 10
@@ -297,14 +297,14 @@ diff --git a/lib/bcdice/game_system/Chill3.rb b/lib/bcdice/game_system/Chill3.rb
 
          if tens == ones
 @@ -38,7 +38,7 @@ module BCDice
-             return " ＞ Ｃ成功"
+             return Result.critical("Ｃ成功")
            end
          elsif (total <= target) || (dice_total == 1) # 01は必ず成功
 -          if total <= (target / 2)
 +          if total <= (target / 2).to_i
-             return " ＞ Ｈ成功"
+             return Result.success("Ｈ成功")
            else
-             return " ＞ Ｌ成功"
+             return Result.success("Ｌ成功")
 diff --git a/lib/bcdice/game_system/Cthulhu.rb b/lib/bcdice/game_system/Cthulhu.rb
 --- a/lib/bcdice/game_system/Cthulhu.rb
 +++ b/lib/bcdice/game_system/Cthulhu.rb
@@ -496,26 +496,14 @@ diff --git a/lib/bcdice/game_system/EclipsePhase.rb b/lib/bcdice/game_system/Ecl
 --- a/lib/bcdice/game_system/EclipsePhase.rb
 +++ b/lib/bcdice/game_system/EclipsePhase.rb
 @@ -21,7 +21,7 @@ module BCDice
-         return '' unless cmp_op == :<=
+         return nil unless cmp_op == :<=
 
-         diceValue = total % 100 # 出目00は100ではなく00とする
--        dice_ten_place = diceValue / 10
-+        dice_ten_place = (diceValue / 10).to_i
-         dice_one_place = diceValue % 10
+         dice_value = total % 100 # 出目00は100ではなく00とする
+-        dice_ten_place = dice_value / 10
++        dice_ten_place = (dice_value / 10).to_i
+         dice_one_place = dice_value % 10
 
          if dice_ten_place == dice_one_place
-diff --git a/lib/bcdice/game_system/Elric.rb b/lib/bcdice/game_system/Elric.rb
---- a/lib/bcdice/game_system/Elric.rb
-+++ b/lib/bcdice/game_system/Elric.rb
-@@ -25,7 +25,7 @@ module BCDice
-         # 100は常に致命的失敗
-         return " ＞ 致命的失敗" if total >= 100
-
--        return " ＞ 決定的成功" if total <= (target / 5 + 0.9)
-+        return " ＞ 決定的成功" if total <= ((target / 5).to_i + 0.9)
-         return " ＞ 成功" if total <= target
-         return " ＞ 致命的失敗" if (total >= 99) && (target < 100)
-
 diff --git a/lib/bcdice/game_system/Emoklore.rb b/lib/bcdice/game_system/Emoklore.rb
 --- a/lib/bcdice/game_system/Emoklore.rb
 +++ b/lib/bcdice/game_system/Emoklore.rb
@@ -549,9 +537,9 @@ diff --git a/lib/bcdice/game_system/GardenOrder.rb b/lib/bcdice/game_system/Gard
 diff --git a/lib/bcdice/game_system/Gundog.rb b/lib/bcdice/game_system/Gundog.rb
 --- a/lib/bcdice/game_system/Gundog.rb
 +++ b/lib/bcdice/game_system/Gundog.rb
-@@ -33,7 +33,7 @@ module BCDice
-         elsif total <= 1
-           " ＞ 絶対成功(達成値1+SL)"
+@@ -34,7 +34,7 @@ module BCDice
+         elsif target == "?"
+           Result.nothing
          elsif total <= target
 -          dig10 = total / 10
 +          dig10 = (total / 10).to_i
@@ -561,9 +549,9 @@ diff --git a/lib/bcdice/game_system/Gundog.rb b/lib/bcdice/game_system/Gundog.rb
 diff --git a/lib/bcdice/game_system/GundogRevised.rb b/lib/bcdice/game_system/GundogRevised.rb
 --- a/lib/bcdice/game_system/GundogRevised.rb
 +++ b/lib/bcdice/game_system/GundogRevised.rb
-@@ -44,7 +44,7 @@ module BCDice
-         elsif total <= 1
-           " ＞ ベアリー(達成値1+SL)"
+@@ -45,7 +45,7 @@ module BCDice
+         elsif target == "?"
+           Result.nothing
          elsif total <= target
 -          dig10 = total / 10
 +          dig10 = (total / 10).to_i
@@ -585,60 +573,39 @@ diff --git a/lib/bcdice/game_system/GurpsFW.rb b/lib/bcdice/game_system/GurpsFW.
 diff --git a/lib/bcdice/game_system/Hieizan.rb b/lib/bcdice/game_system/Hieizan.rb
 --- a/lib/bcdice/game_system/Hieizan.rb
 +++ b/lib/bcdice/game_system/Hieizan.rb
-@@ -21,7 +21,7 @@ module BCDice
-
-         if total <= 1
-           # 1は自動成功
--          if total <= (target / 5)
-+          if total <= (target / 5).to_i
-             " ＞ 大成功"
-           else
-             " ＞ 自動成功"
-@@ -33,7 +33,7 @@ module BCDice
-           # 96-00は自動失敗
-           " ＞ 自動失敗"
-         elsif total <= target
--          if total <= (target / 5)
-+          if total <= (target / 5).to_i
-             # 目標値の1/5以下は大成功
-             " ＞ 大成功"
-           else
+@@ -24,7 +24,7 @@ module BCDice
+           Result.fumble("大失敗")
+         elsif total >= 96
+           Result.failure("自動失敗")
+-        elsif total <= (target / 5)
++        elsif total <= (target / 5).to_i
+           Result.critical("大成功")
+         elsif total <= 1
+           Result.success("自動成功")
 diff --git a/lib/bcdice/game_system/InfiniteFantasia.rb b/lib/bcdice/game_system/InfiniteFantasia.rb
 --- a/lib/bcdice/game_system/InfiniteFantasia.rb
 +++ b/lib/bcdice/game_system/InfiniteFantasia.rb
-@@ -26,15 +26,15 @@ module BCDice
+@@ -25,15 +25,15 @@ module BCDice
          end
 
          output =
 -          if total <= (target / 32)
 +          if total <= (target / 32).to_i
-             " ＞ 32レベル成功(32Lv+)"
+             "32レベル成功(32Lv+)"
 -          elsif total <= (target / 16)
 +          elsif total <= (target / 16).to_i
-             " ＞ 16レベル成功(16LV+)"
+             "16レベル成功(16Lv+)"
 -          elsif total <= (target / 8)
 +          elsif total <= (target / 8).to_i
-             " ＞ 8レベル成功"
+             "8レベル成功"
 -          elsif total <= (target / 4)
 +          elsif total <= (target / 4).to_i
-             " ＞ 4レベル成功"
+             "4レベル成功"
 -          elsif total <= (target / 2)
 +          elsif total <= (target / 2).to_i
-             " ＞ 2レベル成功"
+             "2レベル成功"
            else
-             " ＞ 1レベル成功"
-diff --git a/lib/bcdice/game_system/IthaWenUa.rb b/lib/bcdice/game_system/IthaWenUa.rb
---- a/lib/bcdice/game_system/IthaWenUa.rb
-+++ b/lib/bcdice/game_system/IthaWenUa.rb
-@@ -20,7 +20,7 @@ module BCDice
-         return '' unless cmp_op == :<=
-
-         diceValue = total % 100
--        dice0 = diceValue / 10 # 10の位を代入
-+        dice0 = (diceValue / 10).to_i # 10の位を代入
-         dice1 = diceValue % 10 # 1の位を代入
-
-         if (dice0 == 0) && (dice1 == 1)
+             "1レベル成功"
 diff --git a/lib/bcdice/game_system/KemonoNoMori.rb b/lib/bcdice/game_system/KemonoNoMori.rb
 --- a/lib/bcdice/game_system/KemonoNoMori.rb
 +++ b/lib/bcdice/game_system/KemonoNoMori.rb
@@ -904,6 +871,18 @@ diff --git a/lib/bcdice/game_system/ShinMegamiTenseiKakuseihen.rb b/lib/bcdice/g
          tens = value % 10
 
          return [ones, tens]
+diff --git a/lib/bcdice/game_system/ShinobiGami.rb b/lib/bcdice/game_system/ShinobiGami.rb
+--- a/lib/bcdice/game_system/ShinobiGami.rb
++++ b/lib/bcdice/game_system/ShinobiGami.rb
+@@ -102,7 +102,7 @@ module BCDice
+         cmd = parser.parse(command)
+         return nil unless cmd
+
+-        times = cmd.command.start_with?(/\d/) ? cmd.command.to_i : 2
++        times = cmd.command =~ /^\d/ ? cmd.command.to_i : 2
+         return nil if times <= 1
+
+         cmd.critical ||= 12
 diff --git a/lib/bcdice/game_system/Skynauts.rb b/lib/bcdice/game_system/Skynauts.rb
 --- a/lib/bcdice/game_system/Skynauts.rb
 +++ b/lib/bcdice/game_system/Skynauts.rb
@@ -988,14 +967,14 @@ diff --git a/lib/bcdice/game_system/Warhammer.rb b/lib/bcdice/game_system/Warham
 --- a/lib/bcdice/game_system/Warhammer.rb
 +++ b/lib/bcdice/game_system/Warhammer.rb
 @@ -56,9 +56,9 @@ module BCDice
-         return '' unless cmp_op == :<=
+         return nil unless cmp_op == :<=
 
          if total <= target
--          " ＞ 成功(成功度#{(target - total) / 10})"
-+          " ＞ 成功(成功度#{((target - total) / 10).to_i})"
+-          Result.success("成功(成功度#{(target - total) / 10})")
++          Result.success("成功(成功度#{((target - total) / 10).to_i})")
          else
--          " ＞ 失敗(失敗度#{(total - target) / 10})"
-+          " ＞ 失敗(失敗度#{((total - target) / 10).to_i})"
+-          Result.failure("失敗(失敗度#{(total - target) / 10})")
++          Result.failure("失敗(失敗度#{((total - target) / 10).to_i})")
          end
        end
 
@@ -1003,8 +982,8 @@ diff --git a/lib/bcdice/game_system/Warhammer4.rb b/lib/bcdice/game_system/Warha
 --- a/lib/bcdice/game_system/Warhammer4.rb
 +++ b/lib/bcdice/game_system/Warhammer4.rb
 @@ -48,8 +48,8 @@ module BCDice
-         return '' if target == '?'
-         return '' unless cmp_op == :<=
+         return Result.nothing if target == '?'
+         return nil unless cmp_op == :<=
 
 -        t10 = total / 10
 -        d10 = target / 10
@@ -1013,7 +992,7 @@ diff --git a/lib/bcdice/game_system/Warhammer4.rb b/lib/bcdice/game_system/Warha
          sl = d10 - t10
 
          if total <= 5 && sl < 1
-@@ -282,7 +282,7 @@ module BCDice
+@@ -283,7 +283,7 @@ module BCDice
          if dice == 100
            return 0, 0
          else
