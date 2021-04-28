@@ -629,7 +629,7 @@ diff --git a/lib/bcdice/game_system/LogHorizon.rb b/lib/bcdice/game_system/LogHo
  
  module BCDice
    module GameSystem
-@@ -358,13 +359,13 @@ module BCDice
+@@ -361,13 +362,13 @@ module BCDice
            if index <= 6
              translate("LogHorizon.TRS.below_lower_limit", value: 6) # 6以下の出目は未定義です
            elsif index <= 62
@@ -647,7 +647,7 @@ diff --git a/lib/bcdice/game_system/LogHorizon.rb b/lib/bcdice/game_system/LogHo
            else
              translate("LogHorizon.TRS.exceed_upper_limit", value: 88) # 88以上の出目は未定義です
            end
-@@ -379,7 +380,7 @@ module BCDice
+@@ -382,7 +383,7 @@ module BCDice
            if index <= 6
              translate("LogHorizon.TRS.below_lower_limit", value: 6)
            elsif index <= 53
@@ -656,7 +656,7 @@ diff --git a/lib/bcdice/game_system/LogHorizon.rb b/lib/bcdice/game_system/LogHo
            else
              translate("LogHorizon.TRS.exceed_upper_limit", value: 54)
            end
-@@ -394,13 +395,13 @@ module BCDice
+@@ -397,13 +398,13 @@ module BCDice
            if index <= 6
              translate("LogHorizon.TRS.below_lower_limit", value: 6)
            elsif index <= 162
@@ -674,7 +674,7 @@ diff --git a/lib/bcdice/game_system/LogHorizon.rb b/lib/bcdice/game_system/LogHo
            else
              translate("LogHorizon.TRS.exceed_upper_limit", value: 188)
            end
-@@ -509,7 +510,7 @@ module BCDice
+@@ -512,7 +513,7 @@ module BCDice
  
          table_name = translate("LogHorizon.ESTL.name")
          table = translate("LogHorizon.ESTL.items")
