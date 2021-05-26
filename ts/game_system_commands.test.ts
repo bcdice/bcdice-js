@@ -9,6 +9,11 @@ type TestDataType = Record<string, {
     game_system: string;
     input: string;
     output: string;
+    secret?: boolean;
+    success?: boolean;
+    failure?: boolean;
+    critical?: boolean;
+    fumble?: boolean;
     rands: {
       sides: number,
       value: number,
@@ -21,8 +26,16 @@ const langPattern = /_(Korean)$/;
 const testData = JSON.parse(fs.readFileSync(path.join(__dirname, '../lib/bcdice/test_data.json')).toString());
 Object.keys(testData).forEach(id => {
   describe(id, () => {
-    (testData as TestDataType)[id].test.map((test) => {
-      const output = test.output === '' ? undefined : test.output;
+    (testData as TestDataType)[id].test.map((data) => {
+      const test = {
+        ...data,
+        output: data.output === '' ? undefined : data.output,
+        secret: data.secret ?? false,
+        success: data.success ?? false,
+        failure: data.failure ?? false,
+        critical: data.critical ?? false,
+        fumble: data.fumble ?? false,
+      };
 
       const loader = new DynamicLoader();
 
@@ -53,7 +66,7 @@ Object.keys(testData).forEach(id => {
         }
       });
 
-      it(`evals ${test.input} to ${output}`, async () => {
+      it(`evals ${test.input} to ${test.output}`, async () => {
         const GameSystemClass = await loader.dynamicLoad(test.game_system);
         const gameSystem = new GameSystemClass(test.input);
 
@@ -65,7 +78,18 @@ Object.keys(testData).forEach(id => {
 
         const res = gameSystem.eval();
 
-        expect(res?.text).to.equal(output);
+        if (!res) {
+          expect(test.output).is.undefined;
+          return;
+        }
+
+        expect(res.text).to.equal(test.output);
+        expect(res.secret).to.equal(test.secret);
+        expect(res.success).to.equal(test.success);
+        expect(res.failure).to.equal(test.failure);
+        expect(res.critical).to.equal(test.critical);
+        expect(res.fumble).to.equal(test.fumble);
+        expect(test.input).to.match(GameSystemClass.COMMAND_PATTERN);
       });
     });
   });

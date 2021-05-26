@@ -239,15 +239,15 @@ diff --git a/lib/bcdice/game_system/AFF2e.rb b/lib/bcdice/game_system/AFF2e.rb
 diff --git a/lib/bcdice/game_system/Amadeus.rb b/lib/bcdice/game_system/Amadeus.rb
 --- a/lib/bcdice/game_system/Amadeus.rb
 +++ b/lib/bcdice/game_system/Amadeus.rb
-@@ -89,7 +89,7 @@ module BCDice
-           result = check_success(achieve, dice, signOfInequality, target, specialNum)
-           if is_loop
-             inga_table = translate("Amadeus.inga_table")
--            inga = inga_table[dice - 1]
-+            inga = inga_table[(dice - 1)]
-             message += "#{achieve}_#{result}[#{dice}#{inga}]"
-           else
-             message += "#{achieve}_#{result}[#{dice}]"
+@@ -101,7 +101,7 @@ module BCDice
+               end
+ 
+             if available_inga
+-              inga = inga_table[dice - 1]
++              inga = inga_table[(dice - 1)]
+               "#{total}_#{result}[#{dice}#{inga}]"
+             else
+               "#{total}_#{result}[#{dice}]"
 diff --git a/lib/bcdice/game_system/ChaosFlare.rb b/lib/bcdice/game_system/ChaosFlare.rb
 --- a/lib/bcdice/game_system/ChaosFlare.rb
 +++ b/lib/bcdice/game_system/ChaosFlare.rb
@@ -305,6 +305,18 @@ diff --git a/lib/bcdice/game_system/Chill3.rb b/lib/bcdice/game_system/Chill3.rb
              return Result.success("Ｈ成功")
            else
              return Result.success("Ｌ成功")
+diff --git a/lib/bcdice/game_system/ColossalHunter.rb b/lib/bcdice/game_system/ColossalHunter.rb
+--- a/lib/bcdice/game_system/ColossalHunter.rb
++++ b/lib/bcdice/game_system/ColossalHunter.rb
+@@ -57,7 +57,7 @@ module BCDice
+           return nil
+         end
+ 
+-        parsed.command = "3CH" unless parsed.command.start_with?(/\d/)
++        parsed.command = "3CH" unless parsed.command.match?(/^\d/)
+ 
+         dice_count = parsed.command.to_i
+         modify = parsed.modify_number
 diff --git a/lib/bcdice/game_system/Cthulhu.rb b/lib/bcdice/game_system/Cthulhu.rb
 --- a/lib/bcdice/game_system/Cthulhu.rb
 +++ b/lib/bcdice/game_system/Cthulhu.rb
@@ -507,15 +519,15 @@ diff --git a/lib/bcdice/game_system/EclipsePhase.rb b/lib/bcdice/game_system/Ecl
 diff --git a/lib/bcdice/game_system/Emoklore.rb b/lib/bcdice/game_system/Emoklore.rb
 --- a/lib/bcdice/game_system/Emoklore.rb
 +++ b/lib/bcdice/game_system/Emoklore.rb
-@@ -66,7 +66,7 @@ module BCDice
-         # 成功値
+@@ -67,7 +67,7 @@ module BCDice
          success_value = 2 * critical + success - fumble
+         result = compare_result(success_value)
  
--        "#{values} ＞ #{success_value} ＞ #{result_text(success_value)}"
-+        "[#{values.join(', ')}] ＞ #{success_value} ＞ #{result_text(success_value)}"
+-        result.text = "#{values} ＞ #{success_value} ＞ #{result.text}"
++        result.text = "[#{values.join(', ')}] ＞ #{success_value} ＞ #{result.text}"
+         return result
        end
  
-       # @param [Integer] success
 diff --git a/lib/bcdice/game_system/GardenOrder.rb b/lib/bcdice/game_system/GardenOrder.rb
 --- a/lib/bcdice/game_system/GardenOrder.rb
 +++ b/lib/bcdice/game_system/GardenOrder.rb
@@ -531,9 +543,9 @@ diff --git a/lib/bcdice/game_system/GardenOrder.rb b/lib/bcdice/game_system/Gard
        def check_roll_repeat_attack(success_rate, repeat_count, critical_border)
 -        success_rate_per_one = success_rate / repeat_count
 +        success_rate_per_one = (success_rate / repeat_count).to_i
- 
-         check_roll(success_rate_per_one, critical_border)
-       end
+         # 連続攻撃は最終的な成功率が50%以上であることが必要 cf. p217
+         if repeat_count > 1 && success_rate_per_one < 50
+           return "D100<=#{success_rate_per_one}@#{critical_border} ＞ 連続攻撃は成功率が50％以上必要です"
 diff --git a/lib/bcdice/game_system/Gundog.rb b/lib/bcdice/game_system/Gundog.rb
 --- a/lib/bcdice/game_system/Gundog.rb
 +++ b/lib/bcdice/game_system/Gundog.rb
@@ -609,7 +621,7 @@ diff --git a/lib/bcdice/game_system/InfiniteFantasia.rb b/lib/bcdice/game_system
 diff --git a/lib/bcdice/game_system/KemonoNoMori.rb b/lib/bcdice/game_system/KemonoNoMori.rb
 --- a/lib/bcdice/game_system/KemonoNoMori.rb
 +++ b/lib/bcdice/game_system/KemonoNoMori.rb
-@@ -68,7 +68,7 @@ module BCDice
+@@ -61,7 +61,7 @@ module BCDice
  
          # 行為判定の成功度は [目標値の10の位の数+1]
          # 継続判定の成功度は固定で+1
@@ -780,7 +792,7 @@ diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/Ninj
  
          return EL.new(num, difficulty)
        end
-@@ -219,7 +219,7 @@ module BCDice
+@@ -218,7 +218,7 @@ module BCDice
        def integerValueOfDifficulty(s)
          return 4 unless s
  
@@ -886,13 +898,13 @@ diff --git a/lib/bcdice/game_system/ShinobiGami.rb b/lib/bcdice/game_system/Shin
 diff --git a/lib/bcdice/game_system/Skynauts.rb b/lib/bcdice/game_system/Skynauts.rb
 --- a/lib/bcdice/game_system/Skynauts.rb
 +++ b/lib/bcdice/game_system/Skynauts.rb
-@@ -101,7 +101,7 @@ module BCDice
+@@ -78,7 +78,7 @@ module BCDice
          debug("移動修正", bonus)
  
          total = @randomizer.roll_once(6)
--        movePointBase = (total / 2) <= 0 ? 1 : (total / 2)
-+        movePointBase = (total / 2).to_i <= 0 ? 1 : (total / 2).to_i
-         movePoint = movePointBase + bonus
+-        move_point_base = (total / 2) <= 0 ? 1 : (total / 2)
++        move_point_base = (total / 2).to_i <= 0 ? 1 : (total / 2).to_i
+         movePoint = move_point_base + bonus
          debug("移動エリア数", movePoint)
  
 diff --git a/lib/bcdice/game_system/SterileLife.rb b/lib/bcdice/game_system/SterileLife.rb
