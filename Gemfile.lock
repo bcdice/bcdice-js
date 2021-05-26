@@ -1,7 +1,7 @@
 PATH
   remote: BCDice
   specs:
-    bcdice (3.2.0)
+    bcdice (3.3.0)
       i18n (~> 1.8.5)
 
 GEM
