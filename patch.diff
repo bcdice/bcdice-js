@@ -332,10 +332,10 @@ diff --git a/lib/bcdice/game_system/Cthulhu.rb b/lib/bcdice/game_system/Cthulhu.
 diff --git a/lib/bcdice/game_system/Cthulhu7th.rb b/lib/bcdice/game_system/Cthulhu7th.rb
 --- a/lib/bcdice/game_system/Cthulhu7th.rb
 +++ b/lib/bcdice/game_system/Cthulhu7th.rb
-@@ -119,9 +119,9 @@ module BCDice
- 
-           if total == 1
+@@ -121,9 +121,9 @@ module BCDice
              ResultLevel.new(:critical)
+           elsif total >= fumble
+             ResultLevel.new(:fumble)
 -          elsif total <= (difficulty / 5)
 +          elsif total <= (difficulty / 5).to_i
              ResultLevel.new(:extreme_success)
