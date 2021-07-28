@@ -462,7 +462,7 @@ diff --git a/lib/bcdice/game_system/Dracurouge.rb b/lib/bcdice/game_system/Dracu
        end
  
        def apply_thirsty_point(dice_list, thirsty_point)
-@@ -272,7 +272,7 @@ module BCDice
+@@ -273,7 +273,7 @@ module BCDice
            list = Array.new(times) do
              randomizer.roll_barabara(sides.length, 6)
                        .reverse # テスト系の互換性のために反転する
