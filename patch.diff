@@ -462,7 +462,7 @@ diff --git a/lib/bcdice/game_system/Dracurouge.rb b/lib/bcdice/game_system/Dracu
        end
  
        def apply_thirsty_point(dice_list, thirsty_point)
-@@ -272,7 +272,7 @@ module BCDice
+@@ -273,7 +273,7 @@ module BCDice
            list = Array.new(times) do
              randomizer.roll_barabara(sides.length, 6)
                        .reverse # テスト系の互換性のために反転する
@@ -918,6 +918,18 @@ diff --git a/lib/bcdice/game_system/SterileLife.rb b/lib/bcdice/game_system/Ster
 +        num = ((dice1 - 1) / 2).to_i * 10 + (dice2 - 1)
  
          text = table[num]
+ 
+diff --git a/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb b/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb
+--- a/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb
++++ b/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb
+@@ -80,7 +80,7 @@ module BCDice
+         if modifier <= 10
+           0
+         else
+-          modifier / 10
++          (modifier / 10).to_i
+         end
+       end
  
 diff --git a/lib/bcdice/game_system/TunnelsAndTrolls.rb b/lib/bcdice/game_system/TunnelsAndTrolls.rb
 --- a/lib/bcdice/game_system/TunnelsAndTrolls.rb
