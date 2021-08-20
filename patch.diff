@@ -919,6 +919,18 @@ diff --git a/lib/bcdice/game_system/StellarLife.rb b/lib/bcdice/game_system/Stel
  
          text = table[num]
  
+diff --git a/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb b/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb
+--- a/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb
++++ b/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb
+@@ -80,7 +80,7 @@ module BCDice
+         if modifier <= 10
+           0
+         else
+-          modifier / 10
++          (modifier / 10).to_i
+         end
+       end
+ 
 diff --git a/lib/bcdice/game_system/TunnelsAndTrolls.rb b/lib/bcdice/game_system/TunnelsAndTrolls.rb
 --- a/lib/bcdice/game_system/TunnelsAndTrolls.rb
 +++ b/lib/bcdice/game_system/TunnelsAndTrolls.rb
