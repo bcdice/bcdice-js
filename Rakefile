@@ -73,7 +73,7 @@ end
 
 directory 'patched'
 task copy: 'patched' do
-  sh 'cp -r BCDice/* patched'
+  cp_r Dir.glob('BCDice/*'), 'patched/'
 end
 
 task patch: [:copy] do
