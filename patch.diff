@@ -907,18 +907,6 @@ diff --git a/lib/bcdice/game_system/Skynauts.rb b/lib/bcdice/game_system/Skynaut
          movePoint = move_point_base + bonus
          debug("移動エリア数", movePoint)
  
-diff --git a/lib/bcdice/game_system/StellarLife.rb b/lib/bcdice/game_system/StellarLife.rb
---- a/lib/bcdice/game_system/StellarLife.rb
-+++ b/lib/bcdice/game_system/StellarLife.rb
-@@ -182,7 +182,7 @@ module BCDice
-         dice1 = @randomizer.roll_once(10)
-         dice2 = @randomizer.roll_once(10)
- 
--        num = ((dice1 - 1) / 2) * 10 + (dice2 - 1)
-+        num = ((dice1 - 1) / 2).to_i * 10 + (dice2 - 1)
- 
-         text = table[num]
- 
 diff --git a/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb b/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb
 --- a/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb
 +++ b/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb
