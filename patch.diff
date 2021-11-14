@@ -248,6 +248,36 @@ diff --git a/lib/bcdice/game_system/Amadeus.rb b/lib/bcdice/game_system/Amadeus.
                "#{total}_#{result}[#{dice}#{inga}]"
              else
                "#{total}_#{result}[#{dice}]"
+diff --git a/lib/bcdice/game_system/AssaultEngine.rb b/lib/bcdice/game_system/AssaultEngine.rb
+--- a/lib/bcdice/game_system/AssaultEngine.rb
++++ b/lib/bcdice/game_system/AssaultEngine.rb
+@@ -40,7 +40,7 @@ module BCDice
+ 
+         if cmd.command.include?("AES") # SWAP初回
+           total = @randomizer.roll_once(100) % 100 # 0-99
+-          swap = (total % 10) * 10 + (total / 10)
++          swap = (total % 10) * 10 + (total / 10).floor
+           r1 = judge(target, total)
+           r2 = judge(target, swap)
+           text = "(AES#{format00(target)}) ＞ #{r1.text} / スワップ#{r2.text}"
+@@ -53,7 +53,7 @@ module BCDice
+         else # リロール
+           now = cmd.prefix_number
+           die = @randomizer.roll_once(10) % 10 # 0-9
+-          new1 = judge(target, (now / 10 * 10) + die)    # 1の位を振り直す
++          new1 = judge(target, ((now / 10).floor * 10) + die)    # 1の位を振り直す
+           new2 = judge(target, now % 10 + die * 10)      # 10の位を振り直す
+ 
+           text = "(#{format00(now)}AE#{format00(target)}) ＞ #{die} ＞ #{new1.text} / #{new2.text}"
+@@ -78,7 +78,7 @@ module BCDice
+       end
+ 
+       def judge(target, total)
+-        double = (total / 10) == (total % 10)
++        double = (total / 10).floor == (total % 10)
+         total_text = format00(total)
+         if total <= target
+           double ? Result.critical("(#{total_text})クリティカル") : Result.success("(#{total_text})成功")
 diff --git a/lib/bcdice/game_system/ChaosFlare.rb b/lib/bcdice/game_system/ChaosFlare.rb
 --- a/lib/bcdice/game_system/ChaosFlare.rb
 +++ b/lib/bcdice/game_system/ChaosFlare.rb
@@ -523,8 +553,8 @@ diff --git a/lib/bcdice/game_system/Emoklore.rb b/lib/bcdice/game_system/Emoklor
          success_value = 2 * critical + success - fumble
          result = compare_result(success_value)
  
--        result.text = "#{values} ＞ #{success_value} ＞ #{result.text}"
-+        result.text = "[#{values.join(', ')}] ＞ #{success_value} ＞ #{result.text}"
+-        result.text = "#{values} ＞ #{success_value} ＞ 成功数#{success_value} #{result.text}"
++        result.text = "[#{values.join(', ')}] ＞ #{success_value} ＞ 成功数#{success_value} #{result.text}"
          return result
        end
  
@@ -1028,12 +1058,12 @@ diff --git a/lib/bcdice/game_system/WorldOfDarkness.rb b/lib/bcdice/game_system/
 diff --git a/lib/bcdice/game_system/YearZeroEngine.rb b/lib/bcdice/game_system/YearZeroEngine.rb
 --- a/lib/bcdice/game_system/YearZeroEngine.rb
 +++ b/lib/bcdice/game_system/YearZeroEngine.rb
-@@ -42,7 +42,7 @@ module BCDice
+@@ -44,7 +44,7 @@ module BCDice
        end
  
        def eval_game_system_specific_command(command)
--        m = /\A(\d+)?(YZE|MYZ)(\d+)(\+(\d+))?(\+(\d+))?/.match(command)
-+        m = /^(\d+)?(YZE|MYZ)(\d+)(\+(\d+))?(\+(\d+))?/.match(command)
+-        m = /\A(\d+)?(YZE|MYZ)(\d+)((\+|-)(\d+))?(\+(\d+))?/.match(command)
++        m = /^(\d+)?(YZE|MYZ)(\d+)((\+|-)(\d+))?(\+(\d+))?/.match(command)
          unless m
            return ''
          end
@@ -1049,6 +1079,72 @@ diff --git a/lib/bcdice/game_system/Yggdrasill.rb b/lib/bcdice/game_system/Yggdr
              "#{total}(#{dice}[#{dice}]/2)"
            elsif value <= 14
              dice = @randomizer.roll_once(6)
+diff --git a/lib/bcdice/game_system/beginning_idol/chain_d66_table.rb b/lib/bcdice/game_system/beginning_idol/chain_d66_table.rb
+--- a/lib/bcdice/game_system/beginning_idol/chain_d66_table.rb
++++ b/lib/bcdice/game_system/beginning_idol/chain_d66_table.rb
+@@ -18,7 +18,7 @@ module BCDice
+           dice = randomizer.roll_barabara(2, 6).sort
+ 
+           value = dice[0] * 10 + dice[1]
+-          chosen = @items[value]
++          chosen = @items[value.to_s]
+           body = chosen.map { |item| item.respond_to?(:roll) ? item.roll(randomizer) : item }.join("\n")
+ 
+           return "#{@name}(#{value}) ＞ #{body}"
+diff --git a/lib/bcdice/game_system/beginning_idol/costume_table.rb b/lib/bcdice/game_system/beginning_idol/costume_table.rb
+--- a/lib/bcdice/game_system/beginning_idol/costume_table.rb
++++ b/lib/bcdice/game_system/beginning_idol/costume_table.rb
+@@ -20,7 +20,7 @@ module BCDice
+         # @return [String]
+         def roll(randomizer)
+           value = randomizer.roll_d66(D66SortType::ASC)
+-          "#{@name}(#{value}) ＞ #{@items[value]}"
++          "#{@name}(#{value}) ＞ #{@items[value.to_s]}"
+         end
+ 
+         # @return [DiceTable::D66Table]
+diff --git a/lib/bcdice/game_system/beginning_idol/random_event_table.rb b/lib/bcdice/game_system/beginning_idol/random_event_table.rb
+--- a/lib/bcdice/game_system/beginning_idol/random_event_table.rb
++++ b/lib/bcdice/game_system/beginning_idol/random_event_table.rb
+@@ -21,7 +21,7 @@ module BCDice
+           name = I18n.t("BeginningIdol.RE.name", locale: @locale)
+           result_format = I18n.t("BeginningIdol.RE.format", locale: @locale)
+ 
+-          chosen = table[:items][d66_index]
++          chosen = table[:items][d66_index.to_s]
+ 
+           return "#{name} ＞ (1D6) ＞ #{first_index}\n#{table[:name]} ＞ [#{d66_index}] ＞ #{format(result_format, event: chosen[0], page: chosen[1])}"
+         end
+diff --git a/lib/bcdice/game_system/beginning_idol/table.rb b/lib/bcdice/game_system/beginning_idol/table.rb
+--- a/lib/bcdice/game_system/beginning_idol/table.rb
++++ b/lib/bcdice/game_system/beginning_idol/table.rb
+@@ -76,9 +76,9 @@ module BCDice
+             I18n.t("BeginningIdol.GG.name", locale: locale),
+             I18n.t("BeginningIdol.GG.items", locale: locale).to_h do |index, value|
+               chain =
+-                if [23, 24, 25].include?(index)
++                if ["23", "24", "25"].include?(index)
+                   [value, rare_skill_table]
+-                elsif index == 56
++                elsif index == "56"
+                   [value, item_table]
+                 else
+                   [value]
+@@ -88,9 +88,13 @@ module BCDice
+             end
+           )
+ 
++          ha_items = I18n.t("BeginningIdol.HA.items", locale: locale)
++          ha_items["22"] = [ha_items["22"], SkillHometown.new(skill_table)].flatten
++
++
+           ha = ChainD66Table.new(
+             I18n.t("BeginningIdol.HA.name", locale: locale),
+-            I18n.t("BeginningIdol.HA.items", locale: locale).dup.tap { |items| items[22].push(SkillHometown.new(skill_table)) }
++            ha_items
+           )
+ 
+           {
 diff --git a/lib/bcdice/game_system/cthulhu7th/full_auto.rb b/lib/bcdice/game_system/cthulhu7th/full_auto.rb
 --- a/lib/bcdice/game_system/cthulhu7th/full_auto.rb
 +++ b/lib/bcdice/game_system/cthulhu7th/full_auto.rb
