@@ -57,8 +57,12 @@ Object.keys(testData).forEach(id => {
           case 'Misonzai':
           case 'None':
           case 'Repeat':
+          case 'tally_ty':
+          case 'tally_tz':
           case 'UpperDice':
             expect(GameSystemClass.ID).to.equals('DiceBot');
+            break;
+          case 'tally_sort':
             break;
           default:
             expect(GameSystemClass.ID?.replace(/[^0-9A-Za-z_]/g, '_')?.replace(langPattern, '')).to.equal(id.replace(langPattern, '')); // ToDo: Language suffix
