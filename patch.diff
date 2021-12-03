@@ -185,7 +185,7 @@ diff --git a/lib/bcdice/dice_table/d66_table.rb b/lib/bcdice/dice_table/d66_tabl
 -        chosen = @items[key]
 +        chosen = @items[key] || @items[key.to_s]
          chosen = chosen.roll(randomizer) if chosen.respond_to?(:roll)
-         return RollResult.new(@name, key, chosen)
+         RollResult.new(@name, key, chosen)
        end
 diff --git a/lib/bcdice/dice_table/range_table.rb b/lib/bcdice/dice_table/range_table.rb
 --- a/lib/bcdice/dice_table/range_table.rb
