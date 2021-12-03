@@ -39,6 +39,6 @@ jobs:
     - run: npm run example
 
     - run: npm publish
-      if: ${{ matrix.node-version == '10.x' && startsWith(github.ref, 'refs/tags/v') }}
+      if: ${{ matrix.node-version == '16' && startsWith(github.ref, 'refs/tags/v') }}
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
