@@ -4,6 +4,7 @@
 module I18n
   class << self
     @@load_path = []
+    @@table = nil
     def load_path
       @@load_path
     end
