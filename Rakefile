@@ -94,7 +94,7 @@ task build_opal: [:patch, 'lib/bcdice'] do
   builder.build('native')
   builder.build('./ruby/patch.rb')
   File.write 'lib/bcdice/opal.js',
-             "#{builder}"
+             builder.to_s
   File.write 'lib/bcdice/opal.js.map', builder.source_map
   decleation('bcdice/opal')
 end
