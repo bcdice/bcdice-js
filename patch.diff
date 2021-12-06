@@ -15,7 +15,7 @@ diff --git a/lib/bcdice/arithmetic/node.rb b/lib/bcdice/arithmetic/node.rb
              (dividend.to_f / divisor).round
            else # RoundType::FLOOR
 -            dividend / divisor
-+            (dividend / divisor).to_i
++            (dividend / divisor).floor
            end
          end
        end
@@ -347,6 +347,38 @@ diff --git a/lib/bcdice/game_system/ColossalHunter.rb b/lib/bcdice/game_system/C
 
          dice_count = parsed.command.to_i
          modify = parsed.modify_number
+@@ -72,24 +72,23 @@ module BCDice
+         # 出力文の生成
+         text = "(#{parsed}) ＞ #{dice}[#{dice_str}]#{Format.modifier(modify)} ＞ #{total}"
+
+-        result = get_judge_result(dice, total, parsed)
++        result = get_judge_result(dice, total, parsed, text)
+
+-        result.text = text + result.text
+         return result
+       end
+
+       # 成否判定
+-      def get_judge_result(dice, total, parsed)
++      def get_judge_result(dice, total, parsed, text)
+         if dice <= 5
+-          Result.fumble(" ＞ ファンブル")
++          Result.fumble(text + " ＞ ファンブル")
+         elsif total >= 16
+-          Result.critical(" ＞ クリティカル")
++          Result.critical(text + " ＞ クリティカル")
+         elsif parsed.cmp_op.nil?
+-          Result.new("")
++          Result.new(text)
+         elsif total >= parsed.target_number
+-          Result.success(" ＞ 成功")
++          Result.success(text + " ＞ 成功")
+         else
+-          Result.failure(" ＞ 失敗")
++          Result.failure(text + " ＞ 失敗")
+         end
+       end
+
 diff --git a/lib/bcdice/game_system/Cthulhu.rb b/lib/bcdice/game_system/Cthulhu.rb
 --- a/lib/bcdice/game_system/Cthulhu.rb
 +++ b/lib/bcdice/game_system/Cthulhu.rb
