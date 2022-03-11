@@ -5,24 +5,6 @@ require 'json'
 require 'yaml'
 require 'tomlrb'
 
-# Generates Scope Over Lambda
-# module CallNodeLambdaFix
-#   def compile_block_pass
-#     return unless iter
-
-#     if meth == :lambda
-#       parent_scope = compiler.scope
-#       node = AST::Node.new(:lambda_scope, [iter], {})
-#       compiler.scope = Opal::Nodes::ScopeNode.new(node, @level, compiler)
-#       push ', ', expr(iter)
-#       compiler.scope = parent_scope
-#     else
-#       push ', ', expr(iter)
-#     end
-#   end
-# end
-# Opal::Nodes::CallNode.prepend CallNodeLambdaFix
-
 task default: :build
 task build: %i[
   racc
