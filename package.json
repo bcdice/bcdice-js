@@ -34,6 +34,7 @@
     "lint": "run-s lint:*",
     "lint:eslint": "eslint ts/**/*.ts examples/**/*.ts",
     "lint:rubocop": "bundle exec rubocop ruby Rakefile",
+    "lint:lib": "eslint lib",
     "test": "cd ts && mocha -r ts-node/register -r source-map-support/register --reporter dot --timeout 5000 --extension ts \"**/*.test.ts\""
   },
   "dependencies": {

@@ -33,8 +33,8 @@ jobs:
         key: ${{ runner.os }}-modules-${{ matrix.node-version }}-${{ hashFiles('**/package.lock.json') }}
     - run: npm ci
     - run: npm run clean
-    - run: npm run lint
     - run: BUNDLE_PATH="$(pwd)/vendor/bundle" npm run build
+    - run: npm run lint
     - run: npm test
     - run: npm run example
 
