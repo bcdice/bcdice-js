@@ -12,11 +12,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: bcdice-auto-update
+        ref: master
     - run: |
         git config --global user.name "github-actions"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git merge master || true
+        git checkout -b bcdice-auto-update
         git submodule update --init
     - run: |
         ./scripts/autopatch_rebase.sh master
@@ -24,5 +24,5 @@ jobs:
     - run: |
         git add patch.diff BCDice Gemfile.lock
         git commit -m ":heavy_plus_sign: Update BCDice to $(git -C BCDice rev-parse --short HEAD)"
-        git push
+        git push --force
       continue-on-error: true
