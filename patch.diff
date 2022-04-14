@@ -10,21 +10,35 @@ diff --git a/lib/bcdice/arithmetic/node.rb b/lib/bcdice/arithmetic/node.rb
            divide_and_round(l, r, round_type)
          end
 
-@@ -103,7 +105,7 @@ module BCDice
+@@ -101,9 +103,10 @@ module BCDice
+           when RoundType::CEIL
+             (dividend.to_f / divisor).ceil
            when RoundType::ROUND
-             (dividend.to_f / divisor).round
+-            (dividend.to_f / divisor).round
++            x = dividend.to_f / divisor
++            x.negative? ? -(x.abs.round) : x.round
            else # RoundType::FLOOR
 -            dividend / divisor
 +            (dividend / divisor).floor
            end
          end
        end
-@@ -155,7 +157,7 @@ module BCDice
+@@ -138,7 +141,8 @@ module BCDice
+         # @param [Symbol] _round_type ゲームシステムの端数処理設定
+         # @return [Integer]
+         def divide_and_round(dividend, divisor, _round_type)
+-          (dividend.to_f / divisor).round
++          x = dividend.to_f / divisor
++          x.negative? ? -(x.abs.round) : x.round
+         end
+       end
+
+@@ -155,7 +159,7 @@ module BCDice
          # @param [Symbol] _round_type ゲームシステムの端数処理設定
          # @return [Integer]
          def divide_and_round(dividend, divisor, _round_type)
 -          dividend / divisor
-+          (dividend / divisor).to_i
++          (dividend / divisor).floor
          end
        end
 
@@ -70,25 +84,39 @@ diff --git a/lib/bcdice/common_command/add_dice/node.rb b/lib/bcdice/common_comm
            end
 
            # 除算および端数処理を行う
-@@ -273,7 +273,7 @@ module BCDice
+@@ -271,9 +271,10 @@ module BCDice
+             when RoundType::CEIL
+               (dividend.to_f / divisor).ceil
              when RoundType::ROUND
-               (dividend.to_f / divisor).round
+-              (dividend.to_f / divisor).round
++              x = dividend.to_f / divisor
++              x.negative? ? -(x.abs.round) : x.round
              else # RoundType::FLOOR
 -              dividend / divisor
 +              (dividend / divisor).floor
              end
            end
          end
-@@ -319,7 +319,7 @@ module BCDice
+@@ -304,7 +305,8 @@ module BCDice
+           # @param (see DivideWithGameSystemDefault#divide_and_round)
+           # @return [Integer]
+           def divide_and_round(dividend, divisor, _round_type)
+-            (dividend.to_f / divisor).round
++            x = dividend.to_f / divisor
++            x.negative? ? -(x.abs.round) : x.round
+           end
+         end
+
+@@ -319,7 +321,7 @@ module BCDice
            # @param (see DivideWithGameSystemDefault#divide_and_round)
            # @return [Integer]
            def divide_and_round(dividend, divisor, _round_type)
 -            dividend / divisor
-+            (dividend / divisor).to_i
++            (dividend / divisor).floor
            end
          end
 
-@@ -342,7 +342,7 @@ module BCDice
+@@ -342,7 +344,7 @@ module BCDice
            # @param [Randomizer] randomizer ランダマイザ
            # @return [Integer] 評価結果
            def eval(game_system, randomizer)
@@ -97,7 +125,7 @@ diff --git a/lib/bcdice/common_command/add_dice/node.rb b/lib/bcdice/common_comm
            end
 
            # @return [Boolean]
-@@ -398,7 +398,7 @@ module BCDice
+@@ -398,7 +400,7 @@ module BCDice
              total = dice_list.sum()
              @text = "#{total}[#{dice_list.join(',')}]"
 
@@ -106,7 +134,7 @@ diff --git a/lib/bcdice/common_command/add_dice/node.rb b/lib/bcdice/common_comm
            end
 
            # @return [Boolean]
-@@ -525,7 +525,7 @@ module BCDice
+@@ -525,7 +527,7 @@ module BCDice
 
              @text = "#{total}[#{sorted_values.join(',')}]"
 
@@ -115,7 +143,7 @@ diff --git a/lib/bcdice/common_command/add_dice/node.rb b/lib/bcdice/common_comm
            end
 
            # @return [Boolean]
-@@ -566,7 +566,7 @@ module BCDice
+@@ -566,7 +568,7 @@ module BCDice
            # @param randomizer [Randomizer]
            # @return [integer]
            def eval(game_system, randomizer)
@@ -124,7 +152,7 @@ diff --git a/lib/bcdice/common_command/add_dice/node.rb b/lib/bcdice/common_comm
            end
 
            # @return [Boolean]
-@@ -599,7 +599,7 @@ module BCDice
+@@ -599,7 +601,7 @@ module BCDice
            # ノードを初期化する
            # @param [Integer] literal 値
            def initialize(literal)
@@ -133,7 +161,7 @@ diff --git a/lib/bcdice/common_command/add_dice/node.rb b/lib/bcdice/common_comm
            end
 
            # 符号を反転した結果の数値ノードを返す
-@@ -611,7 +611,7 @@ module BCDice
+@@ -611,7 +613,7 @@ module BCDice
            # ノードを評価する
            # @return [Integer] 格納している値
            def eval(_game_system, _randomizer)
@@ -1256,7 +1284,7 @@ diff --git a/lib/bcdice/user_defined_dice_table.rb b/lib/bcdice/user_defined_dic
 diff --git a/test/data/calc.toml b/test/data/calc.toml
 --- a/test/data/calc.toml
 +++ b/test/data/calc.toml
-@@ -256,3 +256,27 @@ input = "sc1+4*3/2"
+@@ -256,3 +256,57 @@ input = "sc1+4*3/2"
  output = "c(1+4*3/2) ＞ 7"
  secret = true
  rands = []
@@ -1284,3 +1312,33 @@ diff --git a/test/data/calc.toml b/test/data/calc.toml
 +input = "c((1+2)/2F) 切り捨て"
 +output = "c((1+2)/2F) ＞ 1"
 +rands = [{ sides = 1, value = 1 }]
++
++[[ test ]]
++game_system = "DiceBot"
++input = "C(-5/10F)"
++output = "c(-5/10F) ＞ -1"
++rands = []
++
++[[ test ]]
++game_system = "DiceBot"
++input = "C(-5/10C)"
++output = "c(-5/10C) ＞ 0"
++rands = []
++
++[[ test ]]
++game_system = "DiceBot"
++input = "C(-6/10R)"
++output = "c(-6/10R) ＞ -1"
++rands = []
++
++[[ test ]]
++game_system = "DiceBot"
++input = "C(-5/10R)"
++output = "c(-5/10R) ＞ -1"
++rands = []
++
++[[ test ]]
++game_system = "DiceBot"
++input = "C(-4/10R)"
++output = "c(-4/10R) ＞ 0"
++rands = []
