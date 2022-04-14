@@ -194,15 +194,6 @@ diff --git a/lib/bcdice/common_command/repeat.rb b/lib/bcdice/common_command/rep
            return result_with_text("繰り返し対象のコマンドが実行できませんでした (#{@trailer})")
          end
 
-@@ -84,7 +84,7 @@ module BCDice
-       private
-
-       def validate
--        if /\A(repeat|rep|x)\d+/.match?(@trailer)
-+        if /^(repeat|rep|x)\d+/.match?(@trailer)
-           result_with_text("Repeatコマンドの重複はできません")
-         elsif @times < 1 || REPEAT_LIMIT < @times
-           result_with_text("繰り返し回数は1以上、#{REPEAT_LIMIT}以下としてください")
 diff --git a/lib/bcdice/dice_table/d66_table.rb b/lib/bcdice/dice_table/d66_table.rb
 --- a/lib/bcdice/dice_table/d66_table.rb
 +++ b/lib/bcdice/dice_table/d66_table.rb
@@ -215,55 +206,6 @@ diff --git a/lib/bcdice/dice_table/d66_table.rb b/lib/bcdice/dice_table/d66_tabl
          chosen = chosen.roll(randomizer) if chosen.respond_to?(:roll)
          RollResult.new(@name, key, chosen)
        end
-diff --git a/lib/bcdice/dice_table/range_table.rb b/lib/bcdice/dice_table/range_table.rb
---- a/lib/bcdice/dice_table/range_table.rb
-+++ b/lib/bcdice/dice_table/range_table.rb
-@@ -53,7 +53,7 @@ module BCDice
-       Item = Struct.new(:range, :content)
-
-       # 項目を選ぶときのダイスロールの方法を表す正規表現
--      DICE_ROLL_METHOD_RE = /\A(\d+)D(\d+)\z/i.freeze
-+      DICE_ROLL_METHOD_RE = /^(\d+)D(\d+)$/i.freeze
-
-       # 表を振った結果の整形処理（既定の処理）
-       DEFAULT_FORMATTER = lambda do |table, result|
-diff --git a/lib/bcdice/game_system/AFF2e.rb b/lib/bcdice/game_system/AFF2e.rb
---- a/lib/bcdice/game_system/AFF2e.rb
-+++ b/lib/bcdice/game_system/AFF2e.rb
-@@ -71,7 +71,7 @@ module BCDice
-
-       def eval_game_system_specific_command(command)
-         case command
--        when /\AFF/
-+        when /^FF/
-           # 対抗なしロール
-           # '成功' or '失敗' を出力する
-           #
-@@ -88,7 +88,7 @@ module BCDice
-           expr = "#{total}[#{dice_str}]"
-           succ = successful_or_failed(total, diff)
-           sequence = [parentheses(dice_command), expr, succ]
--        when /\AFR/
-+        when /^FR/
-           # 対抗ロール
-           # 値を出力する
-           #
-@@ -105,13 +105,13 @@ module BCDice
-           expr = "#{total}[#{dice_str}]#{explicit_sign corr}"
-           crit = critical(total)
-           sequence = [parentheses(dice_command), expr, crit, total + corr].compact
--        when /\AFD/
-+        when /^FD/
-           # 武器防具ロール
-           # ダメージを出力する
-           #
-           md = Regexp.last_match
-           term = md.post_match
--          md = /\A\[(.+)\]/.match(term)
-+          md = /^\[(.+)\]/.match(term)
-           unless md
-             return 'ダメージスロットは必須です。'
-           end
 diff --git a/lib/bcdice/game_system/Amadeus.rb b/lib/bcdice/game_system/Amadeus.rb
 --- a/lib/bcdice/game_system/Amadeus.rb
 +++ b/lib/bcdice/game_system/Amadeus.rb
@@ -366,15 +308,6 @@ diff --git a/lib/bcdice/game_system/Chill3.rb b/lib/bcdice/game_system/Chill3.rb
 diff --git a/lib/bcdice/game_system/ColossalHunter.rb b/lib/bcdice/game_system/ColossalHunter.rb
 --- a/lib/bcdice/game_system/ColossalHunter.rb
 +++ b/lib/bcdice/game_system/ColossalHunter.rb
-@@ -57,7 +57,7 @@ module BCDice
-           return nil
-         end
-
--        parsed.command = "3CH" unless parsed.command.start_with?(/\d/)
-+        parsed.command = "3CH" unless parsed.command.match?(/^\d/)
-
-         dice_count = parsed.command.to_i
-         modify = parsed.modify_number
 @@ -72,24 +72,23 @@ module BCDice
          # 出力文の生成
          text = "(#{parsed}) ＞ #{dice}[#{dice_str}]#{Format.modifier(modify)} ＞ #{total}"
@@ -531,15 +464,6 @@ diff --git a/lib/bcdice/game_system/CthulhuTech.rb b/lib/bcdice/game_system/Cthu
 
            sorted_dice_values = dice_values.sort
            roll_result = calculate_roll_result(sorted_dice_values)
-@@ -234,7 +234,7 @@ module BCDice
-       private
-
-       # 判定コマンドの正規表現
--      TEST_RE = /\A(\d+)D10((?:[-+]\d+)+)?(>=?)(\d+)\z/.freeze
-+      TEST_RE = /^(\d+)D10((?:[-+]\d+)+)?(>=?)(\d+)$/.freeze
-
-       # 構文解析する
-       # @param [String] command コマンド
 diff --git a/lib/bcdice/game_system/Dracurouge.rb b/lib/bcdice/game_system/Dracurouge.rb
 --- a/lib/bcdice/game_system/Dracurouge.rb
 +++ b/lib/bcdice/game_system/Dracurouge.rb
@@ -785,23 +709,6 @@ diff --git a/lib/bcdice/game_system/LogHorizon.rb b/lib/bcdice/game_system/LogHo
 
          return "#{table_name}(#{total}#{dice_str})\n#{chosen}"
        end
-diff --git a/lib/bcdice/game_system/MetalHead.rb b/lib/bcdice/game_system/MetalHead.rb
---- a/lib/bcdice/game_system/MetalHead.rb
-+++ b/lib/bcdice/game_system/MetalHead.rb
-@@ -42,11 +42,11 @@ module BCDice
-         return result if result
-
-         case command
--        when /\ACRC(\w)(\d+)\z/
-+        when /^CRC(\w)(\d+)$/
-           suv = Regexp.last_match(1)
-           num = Regexp.last_match(2)
-           return mh_crc_table(suv, num)
--        when /\AHR<=(.+)/
-+        when /^HR<=(.+)/
-           target = ArithmeticEvaluator.eval(
-             Regexp.last_match(1), round_type: @round_type
-           )
 diff --git a/lib/bcdice/game_system/NightmareHunterDeep.rb b/lib/bcdice/game_system/NightmareHunterDeep.rb
 --- a/lib/bcdice/game_system/NightmareHunterDeep.rb
 +++ b/lib/bcdice/game_system/NightmareHunterDeep.rb
@@ -973,18 +880,6 @@ diff --git a/lib/bcdice/game_system/ShinMegamiTenseiKakuseihen.rb b/lib/bcdice/g
          tens = value % 10
 
          return [ones, tens]
-diff --git a/lib/bcdice/game_system/ShinobiGami.rb b/lib/bcdice/game_system/ShinobiGami.rb
---- a/lib/bcdice/game_system/ShinobiGami.rb
-+++ b/lib/bcdice/game_system/ShinobiGami.rb
-@@ -102,7 +102,7 @@ module BCDice
-         cmd = parser.parse(command)
-         return nil unless cmd
-
--        times = cmd.command.start_with?(/\d/) ? cmd.command.to_i : 2
-+        times = cmd.command =~ /^\d/ ? cmd.command.to_i : 2
-         return nil if times <= 1
-
-         cmd.critical ||= 12
 diff --git a/lib/bcdice/game_system/Skynauts.rb b/lib/bcdice/game_system/Skynauts.rb
 --- a/lib/bcdice/game_system/Skynauts.rb
 +++ b/lib/bcdice/game_system/Skynauts.rb
@@ -1024,15 +919,6 @@ diff --git a/lib/bcdice/game_system/TunnelsAndTrolls.rb b/lib/bcdice/game_system
 diff --git a/lib/bcdice/game_system/VampireTheMasquerade5th.rb b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 --- a/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 +++ b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
-@@ -44,7 +44,7 @@ module BCDice
-       register_prefix('\d*VMF')
-
-       def eval_game_system_specific_command(command)
--        m = /\A(\d+)?(VMF)(\d+)(\+(\d+))?/.match(command)
-+        m = /^(\d+)?(VMF)(\d+)(\+(\d+))?/.match(command)
-         unless m
-           return ''
-         end
 @@ -94,7 +94,7 @@ module BCDice
 
        def get_critical_success(ten_dice)
@@ -1103,30 +989,6 @@ diff --git a/lib/bcdice/game_system/Warhammer4.rb b/lib/bcdice/game_system/Warha
          end
        end
 
-diff --git a/lib/bcdice/game_system/WorldOfDarkness.rb b/lib/bcdice/game_system/WorldOfDarkness.rb
---- a/lib/bcdice/game_system/WorldOfDarkness.rb
-+++ b/lib/bcdice/game_system/WorldOfDarkness.rb
-@@ -39,7 +39,7 @@ module BCDice
-         enabled_reroll = false
-         enabled_20th = false
-
--        md = command.match(/\A(\d+)(ST[SA]?)(\d+)?([+-]\d+)?/)
-+        md = command.match(/^(\d+)(ST[SA]?)(\d+)?([+-]\d+)?/)
-
-         dice_pool = md[1].to_i
-         case md[2]
-diff --git a/lib/bcdice/game_system/YearZeroEngine.rb b/lib/bcdice/game_system/YearZeroEngine.rb
---- a/lib/bcdice/game_system/YearZeroEngine.rb
-+++ b/lib/bcdice/game_system/YearZeroEngine.rb
-@@ -44,7 +44,7 @@ module BCDice
-       end
-
-       def eval_game_system_specific_command(command)
--        m = /\A(\d+)?(YZE|MYZ)(\d+)((\+|-)(\d+))?(\+(\d+))?/.match(command)
-+        m = /^(\d+)?(YZE|MYZ)(\d+)((\+|-)(\d+))?(\+(\d+))?/.match(command)
-         unless m
-           return ''
-         end
 diff --git a/lib/bcdice/game_system/Yggdrasill.rb b/lib/bcdice/game_system/Yggdrasill.rb
 --- a/lib/bcdice/game_system/Yggdrasill.rb
 +++ b/lib/bcdice/game_system/Yggdrasill.rb
