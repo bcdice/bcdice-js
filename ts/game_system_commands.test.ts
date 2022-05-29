@@ -56,6 +56,7 @@ Object.keys(testData).forEach(id => {
           case 'dummyBot':
           case 'Misonzai':
           case 'None':
+          case 'randomizer':
           case 'Repeat':
           case 'tally_ty':
           case 'tally_tz':
