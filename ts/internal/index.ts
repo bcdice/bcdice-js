@@ -15,7 +15,7 @@ export interface BCDiceModule extends Module {
 }
 
 export interface I18nModule extends Module {
-  $load_translation(json: any): void;
+  $load_translation(json: string): void;
   $default_locale(): string;
   $clear_translate_table(): void;
 }

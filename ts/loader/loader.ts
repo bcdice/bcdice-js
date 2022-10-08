@@ -88,6 +88,7 @@ export default class Loader {
     return getGameSystemClass(gameSystemClass);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   dynamicImportI18n(baseClassName: string, locale: string): Promise<I18nJsonObject> {
     throw new Error('Not implemented');
   }

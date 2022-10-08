@@ -1,6 +1,6 @@
-import Loader, { I18nJsonObject } from './loader';
 import I18nList from '../../lib/bcdice/i18n_list.json';
 import { I18n } from '../internal';
+import Loader, { I18nJsonObject } from './loader';
 
 staticImport();
 
@@ -18,6 +18,7 @@ export default class StaticLoader extends Loader {
 function staticImport() {
   I18nList.i18nList.forEach(I18nInfo => {
     I18nInfo.locales.forEach(locale => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const json = JSON.stringify(require(`../../lib/bcdice/i18n/${I18nInfo.baseClassName}.${locale}.json`));
       I18n.$load_translation(json);
     });
