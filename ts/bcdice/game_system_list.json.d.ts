@@ -3,6 +3,7 @@ export interface GameSystemInfo {
   className: string;
   name: string;
   sortKey: string;
+  locale: string;
 }
 
 export declare const gameSystems: GameSystemInfo[];
