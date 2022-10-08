@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "json"
 
 # Simple emulator
 module I18n
@@ -9,6 +10,10 @@ module I18n
       @@load_path
     end
 
+    def default_locale
+      @@default_locale
+    end
+
     def default_locale=(locale)
       @@default_locale = locale
     end
@@ -17,31 +22,24 @@ module I18n
       I18n::Locale::Fallbacks.new
     end
 
-    def load_translations
+    def load_default_translation
       return unless @@table.nil?
 
-      %x{
-        var get = require('lodash/get');
-        var toPairs = require('lodash/toPairs');
-        var flatten = require('lodash/flatten');
+      @@table = {}
+      load_translation(`JSON.stringify(require('./i18n/i18n.json'))`);
+    end
 
-        function toOpal(value) {
-          if (Array.isArray(value)) return value.map(toOpal);
-          if (typeof value == 'object') {
-            var pairs = toPairs(value).map(([key, v]) => [key, toOpal(v)]);
-            return Opal.hash.apply(Opal, flatten(pairs));
-          }
-          return value;
-        }
+    def load_translation(json)
+      load_default_translation
 
-        var i18n = require('./i18n.json');
-      }
-
-      @@table = `toOpal(i18n)`
+      table = JSON.parse(json, symbolize_names: true)
+      @@table = @@table.merge(table) do |_key, oldval, newval|
+        oldval.merge(newval)
+      end
     end
 
     def translate(key, locale: nil, **options)
-      load_translations
+      load_default_translation
 
       path = key.split('.').map(&:to_sym)
       table = @@table
