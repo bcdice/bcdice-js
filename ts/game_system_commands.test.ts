@@ -3,6 +3,7 @@ import path from 'path';
 import { expect } from 'chai';
 import DynamicLoader from './loader/dynamic_loader';
 import { mockRandomizer } from './test/randomizer';
+import { I18n } from './internal';
 
 type TestDataType = Record<string, {
   test: {
@@ -37,6 +38,7 @@ Object.keys(testData).forEach(id => {
         fumble: data.fumble ?? false,
       };
 
+      I18n.$clear_translate_table();
       const loader = new DynamicLoader();
 
       it('should be valid GameSystem', async () => {
