@@ -129,11 +129,10 @@ task build_i18n_json: 'lib/bcdice/i18n' do
   path_from = Pathname('patched/i18n')
   Dir['patched/i18n/**/*.yml'].each do |path|
     relative_path = Pathname(path).relative_path_from(path_from).to_s
-    next unless 1 < relative_path.split('/').length
+    next unless relative_path.split('/').length > 1
 
     i18n = YAML.load_file(path)
     file_name = File.basename(relative_path.gsub('/', '.'), '.*')
-    locale = File.basename(relative_path, '.*')
     File.write "lib/bcdice/i18n/#{file_name}.json", JSON.dump(i18n)
     puts "bcdice/i18n/#{file_name}.json"
   end
@@ -148,7 +147,8 @@ task build_i18n_list: 'lib/bcdice' do
       locales.push(File.basename(path, '.*'))
     end
     name = File.split(game_path.gsub('patched/i18n', '')).last
-    next unless 1 < name.length
+    next unless name.length > 1
+
     ids.push({ baseClassName: name, locales: locales })
   end
   File.write 'lib/bcdice/i18n_list.json', JSON.dump({ i18nList: ids })

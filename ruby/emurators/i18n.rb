@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require "json"
+
+require 'json'
 
 # Simple emulator
 module I18n
@@ -26,7 +27,7 @@ module I18n
       return unless @@table.nil?
 
       @@table = {}
-      load_translation(`JSON.stringify(require('./i18n/i18n.json'))`);
+      load_translation(`JSON.stringify(require('./i18n/i18n.json'))`)
     end
 
     def load_translation(json)
