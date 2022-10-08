@@ -38,6 +38,11 @@ module I18n
       end
     end
 
+    # only used to i18n dynamic import test
+    def clear_translate_table
+      @@table = nil
+    end
+
     def translate(key, locale: nil, **options)
       load_default_translation
 

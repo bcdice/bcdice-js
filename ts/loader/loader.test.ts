@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { I18n } from '../internal';
 import Loader from './loader';
 
 const loaders: [string, string, boolean][] = [
@@ -9,6 +10,7 @@ const loaders: [string, string, boolean][] = [
 loaders.forEach(([path, title /*, dynamic */ ]) => {
   describe(title, () => {
 
+    I18n.$clear_translate_table();
     let loader: Loader;
     it('can be imported', async () => {
       loader = new (await import(path)).default();
