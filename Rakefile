@@ -9,6 +9,7 @@ task default: :build
 task build: %i[
   racc
   build_opal
+  build_opal_parser
   build_core
   build_game_system
   build_i18n
@@ -72,13 +73,23 @@ task build_opal: [:patch, 'lib/bcdice'] do
   puts 'bcdice/opal'
   builder = create_builder
   builder.build('opal')
-  builder.build('opal-parser')
   builder.build('native')
   builder.build('./ruby/patch.rb')
   File.write 'lib/bcdice/opal.js',
              builder.to_s
   File.write 'lib/bcdice/opal.js.map', builder.source_map
   decleation('bcdice/opal')
+end
+
+directory 'lib/bcdice'
+task build_opal_parser: [:patch, 'lib/bcdice'] do
+  puts 'bcdice/opal-parser'
+  builder = create_builder
+  builder.build('opal-parser')
+  File.write 'lib/bcdice/opal-parser.js',
+             builder.to_s
+  File.write 'lib/bcdice/opal-parser.js.map', builder.source_map
+  decleation('bcdice/opal-parser')
 end
 
 directory 'lib/bcdice'
