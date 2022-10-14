@@ -13,6 +13,8 @@ task build: %i[
   build_core
   build_game_system
   build_i18n
+  build_i18n_json
+  build_i18n_list
   build_test
   build_game_system_list
 ]
@@ -120,17 +122,50 @@ task build_game_system: 'lib/bcdice/game_system' do
   decleation('bcdice/game_system/index')
 end
 
-directory 'lib/bcdice'
-task build_i18n: 'lib/bcdice' do
+directory 'lib/bcdice/i18n'
+task build_i18n: 'lib/bcdice/i18n' do
   i18n = {}
-  Dir['patched/i18n/**/*.yml'].each do |path|
+  Dir['patched/i18n/*.yml'].each do |path|
     i18n = i18n.merge(YAML.load_file(path)) do |_key, oldval, newval|
       oldval.merge(newval)
     end
   end
 
-  File.write 'lib/bcdice/i18n.yml', YAML.dump(i18n)
-  File.write 'lib/bcdice/i18n.json', JSON.dump(i18n)
+  File.write 'lib/bcdice/i18n/i18n.yml', YAML.dump(i18n)
+  File.write 'lib/bcdice/i18n/i18n.json', JSON.dump(i18n)
+end
+
+directory 'lib/bcdice/i18n'
+task build_i18n_json: 'lib/bcdice/i18n' do
+  path_from = Pathname('patched/i18n')
+  Dir['patched/i18n/**/*.yml'].each do |path|
+    relative_path = Pathname(path).relative_path_from(path_from).to_s
+    next unless relative_path.split('/').length > 1
+
+    i18n = YAML.load_file(path)
+    file_name = File.basename(relative_path.gsub('/', '.'), '.*')
+    File.write "lib/bcdice/i18n/#{file_name}.json", JSON.dump(i18n)
+    puts "bcdice/i18n/#{file_name}.json"
+  end
+end
+
+directory 'lib/bcdice'
+task build_i18n_list: 'lib/bcdice' do
+  ids = []
+  Dir['patched/i18n/**/'].each do |game_path|
+    locales = []
+    Dir["#{game_path}*.yml"].each do |path|
+      locales.push(File.basename(path, '.*'))
+    end
+    name = File.split(game_path.gsub('patched/i18n', '')).last
+    next unless name.length > 1
+
+    ids.push({ baseClassName: name, locales: locales })
+  end
+  File.write 'lib/bcdice/i18n_list.json', JSON.dump({ i18nList: ids })
+
+  puts 'bcdice/i18n_list.json.d.ts'
+  FileUtils.copy 'ts/bcdice/i18n_list.json.d.ts', 'lib/bcdice/i18n_list.json.d.ts'
 end
 
 directory 'lib/bcdice'
@@ -156,7 +191,8 @@ task build_game_system_list: [:patch, 'lib/bcdice'] do
       id: game_system_class::ID,
       name: game_system_class::NAME,
       className: game_system_class.name.gsub(/^.*::/, ''),
-      sortKey: game_system_class::SORT_KEY
+      sortKey: game_system_class::SORT_KEY,
+      locale: game_system_class.new('none').instance_variable_get('@locale')
     }
   end
 

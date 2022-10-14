@@ -14,5 +14,12 @@ export interface BCDiceModule extends Module {
   VERSION: string;
 }
 
+export interface I18nModule extends Module {
+  $load_translation(json: string): void;
+  $default_locale(): string;
+  $clear_translate_table(): void;
+}
+
 export const BCDice = Opal_.module<BCDiceModule>(null, 'BCDice');
+export const I18n = Opal_.module<I18nModule>(null, 'I18n')
 export { default as Opal } from './opal';
