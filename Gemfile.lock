@@ -46,7 +46,7 @@ GEM
     simplecov_json_formatter (0.1.4)
     test-unit (3.3.9)
       power_assert
-    tomlrb (2.0.1)
+    tomlrb (2.0.3)
     unicode-display_width (1.8.0)
     webrick (1.7.0)
     yard (0.9.27)
@@ -65,7 +65,7 @@ DEPENDENCIES
   rubocop (~> 1.7.0)
   simplecov (~> 0.21.2)
   test-unit (~> 3.3.7)
-  tomlrb
+  tomlrb (~> 2.0.3)
   yard
 
 BUNDLED WITH
