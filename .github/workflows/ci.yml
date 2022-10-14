@@ -12,25 +12,19 @@ jobs:
       matrix:
         node-version:
           - lts/*
-          - '16'
-
+          - current
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: true
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: npm
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7.0
         bundler-cache: true
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        registry-url: https://registry.npmjs.org
-    - uses: actions/cache@v2
-      with:
-        path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ matrix.node-version }}-${{ hashFiles('**/package.lock.json') }}
     - run: npm ci
     - run: npm run clean
     - run: BUNDLE_PATH="$(pwd)/vendor/bundle" npm run build
