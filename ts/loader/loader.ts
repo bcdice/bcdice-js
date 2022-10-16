@@ -46,10 +46,12 @@ export default class Loader {
     return gameSystem;
   }
 
-  getI18nInfo(className: string): I18nInfo | null {
+  getI18nInfos(className: string): I18nInfo[] {
     const baseClassName = className.replace(/_[^0-9].*$/g, '');
-    const i18n = this.listAvailabletI18nInfoList().find(i18n => i18n.baseClassName === baseClassName) ?? null;
-    return i18n;
+    const i18n = this.listAvailabletI18nInfoList().find(i18n => i18n.baseClassName === baseClassName || i18n.baseClassName === className);
+    const i18ns = i18n ? [i18n] : [];
+    const info = this.listAvailableGameSystems().find(info => info.className === className);
+    return info ? Array.from(new Set(this.getI18nInfos(info.superClassName).concat(i18ns))) : i18ns;
   }
 
   listLoadedGameSystems(): GameSystemClass[] {
@@ -71,13 +73,13 @@ export default class Loader {
     const className = info?.className ?? id;
     if (!className.match(/^[A-Z]\w*$/)) throw new Error('Invalid id');
 
-    const i18nInfo = this.getI18nInfo(className);
-    if (i18nInfo) {
+    const i18nInfos = this.getI18nInfos(className);
+    for (const i18nInfo of i18nInfos) {
       const locales = i18nInfo.locales.filter(locale => locale === info.locale || locale === I18n.$default_locale());
       for (const locale of locales) {
         const json = JSON.stringify(await this.dynamicImportI18n(i18nInfo.baseClassName, locale));
         I18n.$load_translation(json);
-      };
+      }
     }
 
     await this.dynamicImport(className);

@@ -38,10 +38,10 @@ Object.keys(testData).forEach(id => {
         fumble: data.fumble ?? false,
       };
 
-      I18n.$clear_translate_table();
       const loader = new DynamicLoader();
 
       it('should be valid GameSystem', async () => {
+        I18n.$clear_translate_table();
         const loader = new DynamicLoader();
         const GameSystemClass = await loader.dynamicLoad(test.game_system);
 
@@ -74,6 +74,7 @@ Object.keys(testData).forEach(id => {
       });
 
       it(`evals ${test.input} to ${test.output}`, async () => {
+        I18n.$clear_translate_table();
         const GameSystemClass = await loader.dynamicLoad(test.game_system);
         const gameSystem = new GameSystemClass(test.input);
 
