@@ -191,6 +191,7 @@ task build_game_system_list: [:patch, 'lib/bcdice'] do
       id: game_system_class::ID,
       name: game_system_class::NAME,
       className: game_system_class.name.gsub(/^.*::/, ''),
+      superClassName: game_system_class.superclass.name.gsub(/^.*::/, ''),
       sortKey: game_system_class::SORT_KEY,
       locale: game_system_class.new('none').instance_variable_get('@locale')
     }

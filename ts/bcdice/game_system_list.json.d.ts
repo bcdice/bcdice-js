@@ -3,6 +3,7 @@ export interface GameSystemInfo {
   className: string;
   name: string;
   sortKey: string;
+  superClassName: string;
   locale: string;
 }
 
