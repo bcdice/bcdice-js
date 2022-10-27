@@ -55,6 +55,7 @@ Object.keys(testData).forEach(id => {
           case 'AddDice':
           case 'calc':
           case 'choice':
+          case 'D66Dice':
           case 'dummyBot':
           case 'Misonzai':
           case 'None':
@@ -63,7 +64,6 @@ Object.keys(testData).forEach(id => {
           case 'tally_ty':
           case 'tally_tz':
           case 'UpperDice':
-          case 'D66Dice':
             expect(GameSystemClass.ID).to.equals('DiceBot');
             break;
           case 'tally_sort':
