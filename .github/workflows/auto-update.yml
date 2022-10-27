@@ -22,6 +22,9 @@ jobs:
         ./scripts/autopatch_rebase.sh master
         ./scripts/autopatch_apply.sh master
     - run: |
+        npm run build
+        npm test
+    - run: |
         git add patch.diff BCDice Gemfile.lock
         git commit -m ":heavy_plus_sign: Update BCDice to $(git -C BCDice rev-parse --short HEAD)"
         git push --force origin bcdice-auto-update
