@@ -55,6 +55,7 @@ Object.keys(testData).forEach(id => {
           case 'AddDice':
           case 'calc':
           case 'choice':
+          case 'D66Dice':
           case 'dummyBot':
           case 'Misonzai':
           case 'None':
