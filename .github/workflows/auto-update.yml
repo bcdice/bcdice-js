@@ -22,6 +22,7 @@ jobs:
         ./scripts/autopatch_rebase.sh master
         ./scripts/autopatch_apply.sh master
     - run: |
+        npm ci
         npm run build
         npm test
     - run: |
