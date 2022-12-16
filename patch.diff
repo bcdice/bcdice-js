@@ -919,7 +919,7 @@ diff --git a/lib/bcdice/game_system/TunnelsAndTrolls.rb b/lib/bcdice/game_system
 diff --git a/lib/bcdice/game_system/VampireTheMasquerade5th.rb b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 --- a/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 +++ b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
-@@ -115,7 +115,7 @@ module BCDice
+@@ -129,7 +129,7 @@ module BCDice
  
        def get_critical_success(ten_dice)
          # 10の目が2個毎に追加2成功
@@ -980,7 +980,7 @@ diff --git a/lib/bcdice/game_system/Warhammer4.rb b/lib/bcdice/game_system/Warha
          sl = d10 - t10
  
          if total <= 5 && sl < 1
-@@ -283,7 +283,7 @@ module BCDice
+@@ -287,7 +287,7 @@ module BCDice
          if dice == 100
            return 0, 0
          else
