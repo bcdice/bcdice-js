@@ -3,7 +3,8 @@
 name: Auto update BCDice
 
 on:
-  push: ci/*-auto-update
+  push:
+    branches: ci/*-auto-update
   schedule:
     - cron: '0 0/6 * * *'
 
