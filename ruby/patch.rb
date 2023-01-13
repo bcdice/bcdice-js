@@ -11,14 +11,6 @@ class Dir
   end
 end
 
-# Stub
-module ObjectFreezeStub
-  def freeze
-    self
-  end
-end
-Object.prepend ObjectFreezeStub
-
 # Opal Fix
 module StringScannerPatch
   # rubocop:disable Lint/UnusedMethodArgument
