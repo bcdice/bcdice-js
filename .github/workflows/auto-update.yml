@@ -25,7 +25,9 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7.0
-    - run: bundle install
+    - run: |
+        bundle config unset deployment
+        bundle install
     - run: |
         git config --global user.name "github-actions"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
