@@ -45,7 +45,17 @@ diff --git a/lib/bcdice/arithmetic/node.rb b/lib/bcdice/arithmetic/node.rb
 diff --git a/lib/bcdice/base.rb b/lib/bcdice/base.rb
 --- a/lib/bcdice/base.rb
 +++ b/lib/bcdice/base.rb
-@@ -328,7 +328,7 @@ module BCDice
+@@ -20,8 +20,7 @@ module BCDice
+       # 応答するコマンドのprefixを登録する
+       # @param prefixes [Array<String>]
+       def register_prefix(*prefixes)
+-        @prefixes ||= []
+-        @prefixes.concat(prefixes.flatten)
++        @prefixes = (@prefixes || []) + prefixes.flatten
+       end
+ 
+       def register_prefix_from_super_class
+@@ -328,7 +327,7 @@ module BCDice
        num = @randomizer.roll_sum(count, 6)
        debug("num", num)
  
