@@ -618,6 +618,18 @@ diff --git a/lib/bcdice/game_system/Hieizan.rb b/lib/bcdice/game_system/Hieizan.
            Result.critical("大成功")
          elsif total <= 1
            Result.success("自動成功")
+diff --git a/lib/bcdice/game_system/HunterTheReckoning5th.rb b/lib/bcdice/game_system/HunterTheReckoning5th.rb
+--- a/lib/bcdice/game_system/HunterTheReckoning5th.rb
++++ b/lib/bcdice/game_system/HunterTheReckoning5th.rb
+@@ -134,7 +134,7 @@ module BCDice
+ 
+       def get_critical_success(ten_dice)
+         # 10の目が2個毎に追加2成功
+-        return ((ten_dice / 2) * 2)
++        return ((ten_dice / 2).to_i * 2)
+       end
+ 
+       def make_dice_roll(dice_pool)
 diff --git a/lib/bcdice/game_system/InfiniteFantasia.rb b/lib/bcdice/game_system/InfiniteFantasia.rb
 --- a/lib/bcdice/game_system/InfiniteFantasia.rb
 +++ b/lib/bcdice/game_system/InfiniteFantasia.rb
