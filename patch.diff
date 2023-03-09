@@ -854,42 +854,6 @@ diff --git a/lib/bcdice/game_system/Ryutama.rb b/lib/bcdice/game_system/Ryutama.
          dice2 = diceBase % 100
  
          if isValidDice(dice1, dice2)
-diff --git a/lib/bcdice/game_system/SRS.rb b/lib/bcdice/game_system/SRS.rb
---- a/lib/bcdice/game_system/SRS.rb
-+++ b/lib/bcdice/game_system/SRS.rb
-@@ -75,15 +75,15 @@ module BCDice
-                          .join('|')
- 
-           @aliases_re_for_srs_roll_with_target_value = Regexp.new(
--            '\A' \
-+            '^' \
-             "(?:#{aliases_part})" \
--            '((?:[-+][-+\d]+)?>=\d+(?:\[\d*(?:,\d+)?\])?)\z'
-+            '((?:[-+][-+\d]+)?>=\d+(?:\[\d*(?:,\d+)?\])?)$'
-           )
- 
-           @aliases_re_for_srs_roll_without_target_value = Regexp.new(
--            '\A' \
-+            '^' \
-             "(?:#{aliases_part})" \
--            '([-+][-+\d]+)?(\[\d*(?:,\d+)?\])?\z'
-+            '([-+][-+\d]+)?(\[\d*(?:,\d+)?\])?$'
-           )
- 
-           prepare_help_msg_for_aliases_for_srs_roll(aliases_upcase)
-@@ -194,10 +194,10 @@ module BCDice
- 
-       # 目標値あり成功判定の正規表現
-       SRS_ROLL_WITH_TARGET_VALUE_RE =
--        /\A2D6([-+][-+\d]+)?>=(\d+)(?:\[(\d+)?(?:,(\d+))?\])?\z/.freeze
-+        /^2D6([-+][-+\d]+)?>=(\d+)(?:\[(\d+)?(?:,(\d+))?\])?$/.freeze
-       # 目標値なし成功判定の正規表現
-       SRS_ROLL_WITHOUT_TARGET_VALUE_RE =
--        /\A2D6([-+][-+\d]+)?\[(\d+)?(?:,(\d+))?\]\z/.freeze
-+        /^2D6([-+][-+\d]+)?\[(\d+)?(?:,(\d+))?\]$/.freeze
- 
-       # 既定の閾値指定表記
-       SRS_ROLL_DEFAULT_THRESHOLDS =
 diff --git a/lib/bcdice/game_system/ShinMegamiTenseiKakuseihen.rb b/lib/bcdice/game_system/ShinMegamiTenseiKakuseihen.rb
 --- a/lib/bcdice/game_system/ShinMegamiTenseiKakuseihen.rb
 +++ b/lib/bcdice/game_system/ShinMegamiTenseiKakuseihen.rb
