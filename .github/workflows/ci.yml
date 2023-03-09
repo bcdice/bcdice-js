@@ -21,6 +21,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: npm
+        registry-url: https://registry.npmjs.org/
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7.0
