@@ -877,7 +877,27 @@ diff --git a/lib/bcdice/game_system/Skynauts.rb b/lib/bcdice/game_system/Skynaut
 +        move_point_base = (total / 2).to_i <= 0 ? 1 : (total / 2).to_i
          movePoint = move_point_base + bonus
          debug("移動エリア数", movePoint)
- 
+
+diff --git a/lib/bcdice/game_system/SRS.rb b/lib/bcdice/game_system/SRS.rb
+--- a/lib/bcdice/game_system/SRS.rb
++++ b/lib/bcdice/game_system/SRS.rb
+@@ -234,12 +234,12 @@ module BCDice
+                            when 0
+                              [DEFAULT_CRITICAL_VALUE, DEFAULT_FUMBLE_VALUE]
+                            when 1
+-                             [Integer(parsed_c_f[0], exception: false), DEFAULT_FUMBLE_VALUE]
++                             [Integer(parsed_c_f[0]), DEFAULT_FUMBLE_VALUE]
+                            when 2
+                              if parsed_c_f[0] == ""
+-                               [DEFAULT_CRITICAL_VALUE, Integer(parsed_c_f[1], exception: false)]
++                               [DEFAULT_CRITICAL_VALUE, Integer(parsed_c_f[1])]
+                              else
+-                               [Integer(parsed_c_f[0], exception: false), Integer(parsed_c_f[1], exception: false)]
++                               [Integer(parsed_c_f[0]), Integer(parsed_c_f[1])]
+                              end
+                            end
+         if critical.nil? || fumble.nil?
+
 diff --git a/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb b/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb
 --- a/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb
 +++ b/lib/bcdice/game_system/ToshiakiHolyGrailWar.rb
