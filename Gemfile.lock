@@ -1,14 +1,14 @@
 PATH
   remote: BCDice
   specs:
-    bcdice (3.8.0)
+    bcdice (3.9.0)
       i18n (~> 1.8.5)
 
 GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
-    concurrent-ruby (1.1.10)
+    concurrent-ruby (1.2.2)
     docile (1.4.0)
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
