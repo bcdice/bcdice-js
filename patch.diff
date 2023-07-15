@@ -606,6 +606,66 @@ diff --git a/lib/bcdice/game_system/GurpsFW.rb b/lib/bcdice/game_system/GurpsFW.
            if num >= 6
              num = 5
            end
+diff --git a/lib/bcdice/game_system/HeroScale.rb b/lib/bcdice/game_system/HeroScale.rb
+--- a/lib/bcdice/game_system/HeroScale.rb
++++ b/lib/bcdice/game_system/HeroScale.rb
+@@ -159,11 +159,13 @@ module BCDice
+ 
+       def fate_body(natural_result)
+         modified_result = natural_result.dup
+-        modified_result.each do |result|
+-          if result == 4
+-            modified_result << @randomizer.roll_once(4)
+-          end
++        additional = natural_result.count(4)
++        while additional > 0
++          value = @randomizer.roll_once(4)
++          modified_result.push(value)
++          additional -= 1 if value != 4
+         end
++
+         subtotal = results_multiplication(natural_result)
+         total = results_multiplication(modified_result)
+         message = "肉体の超越 ＞ #{subtotal}[#{natural_result.join(',')}] ＞ #{total}[#{modified_result.join(',')}]"
+@@ -297,7 +299,7 @@ module BCDice
+       def fate_acceptance(natural_result, order)
+         subtotal = results_multiplication(natural_result)
+         if order.length > 3 && order[2] =~ /^\d+$/ && order[3] =~ /^\d+$/
+-          change_result = natural_result.min(2)
++          change_result = natural_result.sort().take(2)
+           modified_result = natural_result.dup
+           modified_result[modified_result.index(change_result[0])] = order[2].to_i
+           modified_result[modified_result.index(change_result[1])] = order[3].to_i
+@@ -460,7 +462,7 @@ module BCDice
+         subtotal = results_multiplication(natural_result)
+         modified_result = natural_result.dup
+         depravity_num1 = natural_result[0] % 10
+-        depravity_num10 = natural_result[0] / 10
++        depravity_num10 = (natural_result[0] / 10).to_i
+         if depravity_num10 > 1
+           modified_result << depravity_num10
+         end
+@@ -476,7 +478,7 @@ module BCDice
+         modified_result = natural_result.dup
+         modified_result << @randomizer.roll_once(60)
+         subtotal = results_multiplication(natural_result)
+-        total = results_multiplication(modified_result) / 2
++        total = (results_multiplication(modified_result) / 2).to_i
+         message = "忘却の報い ＞ #{subtotal}[#{natural_result.join(',')}] ＞ #{total}[#{modified_result.join(',')}]"
+         return message
+       end
+@@ -827,9 +829,9 @@ module BCDice
+ 
+       def result_raoundup(result)
+         if result.even?
+-          return result / 2
++          return (result / 2).to_i
+         else
+-          return result / 2 + 1
++          return (result / 2).to_i + 1
+         end
+       end
+     end
 diff --git a/lib/bcdice/game_system/Hieizan.rb b/lib/bcdice/game_system/Hieizan.rb
 --- a/lib/bcdice/game_system/Hieizan.rb
 +++ b/lib/bcdice/game_system/Hieizan.rb
@@ -657,7 +717,7 @@ diff --git a/lib/bcdice/game_system/InfiniteFantasia.rb b/lib/bcdice/game_system
 diff --git a/lib/bcdice/game_system/KemonoNoMori.rb b/lib/bcdice/game_system/KemonoNoMori.rb
 --- a/lib/bcdice/game_system/KemonoNoMori.rb
 +++ b/lib/bcdice/game_system/KemonoNoMori.rb
-@@ -61,7 +61,7 @@ module BCDice
+@@ -71,7 +71,7 @@ module BCDice
  
          # 行為判定の成功度は [目標値の10の位の数+1]
          # 継続判定の成功度は固定で+1
@@ -905,7 +965,7 @@ diff --git a/lib/bcdice/game_system/TunnelsAndTrolls.rb b/lib/bcdice/game_system
 diff --git a/lib/bcdice/game_system/VampireTheMasquerade5th.rb b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 --- a/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 +++ b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
-@@ -129,7 +129,7 @@ module BCDice
+@@ -157,7 +157,7 @@ module BCDice
  
        def get_critical_success(ten_dice)
          # 10の目が2個毎に追加2成功
