@@ -7,8 +7,8 @@ on:
     branches:
       - bcdice-auto-update
       - ci/*-auto-update
-  schedule:
-    - cron: '0 0/6 * * *'
+  # schedule:
+  #   - cron: '0 0/6 * * *'
 
 jobs:
   auto_update:
