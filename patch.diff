@@ -474,6 +474,18 @@ diff --git a/lib/bcdice/game_system/CthulhuTech.rb b/lib/bcdice/game_system/Cthu
  
            sorted_dice_values = dice_values.sort
            roll_result = calculate_roll_result(sorted_dice_values)
+diff --git a/lib/bcdice/game_system/DemonSpike.rb b/lib/bcdice/game_system/DemonSpike.rb
+--- a/lib/bcdice/game_system/DemonSpike.rb
++++ b/lib/bcdice/game_system/DemonSpike.rb
+@@ -51,7 +51,7 @@ module BCDice
+ 
+         is_fumble = step_list[0][:dice_sum] == 2
+         total = is_fumble ? 0 : step_list.sum { |s| s[:dice_sum] } + parsed.modify_number
+-        success_level = total / 10
++        success_level = (total / 10).floor
+         is_success = total >= 10
+ 
+         res =
 diff --git a/lib/bcdice/game_system/Dracurouge.rb b/lib/bcdice/game_system/Dracurouge.rb
 --- a/lib/bcdice/game_system/Dracurouge.rb
 +++ b/lib/bcdice/game_system/Dracurouge.rb
@@ -894,6 +906,18 @@ diff --git a/lib/bcdice/game_system/RuinBreakers.rb b/lib/bcdice/game_system/Rui
          fumble_border = m[6]&.to_i || (success_rate < 100 ? 96 : 99)
  
          total = @randomizer.roll_once(100)
+diff --git a/lib/bcdice/game_system/RuneQuestRoleplayingInGlorantha.rb b/lib/bcdice/game_system/RuneQuestRoleplayingInGlorantha.rb
+--- a/lib/bcdice/game_system/RuneQuestRoleplayingInGlorantha.rb
++++ b/lib/bcdice/game_system/RuneQuestRoleplayingInGlorantha.rb
+@@ -135,7 +135,7 @@ module BCDice
+           Result.success("#{result_prefix_str} 成功\n#{note_str}")
+         else
+           # 上記全てが当てはまらない時に突破可能な能力値を算出
+-          "#{result_prefix_str} 相手側能力値#{active_ability_value + (50 + modifiy_value - roll_value) / 5}まで成功\n#{note_str}"
++          "#{result_prefix_str} 相手側能力値#{active_ability_value + ((50 + modifiy_value - roll_value) / 5).floor}まで成功\n#{note_str}"
+         end
+       end
+ 
 diff --git a/lib/bcdice/game_system/Ryutama.rb b/lib/bcdice/game_system/Ryutama.rb
 --- a/lib/bcdice/game_system/Ryutama.rb
 +++ b/lib/bcdice/game_system/Ryutama.rb
