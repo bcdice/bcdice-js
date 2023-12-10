@@ -555,8 +555,8 @@ diff --git a/lib/bcdice/game_system/EclipsePhase.rb b/lib/bcdice/game_system/Ecl
 diff --git a/lib/bcdice/game_system/Emoklore.rb b/lib/bcdice/game_system/Emoklore.rb
 --- a/lib/bcdice/game_system/Emoklore.rb
 +++ b/lib/bcdice/game_system/Emoklore.rb
-@@ -67,7 +67,7 @@ module BCDice
-         success_value = 2 * critical + success - fumble
+@@ -65,7 +65,7 @@ module BCDice
+         success_value = critical + success - fumble
          result = compare_result(success_value)
  
 -        result.text = "#{values} ＞ #{success_value} ＞ #{translate('Emoklore.success_count', count: success_value)} #{result.text}"
@@ -693,7 +693,7 @@ diff --git a/lib/bcdice/game_system/Hieizan.rb b/lib/bcdice/game_system/Hieizan.
 diff --git a/lib/bcdice/game_system/HunterTheReckoning5th.rb b/lib/bcdice/game_system/HunterTheReckoning5th.rb
 --- a/lib/bcdice/game_system/HunterTheReckoning5th.rb
 +++ b/lib/bcdice/game_system/HunterTheReckoning5th.rb
-@@ -134,7 +134,7 @@ module BCDice
+@@ -141,7 +141,7 @@ module BCDice
  
        def get_critical_success(ten_dice)
          # 10の目が2個毎に追加2成功
@@ -989,7 +989,7 @@ diff --git a/lib/bcdice/game_system/TunnelsAndTrolls.rb b/lib/bcdice/game_system
 diff --git a/lib/bcdice/game_system/VampireTheMasquerade5th.rb b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 --- a/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 +++ b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
-@@ -157,7 +157,7 @@ module BCDice
+@@ -163,7 +163,7 @@ module BCDice
  
        def get_critical_success(ten_dice)
          # 10の目が2個毎に追加2成功
@@ -1059,6 +1059,27 @@ diff --git a/lib/bcdice/game_system/Warhammer4.rb b/lib/bcdice/game_system/Warha
          end
        end
  
+diff --git a/lib/bcdice/game_system/WerewolfTheApocalypse5th.rb b/lib/bcdice/game_system/WerewolfTheApocalypse5th.rb
+--- a/lib/bcdice/game_system/WerewolfTheApocalypse5th.rb
++++ b/lib/bcdice/game_system/WerewolfTheApocalypse5th.rb
+@@ -76,7 +76,7 @@ module BCDice
+         if rage_dice_pool
+           rage_dice_text, rage_success_dice, rage_ten_dice, brutal_result_dice = make_dice_roll(rage_dice_pool)
+ 
+-          brutal_outcome = brutal_result_dice / 2
++          brutal_outcome = (brutal_result_dice / 2).floor
+           ten_dice += rage_ten_dice
+           success_dice += rage_success_dice
+ 
+@@ -155,7 +155,7 @@ module BCDice
+ 
+       def get_critical_success(ten_dice)
+         # 10の目が2個毎に追加2成功
+-        return ((ten_dice / 2) * 2)
++        return ((ten_dice / 2).floor * 2)
+       end
+ 
+       def make_dice_roll(dice_pool)
 diff --git a/lib/bcdice/game_system/Yggdrasill.rb b/lib/bcdice/game_system/Yggdrasill.rb
 --- a/lib/bcdice/game_system/Yggdrasill.rb
 +++ b/lib/bcdice/game_system/Yggdrasill.rb
