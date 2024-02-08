@@ -307,14 +307,14 @@ diff --git a/lib/bcdice/game_system/Chill3.rb b/lib/bcdice/game_system/Chill3.rb
  
          if tens == ones
 @@ -38,7 +38,7 @@ module BCDice
-             return Result.critical("Ｃ成功")
+             return Result.critical("Colossal Success")
            end
          elsif (total <= target) || (dice_total == 1) # 01は必ず成功
 -          if total <= (target / 2)
 +          if total <= (target / 2).to_i
-             return Result.success("Ｈ成功")
+             return Result.success("High Success")
            else
-             return Result.success("Ｌ成功")
+             return Result.success("Low Success")
 diff --git a/lib/bcdice/game_system/ColossalHunter.rb b/lib/bcdice/game_system/ColossalHunter.rb
 --- a/lib/bcdice/game_system/ColossalHunter.rb
 +++ b/lib/bcdice/game_system/ColossalHunter.rb
@@ -820,7 +820,7 @@ diff --git a/lib/bcdice/game_system/NightmareHunterDeep.rb b/lib/bcdice/game_sys
 diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/NinjaSlayer.rb
 --- a/lib/bcdice/game_system/NinjaSlayer.rb
 +++ b/lib/bcdice/game_system/NinjaSlayer.rb
-@@ -48,18 +48,18 @@ module BCDice
+@@ -50,18 +50,18 @@ module BCDice
        end
  
        # 難易度の値の正規表現
@@ -845,7 +845,7 @@ diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/Ninj
  
        # 回避判定のノード
        EV = Struct.new(:num, :difficulty, :targetValue)
-@@ -81,7 +81,7 @@ module BCDice
+@@ -83,7 +83,7 @@ module BCDice
          m = NJ_RE.match(str)
          return str unless m
  
@@ -854,7 +854,7 @@ diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/Ninj
          return "#{m[1]}#{b_roll}"
        end
  
-@@ -127,8 +127,8 @@ module BCDice
+@@ -129,8 +129,8 @@ module BCDice
        # @return [EV]
        def parseEV(m)
          num = m[1].to_i
@@ -865,7 +865,7 @@ diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/Ninj
  
          return EV.new(num, difficulty, targetValue)
        end
-@@ -138,7 +138,7 @@ module BCDice
+@@ -140,7 +140,7 @@ module BCDice
        # @return [AT]
        def parseAT(m)
          num = m[1].to_i
@@ -874,7 +874,7 @@ diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/Ninj
  
          return AT.new(num, difficulty)
        end
-@@ -148,7 +148,7 @@ module BCDice
+@@ -150,7 +150,7 @@ module BCDice
        # @return [EL]
        def parseEL(m)
          num = m[1].to_i
@@ -883,7 +883,7 @@ diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/Ninj
  
          return EL.new(num, difficulty)
        end
-@@ -218,7 +218,7 @@ module BCDice
+@@ -220,7 +220,7 @@ module BCDice
        def integerValueOfDifficulty(s)
          return 4 unless s
  
@@ -950,6 +950,27 @@ diff --git a/lib/bcdice/game_system/ShinMegamiTenseiKakuseihen.rb b/lib/bcdice/g
          tens = value % 10
  
          return [ones, tens]
+diff --git a/lib/bcdice/game_system/Siren.rb b/lib/bcdice/game_system/Siren.rb
+--- a/lib/bcdice/game_system/Siren.rb
++++ b/lib/bcdice/game_system/Siren.rb
+@@ -50,7 +50,7 @@ module BCDice
+           return Result.failure("(1D100<=#{target}) ＞ #{dice} ＞ 失敗")
+         end
+ 
+-        dig10 = dice / 10
++        dig10 = (dice / 10).floor
+         dig1 = dice % 10
+         if dig10 == 0
+           dig10 = 10
+@@ -74,7 +74,7 @@ module BCDice
+ 
+         dice = @randomizer.roll_once(100)
+ 
+-        dig10 = dice / 10
++        dig10 = (dice / 10).floor
+         dig1 = dice % 10
+         if dig10 == 0
+           dig10 = 10
 diff --git a/lib/bcdice/game_system/Skynauts.rb b/lib/bcdice/game_system/Skynauts.rb
 --- a/lib/bcdice/game_system/Skynauts.rb
 +++ b/lib/bcdice/game_system/Skynauts.rb
@@ -989,7 +1010,7 @@ diff --git a/lib/bcdice/game_system/TunnelsAndTrolls.rb b/lib/bcdice/game_system
 diff --git a/lib/bcdice/game_system/VampireTheMasquerade5th.rb b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 --- a/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 +++ b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
-@@ -163,7 +163,7 @@ module BCDice
+@@ -169,7 +169,7 @@ module BCDice
  
        def get_critical_success(ten_dice)
          # 10の目が2個毎に追加2成功
@@ -1063,7 +1084,7 @@ diff --git a/lib/bcdice/game_system/WerewolfTheApocalypse5th.rb b/lib/bcdice/gam
 --- a/lib/bcdice/game_system/WerewolfTheApocalypse5th.rb
 +++ b/lib/bcdice/game_system/WerewolfTheApocalypse5th.rb
 @@ -76,7 +76,7 @@ module BCDice
-         if rage_dice_pool
+         if rage_dice_pool >= 0
            rage_dice_text, rage_success_dice, rage_ten_dice, brutal_result_dice = make_dice_roll(rage_dice_pool)
  
 -          brutal_outcome = brutal_result_dice / 2
@@ -1071,7 +1092,7 @@ diff --git a/lib/bcdice/game_system/WerewolfTheApocalypse5th.rb b/lib/bcdice/gam
            ten_dice += rage_ten_dice
            success_dice += rage_success_dice
  
-@@ -155,7 +155,7 @@ module BCDice
+@@ -161,7 +161,7 @@ module BCDice
  
        def get_critical_success(ten_dice)
          # 10の目が2個毎に追加2成功
@@ -1163,7 +1184,7 @@ diff --git a/lib/bcdice/game_system/cthulhu7th/full_auto.rb b/lib/bcdice/game_sy
 +++ b/lib/bcdice/game_system/cthulhu7th/full_auto.rb
 @@ -43,7 +43,7 @@ module BCDice
            broken_number = m[3].to_i
-           bonus_dice_count = m[4]&.to_i || 0
+           bonus_dice_count = m[4].to_i
            stop_count = m[5]&.downcase || ""
 -          bullet_set_count_cap = m[6]&.to_i || diff / 10
 +          bullet_set_count_cap = m[6]&.to_i || (diff / 10).to_i
