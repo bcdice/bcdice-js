@@ -1,3 +1,15 @@
+diff --git a/i18n/KillDeathBusiness/ja_jp.yml b/i18n/KillDeathBusiness/ja_jp.yml
+--- a/i18n/KillDeathBusiness/ja_jp.yml
++++ b/i18n/KillDeathBusiness/ja_jp.yml
+@@ -1257,7 +1257,7 @@ ja_jp:
+             会場ではウケたようだが、ヘル山くんは気に入らなかったようだ。
+             座布団を1枚没収する。
+           6: |-
+-            「いやぁ面白い回答でした！　座布団を差し上げます、いーちにーい……ところで今、視聴率何%でしたっけ？」
++            「いやぁ面白い回答でした！　座布団を差し上げます、いーちにーい……ところで今、視聴率何％でしたっけ？」
+             視聴率の確認に乗じて座布団の枚数を誤魔化される。
+             座布団の枚数を%{size}枚増減させる。
+       NOT:
 diff --git a/lib/bcdice/arithmetic/node.rb b/lib/bcdice/arithmetic/node.rb
 --- a/lib/bcdice/arithmetic/node.rb
 +++ b/lib/bcdice/arithmetic/node.rb
@@ -228,17 +240,21 @@ diff --git a/lib/bcdice/game_system/Amadeus.rb b/lib/bcdice/game_system/Amadeus.
                "#{total}_#{result}[#{dice}#{inga}]"
              else
                "#{total}_#{result}[#{dice}]"
-diff --git a/lib/bcdice/game_system/Arianrhod_Korean.rb b/lib/bcdice/game_system/Arianrhod_Korean.rb
---- a/lib/bcdice/game_system/Arianrhod_Korean.rb
-+++ b/lib/bcdice/game_system/Arianrhod_Korean.rb
-@@ -1,5 +1,7 @@
- # frozen_string_literal: true
+diff --git a/lib/bcdice/game_system/ArknightsFan.rb b/lib/bcdice/game_system/ArknightsFan.rb
+--- a/lib/bcdice/game_system/ArknightsFan.rb
++++ b/lib/bcdice/game_system/ArknightsFan.rb
+@@ -157,9 +157,9 @@ module BCDice
+       end
  
-+require "bcdice/game_system/Arianrhod"
-+
- module BCDice
-   module GameSystem
-     class Arianrhod_Korean < Arianrhod
+       def eval_orp(command)
+-        m   = %r{^ORP(?'END'[-+*/\d]+)@(?'ORP'[-+*/\d]+)(?:\+D(?'DICE'[-+*/\d]+))?(?:\+T(?'TGT'[-+*/\d]+))?$}.match(command)
++        m   = %r{^ORP(?<END>[-+*/\d]+)@(?<ORP>[-+*/\d]+)(?:\+D(?<DICE>[-+*/\d]+))?(?:\+T(?<TGT>[-+*/\d]+))?$}.match(command)
+         # D補正とT補正が逆順でも対応する
+-        m ||= %r{^ORP(?'END'[-+*/\d]+)@(?'ORP'[-+*/\d]+)(?:\+T(?'TGT'[-+*/\d]+))?(?:\+D(?'DICE'[-+*/\d]+))?$}.match(command)
++        m ||= %r{^ORP(?<END>[-+*/\d]+)@(?<ORP>[-+*/\d]+)(?:\+T(?<TGT>[-+*/\d]+))?(?:\+D(?<DICE>[-+*/\d]+))?$}.match(command)
+         return nil unless m
+ 
+         endurance = Arithmetic.eval(m[:END], @round_type)
 diff --git a/lib/bcdice/game_system/AssaultEngine.rb b/lib/bcdice/game_system/AssaultEngine.rb
 --- a/lib/bcdice/game_system/AssaultEngine.rb
 +++ b/lib/bcdice/game_system/AssaultEngine.rb
@@ -403,35 +419,71 @@ diff --git a/lib/bcdice/game_system/Cthulhu7th.rb b/lib/bcdice/game_system/Cthul
 diff --git a/lib/bcdice/game_system/Cthulhu7th_ChineseTraditional.rb b/lib/bcdice/game_system/Cthulhu7th_ChineseTraditional.rb
 --- a/lib/bcdice/game_system/Cthulhu7th_ChineseTraditional.rb
 +++ b/lib/bcdice/game_system/Cthulhu7th_ChineseTraditional.rb
-@@ -113,8 +113,8 @@ module BCDice
-       def getCheckResultText(total, diff, fumbleable = false)
-         if total <= diff
-           return "決定性的成功" if total == 1
--          return "極限的成功" if total <= (diff / 5)
--          return "困難的成功" if total <= (diff / 2)
-+          return "極限的成功" if total <= (diff / 5).to_i
-+          return "困難的成功" if total <= (diff / 2).to_i
- 
-           return "通常成功"
+@@ -119,9 +119,9 @@ module BCDice
+             ResultLevel.new(:critical)
+           elsif total >= fumble
+             ResultLevel.new(:fumble)
+-          elsif total <= (difficulty / 5)
++          elsif total <= (difficulty / 5).floor
+             ResultLevel.new(:extreme_success)
+-          elsif total <= (difficulty / 2)
++          elsif total <= (difficulty / 2).floor
+             ResultLevel.new(:hard_success)
+           elsif total <= difficulty
+             ResultLevel.new(:regular_success)
+@@ -192,9 +192,9 @@ module BCDice
+         if difficulty == 0
+           difficulty = nil
+         elsif difficulty_level == "H"
+-          difficulty /= 2
++          difficulty = (difficulty / 2).floor
+         elsif difficulty_level == "E"
+-          difficulty /= 5
++          difficulty = (difficulty / 5).floor
+         elsif difficulty_level == "C"
+           difficulty = 0
          end
-@@ -344,7 +344,7 @@ module BCDice
-       end
+diff --git a/lib/bcdice/game_system/Cthulhu7th_ChineseTraditional/full_auto.rb b/lib/bcdice/game_system/Cthulhu7th_ChineseTraditional/full_auto.rb
+--- a/lib/bcdice/game_system/Cthulhu7th_ChineseTraditional/full_auto.rb
++++ b/lib/bcdice/game_system/Cthulhu7th_ChineseTraditional/full_auto.rb
+@@ -43,7 +43,7 @@ module BCDice
+           broken_number = m[3].to_i
+           bonus_dice_count = m[4].to_i
+           stop_count = m[5]&.downcase || ""
+-          bullet_set_count_cap = m[6]&.to_i || diff / 10
++          bullet_set_count_cap = m[6]&.to_i || (diff / 10).floor
  
-       def getSetOfBullet(diff)
--        bullet_set_count = diff / 10
-+        bullet_set_count = (diff / 10).to_i
+           output = ""
  
-         if (diff >= 1) && (diff < 10)
-           bullet_set_count = 1 # 技能值９以下的最低限度保障處理
-@@ -354,7 +354,7 @@ module BCDice
-       end
+@@ -55,8 +55,8 @@ module BCDice
+           end
  
-       def getHitBulletCountBase(diff, bullet_set_count)
--        hit_bullet_count_base = (bullet_set_count / 2)
-+        hit_bullet_count_base = (bullet_set_count / 2).to_i
+           # 如果設置的連射上限不合理則顯示注意
+-          if (bullet_set_count_cap > diff / 10) && (diff > 39) && !m[6].nil?
+-            bullet_set_count_cap = diff / 10
++          if (bullet_set_count_cap > (diff / 10).floor) && (diff > 39) && !m[6].nil?
++            bullet_set_count_cap = (diff / 10).floor
+             output += "連射的彈藥數量上限為\[技能值÷10（取整）\]發，因此無法指定更高的數量。連射的彈藥數量更改為#{bullet_set_count_cap}發。\n"
+           elsif (diff <= 39) && (bullet_set_count_cap > 3) && !m[6].nil?
+             bullet_set_count_cap = 3
+@@ -246,7 +246,7 @@ module BCDice
+         end
  
-         if (diff >= 1) && (diff < 10)
-           hit_bullet_count_base = 1 # 技能值９以下的最低限度保障處理
+         def get_set_of_bullet(diff, bullet_set_count_cap)
+-          bullet_set_count = diff / 10
++          bullet_set_count = (diff / 10).floor
+ 
+           if bullet_set_count_cap < bullet_set_count
+             bullet_set_count = bullet_set_count_cap
+@@ -260,7 +260,7 @@ module BCDice
+         end
+ 
+         def get_hit_bullet_count_base(diff, bullet_set_count)
+-          hit_bullet_count_base = (bullet_set_count / 2)
++          hit_bullet_count_base = (bullet_set_count / 2).floor
+ 
+           if (diff >= 1) && (diff < 30)
+             hit_bullet_count_base = 1 # 技能值在29以下的最低值保障
 diff --git a/lib/bcdice/game_system/Cthulhu7th_Korean.rb b/lib/bcdice/game_system/Cthulhu7th_Korean.rb
 --- a/lib/bcdice/game_system/Cthulhu7th_Korean.rb
 +++ b/lib/bcdice/game_system/Cthulhu7th_Korean.rb
@@ -575,10 +627,22 @@ diff --git a/lib/bcdice/game_system/Emoklore.rb b/lib/bcdice/game_system/Emoklor
          return result
        end
  
+diff --git a/lib/bcdice/game_system/Garactier.rb b/lib/bcdice/game_system/Garactier.rb
+--- a/lib/bcdice/game_system/Garactier.rb
++++ b/lib/bcdice/game_system/Garactier.rb
+@@ -433,7 +433,7 @@ module BCDice
+           elsif fumble
+             Result.fumble("ファンブル")
+           else
+-            success_level = (total - 4) / 2
++            success_level = ((total - 4) / 2).floor
+             if success_level >= 11
+               success_level = 11
+             elsif success_level <= 0
 diff --git a/lib/bcdice/game_system/GardenOrder.rb b/lib/bcdice/game_system/GardenOrder.rb
 --- a/lib/bcdice/game_system/GardenOrder.rb
 +++ b/lib/bcdice/game_system/GardenOrder.rb
-@@ -52,12 +52,12 @@ module BCDice
+@@ -66,12 +66,12 @@ module BCDice
        def get_critical_border(critical_border_text, success_rate)
          return critical_border_text.to_i unless critical_border_text.nil?
  
@@ -920,7 +984,7 @@ diff --git a/lib/bcdice/game_system/RuinBreakers.rb b/lib/bcdice/game_system/Rui
 diff --git a/lib/bcdice/game_system/RuneQuestRoleplayingInGlorantha.rb b/lib/bcdice/game_system/RuneQuestRoleplayingInGlorantha.rb
 --- a/lib/bcdice/game_system/RuneQuestRoleplayingInGlorantha.rb
 +++ b/lib/bcdice/game_system/RuneQuestRoleplayingInGlorantha.rb
-@@ -135,7 +135,7 @@ module BCDice
+@@ -138,7 +138,7 @@ module BCDice
            Result.success("#{result_prefix_str} 成功\n#{note_str}")
          else
            # 上記全てが当てはまらない時に突破可能な能力値を算出
@@ -997,9 +1061,9 @@ diff --git a/lib/bcdice/game_system/Skynauts.rb b/lib/bcdice/game_system/Skynaut
 diff --git a/lib/bcdice/game_system/TensaiGunshiNiNaro.rb b/lib/bcdice/game_system/TensaiGunshiNiNaro.rb
 --- a/lib/bcdice/game_system/TensaiGunshiNiNaro.rb
 +++ b/lib/bcdice/game_system/TensaiGunshiNiNaro.rb
-@@ -182,7 +182,7 @@ module BCDice
+@@ -216,7 +216,7 @@ module BCDice
          # ダメージ計算
-         damage = @randomizer.roll_sum(parsed.prefix_number, 6)
+         damage = @randomizer.roll_sum(parsed.prefix_number, 6) + parsed.modify_number
          # HP減少量計算
 -        dec = damage / parsed.target_number
 +        dec = (damage / parsed.target_number).floor
@@ -1278,6 +1342,18 @@ diff --git a/lib/bcdice/user_defined_dice_table.rb b/lib/bcdice/user_defined_dic
        @name = lines.shift
        @type = lines.shift.upcase
        @rows = lines
+diff --git a/test/data/KillDeathBusiness.toml b/test/data/KillDeathBusiness.toml
+--- a/test/data/KillDeathBusiness.toml
++++ b/test/data/KillDeathBusiness.toml
+@@ -1451,7 +1451,7 @@ rands = [
+ [[ test ]]
+ game_system = "KillDeathBusiness"
+ input = "POT"
+-output = "ヘル司会者 リアクション表(好印象ver)(6) ＞ 「いやぁ面白い回答でした！　座布団を差し上げます、いーちにーい……ところで今、視聴率何%でしたっけ？」\n視聴率の確認に乗じて座布団の枚数を誤魔化される。\n座布団の枚数を3枚増減させる。"
++output = "ヘル司会者 リアクション表(好印象ver)(6) ＞ 「いやぁ面白い回答でした！　座布団を差し上げます、いーちにーい……ところで今、視聴率何％でしたっけ？」\n視聴率の確認に乗じて座布団の枚数を誤魔化される。\n座布団の枚数を3枚増減させる。"
+ rands = [
+   { sides = 6, value = 6 },
+   { sides = 6, value = 6 },
 diff --git a/test/data/calc.toml b/test/data/calc.toml
 --- a/test/data/calc.toml
 +++ b/test/data/calc.toml
