@@ -41,8 +41,9 @@ module StringScannerPatch
           continue;
         }
 
-        self.matched  = self.string.substr(self.pos, pos - self.pos - 1 + result[0].length);
-        self.prev_pos = pos - 1;
+        pos = pos + result[0].length - 1;
+        self.matched  = self.string.substr(self.pos, pos - self.pos);
+        self.prev_pos = self.pos;
         self.pos      = pos;
         self.working  = working.substr(result[0].length - 1);
 
