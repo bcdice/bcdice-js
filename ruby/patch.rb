@@ -20,7 +20,6 @@ module StringScannerPatch
     %x{
       var self = this;
 
-
       pattern = self.$anchor(pattern);
 
       var pos     = self.pos,
@@ -28,9 +27,9 @@ module StringScannerPatch
           result;
 
       while (true) {
-        var   isEmpty = working.length === 0;
-        result   = pattern.exec(working);
-        pos     += 1;
+        var isEmpty = working.length === 0;
+        result = pattern.exec(working);
+        pos += 1;
         working  = working.substr(1);
 
         if (result == null) {
@@ -41,12 +40,11 @@ module StringScannerPatch
           continue;
         }
 
-        self.matched  = self.string.substr(self.pos, pos - self.pos - 1 + result[0].length);
-        self.prev_pos = pos - 1;
-        self.pos      = pos;
+        self.prev_pos = self.pos;
+        self.pos      = pos + result[0].length - 1;
         self.working  = working.substr(result[0].length - 1);
 
-        return self.matched;
+        return self.matched = self.string.substr(self.prev_pos, self.pos - self.prev_pos);
       }
     }
   end
