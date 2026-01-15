@@ -8,6 +8,12 @@ const compat = new FlatCompat({
 
 module.exports = [
   {
+    ignores: [
+      "**/*.d.ts",
+      "**/*.map",
+      "lib/bcdice/opal.js",
+      "lib/bcdice/opal-parser.js",
+    ],
     linterOptions: {
       reportUnusedDisableDirectives: "off",
     },
@@ -64,6 +70,7 @@ module.exports = [
         },
         globals: {
           Opal: "readonly",
+          Iterator: "readonly",
         },
         rules: {
           "@typescript-eslint/no-empty-function": "off",
