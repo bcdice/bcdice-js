@@ -13,7 +13,9 @@ module.exports = [
       "**/*.map",
       "lib/bcdice/opal.js",
       "lib/bcdice/opal-parser.js",
-    ],
+    ]
+  },
+  {
     linterOptions: {
       reportUnusedDisableDirectives: "off",
     },
