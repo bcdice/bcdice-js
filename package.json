@@ -41,7 +41,7 @@
     "test": "cd ts && mocha -r ts-node/register -r source-map-support/register --reporter dot --timeout 5000 --extension ts \"**/*.test.ts\""
   },
   "dependencies": {
-    "lodash": "^4.17.20",
+    "lodash": "^4.18.1",
     "source-map-support": "^0.5.21"
   },
   "devDependencies": {
@@ -53,14 +53,14 @@
     "@types/semver": "^7.7.1",
     "@types/sinon": "^21.0.0",
     "@types/sinon-chai": "^4.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.53.0",
-    "@typescript-eslint/parser": "^8.53.0",
+    "@typescript-eslint/eslint-plugin": "^8.58.1",
+    "@typescript-eslint/parser": "^8.58.1",
     "chai": "^4.5.0",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-tsdoc": "^0.5.0",
+    "eslint-plugin-tsdoc": "^0.5.2",
     "mocha": "^11.7.5",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.8.0",
@@ -73,24 +73,65 @@
   },
   "overrides": {
     "@eslint/eslintrc": {
-      "js-yaml": "3.14.2"
-    },
-    "cross-spawn": "7.0.6",
-    "micromatch": "4.0.8",
-    "mocha": {
-      "glob": "10.5.0",
       "js-yaml": "4.1.1"
     },
+    "@isaacs/brace-expansion": "5.0.1",
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "9.0.9"
+    },
+    "brace-expansion@2.0.2": "2.0.3",
+    "cross-spawn": "7.0.6",
     "eslint": {
-      "js-yaml": "3.14.2"
+      "ajv": "6.14.0",
+      "minimatch": {
+        ".": "3.1.5",
+        "brace-expansion": "1.1.13"
+      }
+    },
+    "eslint-plugin-import": {
+      "minimatch": {
+        ".": "3.1.5",
+        "brace-expansion": "1.1.13"
+      }
+    },
+    "flat-cache": {
+      "flatted": "3.4.2"
+    },
+    "fdir": {
+      "picomatch": "4.0.4"
+    },
+    "micromatch": {
+      "picomatch": "2.3.2"
+    },
+    "minimatch@9.0.5": "9.0.9",
+    "minimatch@10.1.1": "10.2.5",
+    "mocha": {
+      "diff": "8.0.4",
+      "glob": "10.5.0",
+      "js-yaml": "4.1.1",
+      "minimatch": "9.0.9",
+      "serialize-javascript": "7.0.5"
     },
     "normalize-package-data": {
       "semver": "5.7.2"
     },
     "npm-run-all": {
       "cross-spawn": "6.0.6",
+      "minimatch": {
+        ".": "3.1.5",
+        "brace-expansion": "1.1.13"
+      },
       "semver": "5.7.2"
     },
-    "path-to-regexp": "1.9.0"
+    "path-to-regexp": "1.9.0",
+    "sinon": {
+      "diff": "4.0.4"
+    },
+    "tinyglobby": {
+      "picomatch": "4.0.4"
+    },
+    "ts-node": {
+      "diff": "4.0.4"
+    }
   }
 }
