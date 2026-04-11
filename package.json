@@ -35,7 +35,7 @@
     "example:ts-basic": "cd examples/ts && ts-node ./basic",
     "example:ts-user_defined_dice_table": "cd examples/ts && ts-node ./user_defined_dice_table",
     "lint": "run-s lint:*",
-    "lint:eslint": "eslint ts/**/*.ts examples/**/*.ts",
+    "lint:eslint": "eslint --no-warn-ignored ts/**/*.ts examples/**/*.ts",
     "lint:rubocop": "bundle exec rubocop ruby Rakefile",
     "lint:lib": "eslint --no-error-on-unmatched-pattern --ext .js lib",
     "test": "cd ts && mocha -r ts-node/register -r source-map-support/register --reporter dot --timeout 5000 --extension ts \"**/*.test.ts\""
