@@ -67,7 +67,19 @@ task patch: [:copy] do
 end
 
 task racc: [:copy] do
-  sh 'bundle exec rake racc', { chdir: 'patched' }, {}
+  bundle_path = ENV.fetch('BUNDLE_PATH', nil)
+
+  env = {
+    'BUNDLE_PATH' => bundle_path && File.expand_path(bundle_path, __dir__),
+    'BUNDLE_DISABLE_SHARED_GEMS' => ENV.fetch('BUNDLE_DISABLE_SHARED_GEMS', nil)
+  }.compact
+
+  Bundler.with_unbundled_env do
+    Dir.chdir('patched') do
+      success = system(env, 'bundle', 'exec', 'rake', 'racc')
+      raise 'bundle exec rake racc failed' unless success
+    end
+  end
 end
 
 directory 'lib/bcdice'
