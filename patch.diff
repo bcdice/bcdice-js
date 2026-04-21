@@ -802,16 +802,16 @@ diff --git a/lib/bcdice/game_system/NinjaSlayer.rb b/lib/bcdice/game_system/Ninj
  
        # 通常判定の正規表現
 -      NJ_RE = /\A(S)?NJ(\d+)#{DIFFICULTY_RE}?\z/io.freeze
-+      NJ_RE = /^(S)?NJ(\d+)#{DIFFICULTY_RE}?$/io.freeze
++      NJ_RE = /^(S)?NJ(\d+)#{DIFFICULTY_RE}?$/i.freeze
        # 回避判定の正規表現
 -      EV_RE = %r{\AEV(\d+)#{DIFFICULTY_RE}?(?:/(\d+))?\z}io.freeze
-+      EV_RE = /^EV(\d+)#{DIFFICULTY_RE}?(?:\/(\d+))?$/io.freeze
++      EV_RE = /^EV(\d+)#{DIFFICULTY_RE}?(?:\/(\d+))?$/i.freeze
        # 近接攻撃の正規表現
 -      AT_RE = /\AAT(\d+)#{DIFFICULTY_RE}?\z/io.freeze
-+      AT_RE = /^AT(\d+)#{DIFFICULTY_RE}?$/io.freeze
++      AT_RE = /^AT(\d+)#{DIFFICULTY_RE}?$/i.freeze
        # 電子戦の正規表現
 -      EL_RE = /\AEL(\d+)#{DIFFICULTY_RE}?\z/io.freeze
-+      EL_RE = /^EL(\d+)#{DIFFICULTY_RE}?$/io.freeze
++      EL_RE = /^EL(\d+)#{DIFFICULTY_RE}?$/i.freeze
  
        # 回避判定のノード
        EV = Struct.new(:num, :difficulty, :targetValue)
