@@ -1342,6 +1342,18 @@ diff --git a/lib/bcdice/user_defined_dice_table.rb b/lib/bcdice/user_defined_dic
        @name = lines.shift
        @type = lines.shift.upcase
        @rows = lines
+diff --git a/lib/bcdice/game_system/filled_with/tresure_tables.rb b/lib/bcdice/game_system/filled_with/tresure_tables.rb
+--- a/lib/bcdice/game_system/filled_with/tresure_tables.rb
++++ b/lib/bcdice/game_system/filled_with/tresure_tables.rb
+@@ -11,7 +11,7 @@ module BCDice
+         end
+ 
+         rank = m[1].to_i + m[2].to_i
+-        rank = rank.clamp(0, 12)
++        rank = rank.clamp(0, 12).to_i
+ 
+         return TRESURE_TABLES[rank].roll(@randomizer)
+       end
 diff --git a/test/data/KillDeathBusiness.toml b/test/data/KillDeathBusiness.toml
 --- a/test/data/KillDeathBusiness.toml
 +++ b/test/data/KillDeathBusiness.toml
