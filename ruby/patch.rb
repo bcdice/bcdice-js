@@ -1,4 +1,5 @@
-# frozen_string_literal: true
+# rubocop:disable Style/FrozenStringLiteralComment
+# backtick_javascript: true
 
 require 'strscan'
 
@@ -52,3 +53,4 @@ end
 StringScanner.prepend StringScannerPatch
 
 nil
+# rubocop:enable Style/FrozenStringLiteralComment

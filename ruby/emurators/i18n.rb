@@ -1,4 +1,5 @@
-# frozen_string_literal: true
+# rubocop:disable Style/FrozenStringLiteralComment
+# backtick_javascript: true
 
 require 'json'
 
@@ -87,3 +88,4 @@ module I18n
     end
   end
 end
+# rubocop:enable Style/FrozenStringLiteralComment
