@@ -67,27 +67,9 @@ diff --git a/lib/bcdice/base.rb b/lib/bcdice/base.rb
        end
  
        def register_prefix_from_super_class
-@@ -328,7 +327,7 @@ module BCDice
-       num = @randomizer.roll_sum(count, 6)
-       debug("num", num)
- 
--      index = ((num - 1) / 2)
-+      index = ((num - 1) / 2).to_i
-       debug("index", index)
- 
-       text = table[index]
 diff --git a/lib/bcdice/common_command/add_dice/node.rb b/lib/bcdice/common_command/add_dice/node.rb
 --- a/lib/bcdice/common_command/add_dice/node.rb
 +++ b/lib/bcdice/common_command/add_dice/node.rb
-@@ -140,7 +140,7 @@ module BCDice
-             lhs = @lhs.eval(game_system, randomizer)
-             rhs = @rhs.eval(game_system, randomizer)
- 
--            return calc(lhs, rhs, game_system.round_type)
-+            return calc(lhs, rhs, game_system.round_type).to_i
-           end
- 
-           # @return [Boolean]
 @@ -177,7 +177,7 @@ module BCDice
            # @param _round_type [Symbol] ゲームシステムの端数処理設定
            # @return [Integer] 演算の結果
@@ -97,15 +79,6 @@ diff --git a/lib/bcdice/common_command/add_dice/node.rb b/lib/bcdice/common_comm
            end
  
            # S式で使う演算子の表現を返す
-@@ -242,7 +242,7 @@ module BCDice
-               return 1
-             end
- 
--            return divide_and_round(lhs, rhs, round_type)
-+            return divide_and_round(lhs, rhs, round_type).to_i
-           end
- 
-           # 除算および端数処理を行う
 @@ -271,9 +271,10 @@ module BCDice
              when RoundType::CEIL
                (dividend.to_f / divisor).ceil
@@ -138,72 +111,6 @@ diff --git a/lib/bcdice/common_command/add_dice/node.rb b/lib/bcdice/common_comm
            end
          end
  
-@@ -342,7 +344,7 @@ module BCDice
-           # @param [Randomizer] randomizer ランダマイザ
-           # @return [Integer] 評価結果
-           def eval(game_system, randomizer)
--            -@body.eval(game_system, randomizer)
-+            -@body.eval(game_system, randomizer).to_i
-           end
- 
-           # @return [Boolean]
-@@ -398,7 +400,7 @@ module BCDice
-             total = dice_list.sum()
-             @text = "#{total}[#{dice_list.join(',')}]"
- 
--            return total
-+            return total.to_i
-           end
- 
-           # @return [Boolean]
-@@ -529,7 +531,7 @@ module BCDice
- 
-             @text = "#{total}[#{sorted_values.join(',')}]"
- 
--            return total
-+            return total.to_i
-           end
- 
-           # @return [Boolean]
-@@ -590,7 +592,7 @@ module BCDice
-           # @param randomizer [Randomizer]
-           # @return [integer]
-           def eval(game_system, randomizer)
--            @expr.eval(game_system, randomizer)
-+            @expr.eval(game_system, randomizer).to_i
-           end
- 
-           # @return [Boolean]
-@@ -623,7 +625,7 @@ module BCDice
-           # ノードを初期化する
-           # @param [Integer] literal 値
-           def initialize(literal)
--            @literal = literal
-+            @literal = literal.to_i
-           end
- 
-           # 符号を反転した結果の数値ノードを返す
-@@ -635,7 +637,7 @@ module BCDice
-           # ノードを評価する
-           # @return [Integer] 格納している値
-           def eval(_game_system, _randomizer)
--            @literal
-+            @literal.to_i
-           end
- 
-           # @return [Boolean]
-diff --git a/lib/bcdice/common_command/calc/node.rb b/lib/bcdice/common_command/calc/node.rb
---- a/lib/bcdice/common_command/calc/node.rb
-+++ b/lib/bcdice/common_command/calc/node.rb
-@@ -15,7 +15,7 @@ module BCDice
-           def eval(round_type)
-             value =
-               begin
--                @expr.eval(round_type)
-+                @expr.eval(round_type).to_i
-               rescue ZeroDivisionError
-                 "ゼロ除算が発生したため計算できませんでした"
-               end
 diff --git a/lib/bcdice/common_command/repeat.rb b/lib/bcdice/common_command/repeat.rb
 --- a/lib/bcdice/common_command/repeat.rb
 +++ b/lib/bcdice/common_command/repeat.rb
