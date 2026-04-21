@@ -111,18 +111,6 @@ diff --git a/lib/bcdice/common_command/add_dice/node.rb b/lib/bcdice/common_comm
            end
          end
  
-diff --git a/lib/bcdice/common_command/repeat.rb b/lib/bcdice/common_command/repeat.rb
---- a/lib/bcdice/common_command/repeat.rb
-+++ b/lib/bcdice/common_command/repeat.rb
-@@ -68,7 +68,7 @@ module BCDice
-           cmd.eval()
-         end
- 
--        if results.count(nil) == @times
-+        if results.count { |i| i == nil } == @times
-           return result_with_text("繰り返し対象のコマンドが実行できませんでした (#{@trailer})")
-         end
- 
 diff --git a/lib/bcdice/dice_table/d66_table.rb b/lib/bcdice/dice_table/d66_table.rb
 --- a/lib/bcdice/dice_table/d66_table.rb
 +++ b/lib/bcdice/dice_table/d66_table.rb
@@ -1214,18 +1202,6 @@ diff --git a/lib/bcdice/game_system/cthulhu7th/full_auto.rb b/lib/bcdice/game_sy
  
            if (diff >= 1) && (diff < 30)
              hit_bullet_count_base = 1 # 技能値29以下での最低値保障
-diff --git a/lib/bcdice/loader.rb b/lib/bcdice/loader.rb
---- a/lib/bcdice/loader.rb
-+++ b/lib/bcdice/loader.rb
-@@ -28,7 +28,7 @@ module BCDice
-       class_name = id.tr(":.", "_")
- 
-       # 対象ディレクトリの外にあるファイルをロードされないように制約を設ける
--      unless /\A[A-Z]\w*\z/.match?(class_name)
-+      unless /^[A-Z]\w*$/.match?(class_name)
-         return nil
-       end
- 
 diff --git a/lib/bcdice/preprocessor.rb b/lib/bcdice/preprocessor.rb
 --- a/lib/bcdice/preprocessor.rb
 +++ b/lib/bcdice/preprocessor.rb
