@@ -397,10 +397,10 @@ diff --git a/lib/bcdice/game_system/Cthulhu7th.rb b/lib/bcdice/game_system/Cthul
            elsif total >= fumble
              ResultLevel.new(:fumble)
 -          elsif total <= (difficulty / 5)
-+          elsif total <= (difficulty / 5).to_i
++          elsif total <= (difficulty / 5)
              ResultLevel.new(:extreme_success)
 -          elsif total <= (difficulty / 2)
-+          elsif total <= (difficulty / 2).to_i
++          elsif total <= (difficulty / 2)
              ResultLevel.new(:hard_success)
            elsif total <= difficulty
              ResultLevel.new(:regular_success)
@@ -424,10 +424,10 @@ diff --git a/lib/bcdice/game_system/Cthulhu7th_ChineseTraditional.rb b/lib/bcdic
            elsif total >= fumble
              ResultLevel.new(:fumble)
 -          elsif total <= (difficulty / 5)
-+          elsif total <= (difficulty / 5).floor
++          elsif total <= (difficulty / 5)
              ResultLevel.new(:extreme_success)
 -          elsif total <= (difficulty / 2)
-+          elsif total <= (difficulty / 2).floor
++          elsif total <= (difficulty / 2)
              ResultLevel.new(:hard_success)
            elsif total <= difficulty
              ResultLevel.new(:regular_success)
@@ -785,19 +785,19 @@ diff --git a/lib/bcdice/game_system/InfiniteFantasia.rb b/lib/bcdice/game_system
  
          output =
 -          if total <= (target / 32)
-+          if total <= (target / 32).to_i
++          if total <= (target / 32)
              "32レベル成功(32Lv+)"
 -          elsif total <= (target / 16)
-+          elsif total <= (target / 16).to_i
++          elsif total <= (target / 16)
              "16レベル成功(16Lv+)"
 -          elsif total <= (target / 8)
-+          elsif total <= (target / 8).to_i
++          elsif total <= (target / 8)
              "8レベル成功"
 -          elsif total <= (target / 4)
-+          elsif total <= (target / 4).to_i
++          elsif total <= (target / 4)
              "4レベル成功"
 -          elsif total <= (target / 2)
-+          elsif total <= (target / 2).to_i
++          elsif total <= (target / 2)
              "2レベル成功"
            else
              "1レベル成功"
