@@ -1,0 +1,34 @@
+name: Publish Package
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  id-token: write # Required for OIDC
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version: current
+          cache: npm
+          registry-url: https://registry.npmjs.org/
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+          bundler-cache: true
+      - run: npm ci
+      - run: npm run clean
+      - run: BUNDLE_PATH="$(pwd)/vendor/bundle" npm run build
+      - run: npm run lint
+      - run: npm test
+      - run: npm run example
+      - run: npm publish

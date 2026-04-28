@@ -31,8 +31,3 @@ jobs:
     - run: npm run lint
     - run: npm test
     - run: npm run example
-
-    - run: npm publish
-      if: ${{ matrix.node-version == 'current' && startsWith(github.ref, 'refs/tags/v') }}
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
