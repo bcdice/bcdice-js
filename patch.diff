@@ -487,44 +487,30 @@ diff --git a/lib/bcdice/game_system/Cthulhu7th_ChineseTraditional/full_auto.rb b
 diff --git a/lib/bcdice/game_system/Cthulhu7th_Korean.rb b/lib/bcdice/game_system/Cthulhu7th_Korean.rb
 --- a/lib/bcdice/game_system/Cthulhu7th_Korean.rb
 +++ b/lib/bcdice/game_system/Cthulhu7th_Korean.rb
-@@ -110,8 +110,8 @@ module BCDice
-       def getCheckResultText(total, diff, fumbleable = false)
-         if total <= diff
-           return "대성공" if total == 1
--          return "대단한 성공" if total <= (diff / 5)
--          return "어려운 성공" if total <= (diff / 2)
-+          return "대단한 성공" if total <= (diff / 5).to_i
-+          return "어려운 성공" if total <= (diff / 2).to_i
- 
-           return "보통 성공"
+@@ -123,9 +123,9 @@ module BCDice
+             ResultLevel.new(:critical)
+           elsif total >= fumble
+             ResultLevel.new(:fumble)
+-          elsif total <= (difficulty / 5)
++          elsif total <= (difficulty / 5).to_i
+             ResultLevel.new(:extreme_success)
+-          elsif total <= (difficulty / 2)
++          elsif total <= (difficulty / 2).to_i
+             ResultLevel.new(:hard_success)
+           elsif total <= difficulty
+             ResultLevel.new(:regular_success)
+@@ -196,9 +196,9 @@ module BCDice
+         if difficulty == 0
+           difficulty = nil
+         elsif difficulty_level == "H"
+-          difficulty /= 2
++          difficulty = (difficulty / 2).to_i
+         elsif difficulty_level == "E"
+-          difficulty /= 5
++          difficulty = (difficulty / 5).to_i
+         elsif difficulty_level == "C"
+           difficulty = 0
          end
-@@ -302,7 +302,7 @@ module BCDice
-           lost_bullet_count = bullet_count
-         end
- 
--        return hit_bullet_count, impale_bullet_count, lost_bullet_count
-+        return hit_bullet_count.to_i, impale_bullet_count.to_i, lost_bullet_count.to_i
-       end
- 
-       def getSuccessListImpaleBulletList(more_difficlty)
-@@ -341,7 +341,7 @@ module BCDice
-       end
- 
-       def getSetOfBullet(diff)
--        bullet_set_count = diff / 10
-+        bullet_set_count = (diff / 10).to_i
- 
-         if (diff >= 1) && (diff < 10)
-           bullet_set_count = 1 # 기능 수치가 9 이하일 때의 최저수치 보장 처리
-@@ -351,7 +351,7 @@ module BCDice
-       end
- 
-       def getHitBulletCountBase(diff, bullet_set_count)
--        hit_bullet_count_base = (bullet_set_count / 2)
-+        hit_bullet_count_base = (bullet_set_count / 2).to_i
- 
-         if (diff >= 1) && (diff < 10)
-           hit_bullet_count_base = 1 # 기능 수치가 9 이하일 때의 최저수치 보장
 diff --git a/lib/bcdice/game_system/CthulhuTech.rb b/lib/bcdice/game_system/CthulhuTech.rb
 --- a/lib/bcdice/game_system/CthulhuTech.rb
 +++ b/lib/bcdice/game_system/CthulhuTech.rb
@@ -618,7 +604,7 @@ diff --git a/lib/bcdice/game_system/EclipsePhase.rb b/lib/bcdice/game_system/Ecl
 diff --git a/lib/bcdice/game_system/Emoklore.rb b/lib/bcdice/game_system/Emoklore.rb
 --- a/lib/bcdice/game_system/Emoklore.rb
 +++ b/lib/bcdice/game_system/Emoklore.rb
-@@ -65,7 +65,7 @@ module BCDice
+@@ -70,7 +70,7 @@ module BCDice
          success_value = critical + success - fumble
          result = compare_result(success_value)
  
@@ -657,6 +643,24 @@ diff --git a/lib/bcdice/game_system/GardenOrder.rb b/lib/bcdice/game_system/Gard
          # 連続攻撃は最終的な成功率が50%以上であることが必要 cf. p217
          if repeat_count > 1 && success_rate_per_one < 50
            return "D100<=#{success_rate_per_one}@#{critical_border} ＞ 連続攻撃は成功率が50％以上必要です"
+diff --git a/lib/bcdice/game_system/GardenOrder_Korean.rb b/lib/bcdice/game_system/GardenOrder_Korean.rb
+--- a/lib/bcdice/game_system/GardenOrder_Korean.rb
++++ b/lib/bcdice/game_system/GardenOrder_Korean.rb
+@@ -68,12 +68,12 @@ module BCDice
+       def get_critical_border(critical_border_text, success_rate)
+         return critical_border_text.to_i unless critical_border_text.nil?
+ 
+-        critical_border = [success_rate / 5, 1].max
++        critical_border = [(success_rate / 5).to_i, 1].max
+         return critical_border
+       end
+ 
+       def check_roll_repeat_attack(success_rate, repeat_count, critical_border)
+-        success_rate_per_one = success_rate / repeat_count
++        success_rate_per_one = (success_rate / repeat_count).to_i
+         # 連続攻撃は最終的な成功率が50%以上であることが必要 cf. p217
+         if repeat_count > 1 && success_rate_per_one < 50
+           return "D100<=#{success_rate_per_one}@#{critical_border} ＞ 연속 공격은 성공률이 50% 이상 필요합니다."
 diff --git a/lib/bcdice/game_system/Gundog.rb b/lib/bcdice/game_system/Gundog.rb
 --- a/lib/bcdice/game_system/Gundog.rb
 +++ b/lib/bcdice/game_system/Gundog.rb
@@ -768,7 +772,7 @@ diff --git a/lib/bcdice/game_system/Hieizan.rb b/lib/bcdice/game_system/Hieizan.
 diff --git a/lib/bcdice/game_system/HunterTheReckoning5th.rb b/lib/bcdice/game_system/HunterTheReckoning5th.rb
 --- a/lib/bcdice/game_system/HunterTheReckoning5th.rb
 +++ b/lib/bcdice/game_system/HunterTheReckoning5th.rb
-@@ -141,7 +141,7 @@ module BCDice
+@@ -145,7 +145,7 @@ module BCDice
  
        def get_critical_success(ten_dice)
          # 10の目が2個毎に追加2成功
@@ -998,21 +1002,21 @@ diff --git a/lib/bcdice/game_system/Ryutama.rb b/lib/bcdice/game_system/Ryutama.
 +++ b/lib/bcdice/game_system/Ryutama.rb
 @@ -86,14 +86,14 @@ module BCDice
  
-         diceBase = dice1
+         dice_base = dice1
  
--        dice1 = diceBase / 10
-+        dice1 = (diceBase / 10).to_i
-         dice2 = diceBase % 10
+-        dice1 = dice_base / 10
++        dice1 = (dice_base / 10).to_i
+         dice2 = dice_base % 10
  
-         if isValidDice(dice1, dice2)
+         if valid_dice?(dice1, dice2)
            return dice1, dice2
          end
  
--        dice1 = diceBase / 100
-+        dice1 = (diceBase / 100).to_i
-         dice2 = diceBase % 100
+-        dice1 = dice_base / 100
++        dice1 = (dice_base / 100).to_i
+         dice2 = dice_base % 100
  
-         if isValidDice(dice1, dice2)
+         if valid_dice?(dice1, dice2)
 diff --git a/lib/bcdice/game_system/ShinMegamiTenseiKakuseihen.rb b/lib/bcdice/game_system/ShinMegamiTenseiKakuseihen.rb
 --- a/lib/bcdice/game_system/ShinMegamiTenseiKakuseihen.rb
 +++ b/lib/bcdice/game_system/ShinMegamiTenseiKakuseihen.rb
@@ -1097,7 +1101,7 @@ diff --git a/lib/bcdice/game_system/TunnelsAndTrolls.rb b/lib/bcdice/game_system
 diff --git a/lib/bcdice/game_system/VampireTheMasquerade5th.rb b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 --- a/lib/bcdice/game_system/VampireTheMasquerade5th.rb
 +++ b/lib/bcdice/game_system/VampireTheMasquerade5th.rb
-@@ -169,7 +169,7 @@ module BCDice
+@@ -174,7 +174,7 @@ module BCDice
  
        def get_critical_success(ten_dice)
          # 10の目が2個毎に追加2成功
@@ -1147,7 +1151,7 @@ diff --git a/lib/bcdice/game_system/Warhammer.rb b/lib/bcdice/game_system/Warham
 diff --git a/lib/bcdice/game_system/Warhammer4.rb b/lib/bcdice/game_system/Warhammer4.rb
 --- a/lib/bcdice/game_system/Warhammer4.rb
 +++ b/lib/bcdice/game_system/Warhammer4.rb
-@@ -62,8 +62,8 @@ module BCDice
+@@ -70,8 +70,8 @@ module BCDice
          return Result.nothing if target == '?'
          return nil unless cmp_op == :<=
  
@@ -1158,7 +1162,7 @@ diff --git a/lib/bcdice/game_system/Warhammer4.rb b/lib/bcdice/game_system/Warha
          sl = d10 - t10
  
          if total <= 5 && sl < 1
-@@ -301,7 +301,7 @@ module BCDice
+@@ -445,7 +445,7 @@ module BCDice
          if dice == 100
            return 0, 0
          else
@@ -1170,7 +1174,7 @@ diff --git a/lib/bcdice/game_system/Warhammer4.rb b/lib/bcdice/game_system/Warha
 diff --git a/lib/bcdice/game_system/WerewolfTheApocalypse5th.rb b/lib/bcdice/game_system/WerewolfTheApocalypse5th.rb
 --- a/lib/bcdice/game_system/WerewolfTheApocalypse5th.rb
 +++ b/lib/bcdice/game_system/WerewolfTheApocalypse5th.rb
-@@ -76,7 +76,7 @@ module BCDice
+@@ -73,7 +73,7 @@ module BCDice
          if rage_dice_pool >= 0
            rage_dice_text, rage_success_dice, rage_ten_dice, brutal_result_dice = make_dice_roll(rage_dice_pool)
  
@@ -1179,7 +1183,7 @@ diff --git a/lib/bcdice/game_system/WerewolfTheApocalypse5th.rb b/lib/bcdice/gam
            ten_dice += rage_ten_dice
            success_dice += rage_success_dice
  
-@@ -161,7 +161,7 @@ module BCDice
+@@ -166,7 +166,7 @@ module BCDice
  
        def get_critical_success(ten_dice)
          # 10の目が2個毎に追加2成功
@@ -1307,6 +1311,47 @@ diff --git a/lib/bcdice/game_system/cthulhu7th/full_auto.rb b/lib/bcdice/game_sy
  
            if (diff >= 1) && (diff < 30)
              hit_bullet_count_base = 1 # 技能値29以下での最低値保障
+diff --git a/lib/bcdice/game_system/cthulhu7th_Korean/full_auto.rb b/lib/bcdice/game_system/cthulhu7th_Korean/full_auto.rb
+--- a/lib/bcdice/game_system/cthulhu7th_Korean/full_auto.rb
++++ b/lib/bcdice/game_system/cthulhu7th_Korean/full_auto.rb
+@@ -43,7 +43,7 @@ module BCDice
+           broken_number = m[3].to_i
+           bonus_dice_count = m[4].to_i
+           stop_count = m[5]&.downcase || ""
+-          bullet_set_count_cap = m[6]&.to_i || diff / 10
++          bullet_set_count_cap = m[6]&.to_i || (diff / 10).to_i
+ 
+           output = ""
+ 
+@@ -55,8 +55,8 @@ module BCDice
+           end
+ 
+           # ボレーの上限の設定がおかしい場合の注意表示 : 연사 상한선 설정이 잘못된 경우의 주의 표시
+-          if (bullet_set_count_cap > diff / 10) && (diff > 39) && !m[6].nil?
+-            bullet_set_count_cap = diff / 10
++          if (bullet_set_count_cap > (diff / 10).to_i) && (diff > 39) && !m[6].nil?
++            bullet_set_count_cap = (diff / 10).to_i
+             output += "연사할 탄환 수의 상한은 [기능치÷10(소수점 버림)]발이므로, 그보다 큰 수를 지정할 수 없습니다. 연사할 탄환 수를 #{bullet_set_count_cap}발로 변경합니다.\n"
+           elsif (diff <= 39) && (bullet_set_count_cap > 3) && !m[6].nil?
+             bullet_set_count_cap = 3
+@@ -247,7 +247,7 @@ module BCDice
+         end
+ 
+         def get_set_of_bullet(diff, bullet_set_count_cap)
+-          bullet_set_count = diff / 10
++          bullet_set_count = (diff / 10).to_i
+ 
+           if bullet_set_count_cap < bullet_set_count
+             bullet_set_count = bullet_set_count_cap
+@@ -261,7 +261,7 @@ module BCDice
+         end
+ 
+         def get_hit_bullet_count_base(diff, bullet_set_count)
+-          hit_bullet_count_base = (bullet_set_count / 2)
++          hit_bullet_count_base = (bullet_set_count / 2).to_i
+ 
+           if (diff >= 1) && (diff < 30)
+             hit_bullet_count_base = 1 # 技能値29以下での最低値保障 : 기능치 29 이하일 때의 최저치 보장
 diff --git a/lib/bcdice/loader.rb b/lib/bcdice/loader.rb
 --- a/lib/bcdice/loader.rb
 +++ b/lib/bcdice/loader.rb
